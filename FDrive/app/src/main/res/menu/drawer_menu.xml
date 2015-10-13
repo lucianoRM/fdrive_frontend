@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group>
         <item
             android:id="@+id/my_drive_button"
-            android:icon="@android:drawable/sym_def_app_icon"
+            android:icon="@mipmap/ic_folder_black_24dp"
             android:title="@string/my_drive" />
         <item
             android:id="@+id/shared_whith_me_button"
-            android:icon="@android:drawable/ic_input_add"
+            android:icon="@mipmap/ic_folder_shared_black_24dp"
             android:title="@string/shared" />
 
 
@@ -20,11 +20,11 @@
             <menu>
                 <item
                     android:id="@+id/settings_button"
-                    android:icon="@android:drawable/ic_input_add"
+                    android:icon="@mipmap/ic_settings_black_24dp"
                     android:title="@string/settings" />
                 <item
                     android:id="@+id/logout_button"
-                    android:icon="@android:drawable/ic_notification_clear_all"
+                    android:icon="@mipmap/ic_power_settings_new_black_24dp"
                     android:title="@string/logout" />
             </menu>
         </item>
