@@ -1,8 +1,11 @@
 package com.example.margonari.fdrive;
 
+import android.annotation.TargetApi;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,50 +23,65 @@ public class RegistrationActivity extends AppCompatActivity {
 
         textName = (EditText) findViewById(R.id.editTextName);
         textName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    textName.setText("");
+                    textName.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+                } else {
+                    textName.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                 }
             }
         });
 
         textSurname = (EditText) findViewById(R.id.editTextSurname);
         textSurname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    textSurname.setText("");
+                    textSurname.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+                } else {
+                    textSurname.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                 }
             }
         });
 
         textEmail = (EditText) findViewById(R.id.editTextEmail);
         textEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    textEmail.setText("");
+                    textEmail.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+                } else {
+                    textEmail.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                 }
             }
         });
 
         textPassword = (EditText) findViewById(R.id.editTextPassword);
         textPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    textPassword.setText("");
+                    textPassword.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+                } else {
+                    textPassword.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                 }
             }
         });
 
         textConfirmPassword = (EditText) findViewById(R.id.editTextPasswordConf);
         textConfirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    textConfirmPassword.setText("");
+                    textConfirmPassword.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+                } else {
+                    textConfirmPassword.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                 }
             }
         });
