@@ -23,5 +23,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, DriveActivity.class)); //Just to test
     }
 
+    public void toLogInActivity(View view) {
+        startActivity(new Intent(MainActivity.this, LogInActivity.class));
+    }
 
 }

@@ -19,6 +19,9 @@
         </activity>
         <activity android:name=".DriveActivity" >
         </activity>
+        <activity android:name=".LogInActivity" >
+
+        </activity>
     </application>
 
 </manifest>

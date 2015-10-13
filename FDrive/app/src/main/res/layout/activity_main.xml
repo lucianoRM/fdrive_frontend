@@ -45,16 +45,9 @@
         android:textColor="@android:color/holo_blue_light"
         android:background="@null"
         android:height="10dp"
-        android:layout_alignTop="@+id/textViewRegister"
-        android:shadowColor="@android:color/white" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/buttonRegister"
-        android:layout_marginTop="107dp"
-        android:onClick="openDrive" />
+        android:shadowColor="@android:color/white"
+        android:onClick="toLogInActivity"
+        android:layout_alignTop="@+id/textViewRegister" />
+
 </RelativeLayout>
