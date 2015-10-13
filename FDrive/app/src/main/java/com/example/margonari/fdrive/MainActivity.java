@@ -7,13 +7,21 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
     public void toRegisterActivity(View view) {
         startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
     }
+
+    public void openDrive(View view){
+        startActivity(new Intent(MainActivity.this, DriveActivity.class)); //Just to test
+    }
+
+
 }
