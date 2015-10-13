@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText textName, textSurname, textEmail, textPassword, textConfirmPassword;
-    private TextView labelErrorName, labelErrorSurname, labelErrorEmail;
+    private TextView labelErrorName, labelErrorSurname, labelErrorEmail, labelErrorPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class RegistrationActivity extends AppCompatActivity {
         labelErrorName = (TextView) findViewById(R.id.textViewErrorName);
         labelErrorSurname = (TextView) findViewById(R.id.textViewErrorSurname);
         labelErrorEmail = (TextView) findViewById(R.id.textViewErrorEmail);
+        labelErrorPassword = (TextView) findViewById(R.id.textViewErrorPassword);
 
         textName = (EditText) findViewById(R.id.editTextName);
         textName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -67,12 +68,14 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         textPassword = (EditText) findViewById(R.id.editTextPassword);
+        textConfirmPassword = (EditText) findViewById(R.id.editTextPasswordConf);
         textPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     textPassword.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+                    textConfirmPassword.setVisibility(View.VISIBLE);
                 } else {
                     textPassword.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                 }
@@ -101,6 +104,9 @@ public class RegistrationActivity extends AppCompatActivity {
         String name = textName.getText().toString();
         String surname = textSurname.getText().toString();
         String email = textEmail.getText().toString();
+        String password = textPassword.getText().toString();
+        String passwordConfirm = textConfirmPassword.getText().toString();
+
 
         if (name.equals("")) {
             labelErrorName.setVisibility(View.VISIBLE);
@@ -121,6 +127,19 @@ public class RegistrationActivity extends AppCompatActivity {
             textEmail.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
         } else {
             labelErrorEmail.setVisibility(View.INVISIBLE);
+        }
+
+        if (password.length() < 6) {
+            labelErrorPassword.setVisibility(View.VISIBLE);
+            labelErrorPassword.setText("The password must have at least 6 characters");
+            textPassword.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+        } else {
+            labelErrorPassword.setVisibility(View.INVISIBLE);
+            if (! password.contentEquals(passwordConfirm)) {
+                labelErrorPassword.setVisibility(View.VISIBLE);
+                labelErrorPassword.setText("The password confirmation does not match");
+                textPassword.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            }
         }
     }
 
