@@ -19,7 +19,7 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        textEmail = (EditText) findViewById(R.id.editTextEmail);
+        textEmail = (EditText) findViewById(R.id.editTextEmailLogIn);
         textEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -32,7 +32,7 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-        textPassword = (EditText) findViewById(R.id.editTextPassword);
+        textPassword = (EditText) findViewById(R.id.editTextPasswordLogIn);
         textPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
