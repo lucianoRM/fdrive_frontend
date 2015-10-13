@@ -7,7 +7,8 @@
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/include" />
 
     <Button
         android:layout_width="wrap_content"
@@ -49,5 +50,15 @@
         android:shadowColor="@android:color/white"
         android:onClick="toLogInActivity"
         android:layout_alignTop="@+id/textViewRegister" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To Drive"
+        android:id="@+id/button"
+        android:layout_below="@+id/include"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="103dp"
+        android:onClick="openDrive" />
 
 </RelativeLayout>
