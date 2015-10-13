@@ -34,10 +34,8 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     textName.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
-                    labelErrorName.setVisibility(View.INVISIBLE);
                 } else {
                     textName.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
-                    labelErrorName.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -49,10 +47,8 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     textSurname.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
-                    labelErrorSurname.setVisibility(View.INVISIBLE);
                 } else {
                     textSurname.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
-                    labelErrorSurname.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -64,10 +60,8 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     textEmail.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
-                    labelErrorEmail.setVisibility(View.INVISIBLE);
                 } else {
                     textEmail.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
-                    labelErrorEmail.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -101,12 +95,34 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     }
-/*
-    public void clickedTextName(View view) {
-        EditText textName = (EditText) findViewById(R.id.editTextName);
-        textName.setText("");
-        textName.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void checkFields(View view) {
+        String name = textName.getText().toString();
+        String surname = textSurname.getText().toString();
+        String email = textEmail.getText().toString();
+
+        if (name.equals("")) {
+            labelErrorName.setVisibility(View.VISIBLE);
+            textName.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+        } else {
+            labelErrorName.setVisibility(View.INVISIBLE);
+        }
+
+        if (surname.equals("")) {
+            labelErrorSurname.setVisibility(View.VISIBLE);
+            textSurname.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+        } else {
+            labelErrorSurname.setVisibility(View.INVISIBLE);
+        }
+
+        if (email.equals("")) {
+            labelErrorEmail.setVisibility(View.VISIBLE);
+            textEmail.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+        } else {
+            labelErrorEmail.setVisibility(View.INVISIBLE);
+        }
     }
-*/
+
 
 }
