@@ -27,17 +27,31 @@ public class DriveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive);
 
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        setToolbar();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    }
 
-        drawerTitle = "FDrive";
+
+    private void setToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            // Poner ícono del drawer toggle
+            ab.setHomeAsUpIndicator(R.mipmap.ic_menu_white_24dp);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            getMenuInflater().inflate(R.menu.drive_action_bar_menu, menu);
+            return true;
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
