@@ -1,6 +1,7 @@
 package com.example.margonari.fdrive;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,8 +30,11 @@ public class DriveActivity extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         setToolbar();
+        setOnActionButtonClickListener();
 
     }
+
+
 
 
     private void setToolbar() {
@@ -44,6 +48,7 @@ public class DriveActivity extends AppCompatActivity {
         }
 
     }
+
 
 
     @Override
@@ -61,8 +66,19 @@ public class DriveActivity extends AppCompatActivity {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setOnActionButtonClickListener(){
+        FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
     }
 
 }
