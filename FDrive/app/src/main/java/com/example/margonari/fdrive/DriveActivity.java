@@ -1,5 +1,7 @@
 package com.example.margonari.fdrive;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -71,11 +73,35 @@ public class DriveActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    protected void pickFile(View view){
+
+        ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
+
+        Intent intent = new Intent();
+        intent.setType("file/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Choose File to Upload"),1);
+
+    }
+
+    //It's executed when leaving file system
+    @Override
+    protected void onActivityResult(int reqCode, int resCode, Intent data){
+        super.onActivityResult(reqCode, resCode, data);
+
+        if (reqCode == 1 && resCode == RESULT_OK && data != null) {
+            Uri selectedFile = data.getData();
+            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+            toolbar.setTitle(selectedFile.toString());
+        }
+    }
+
     public void setOnActionButtonClickListener(){
         FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
         floatingButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                drawerLayout.openDrawer(GravityCompat.START);
+               pickFile(view);
             }
         });
 
