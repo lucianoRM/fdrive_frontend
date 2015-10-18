@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,9 +50,27 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.FileViewHolder
 
     @Override
     public void onBindViewHolder(FileViewHolder fileViewHolder, int i) {
+        List<String> imageExtensionList = Arrays.asList(".jpg",".bmp",".gif",".png",".psd",".pspimage",".thm",".tiff",".yuv");
+        List<String> sourceExtensionList = Arrays.asList(".c",".cpp",".java",".py",".sh",".pl");
+        List<String> musicExtensionList = Arrays.asList(".mp3",".wav",".mid",".wma");
+        List<String> videoExtensionList = Arrays.asList(".3gp",".avi",".mp4",".mkv",".3g2",".asf",".asx",".mov",".mpg",".wmv");
         fileViewHolder.namePlusExtension.setText(files.get(i).name + files.get(i).extension);
         fileViewHolder.size.setText(files.get(i).size);
-        fileViewHolder.icon.setImageResource(R.mipmap.ic_folder_black_24dp);
+
+        String extension = files.get(i).extension;
+        int resource = R.mipmap.ic_insert_drive_file_black_24dp;
+        if( imageExtensionList.contains(extension) ) {
+            resource = R.mipmap.ic_photo_black_24dp;
+        }else if( sourceExtensionList.contains(extension)){
+            resource = R.mipmap.ic_code_black_24dp;
+        }else if( musicExtensionList.contains(extension)){
+            resource = R.mipmap.ic_music_note_black_24dp;
+        }else if( videoExtensionList.contains(extension)){
+            resource = R.mipmap.ic_videocam_black_24dp;
+        }
+
+
+        fileViewHolder.icon.setImageResource(resource);
     }
 
     @Override

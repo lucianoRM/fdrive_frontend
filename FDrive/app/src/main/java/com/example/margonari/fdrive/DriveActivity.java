@@ -57,13 +57,13 @@ public class DriveActivity extends AppCompatActivity {
         files.add(new File("archivo2",".cpp","100kb"));
         files.add(new File("archivo3", ".txt", "200kb"));
         files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo2",".3gp","100kb"));
         files.add(new File("archivo3",".txt","200kb"));
         files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo2",".pl","100kb"));
         files.add(new File("archivo3",".txt","200kb"));
         files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo2",".avi","100kb"));
         files.add(new File("archivo3",".txt","200kb"));
         files.add(new File("archivo1",".jpg","50kb"));
         files.add(new File("archivo2",".cpp","100kb"));
