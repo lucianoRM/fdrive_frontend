@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import com.example.margonari.fdrive.requests.RequestMaker;
 import com.example.margonari.fdrive.requests.ServiceGenerator;
 import com.example.margonari.fdrive.requests.UserSignUpService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -44,12 +47,36 @@ public class DriveActivity extends AppCompatActivity {
         setToolbar();
         setOnActionButtonClickListener();
 
-        /*RequestMaker.logIn("http://192.168.0.5:8000", "Luciano", "pass");
-        try {
-            Thread.sleep(2000);
-        }catch (InterruptedException e){
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_files_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
 
-        }*/
+        recyclerView.setLayoutManager(layoutManager);
+
+        List<File> files = new ArrayList<>();
+        files.add(new File("archivo1",".jpg","50kb"));
+        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo3", ".txt", "200kb"));
+        files.add(new File("archivo1",".jpg","50kb"));
+        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo3",".txt","200kb"));
+        files.add(new File("archivo1",".jpg","50kb"));
+        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo3",".txt","200kb"));
+        files.add(new File("archivo1",".jpg","50kb"));
+        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo3",".txt","200kb"));
+        files.add(new File("archivo1",".jpg","50kb"));
+        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo3",".txt","200kb"));
+        files.add(new File("archivo1",".jpg","50kb"));
+        files.add(new File("archivo2",".cpp","100kb"));
+        files.add(new File("archivo3",".txt","200kb"));
+
+
+        CardAdapter adapter = new CardAdapter(files);
+        recyclerView.setAdapter(adapter);
+
+
         List<String> tags = Arrays.asList("quico","caco");
         RequestMaker.saveFile("http://192.168.0.5:8000", "Luciano", "zLOZ2nOXpPIhMFSv8kP0", "archivito", ".cpp", "Luciano", tags);
 
