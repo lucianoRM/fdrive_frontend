@@ -14,7 +14,7 @@ import retrofit.http.Query;
 
 public interface UserSignUpService{
     @GET("/users")
-    void registerUser(@Query("email") String email,@Query("password") String password, Callback<H> callback);
+    void registerUser(@Query("email") String email,@Query("password") String password, Callback<RequestAnswer> callback);
 }
 
 

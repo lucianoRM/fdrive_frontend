@@ -9,12 +9,13 @@ import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.Callback;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 /**
  * Created by luciano on 16/10/15.
  */
-public interface LoginUserService {
-    @GET("/login?email={email}&password={password}")
-    void loginUser(@Path("email") String email,@Path("password") String password,Callback<Response> callback);
+public interface UserLoginService {
+    @GET("/login")
+    void loginUser(@Query("email") String email,@Query("password") String password,Callback<RequestAnswer> callback);
     }
 

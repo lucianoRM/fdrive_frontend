@@ -1,7 +1,26 @@
 package com.example.margonari.fdrive.requests;
 
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.http.Body;
+import retrofit.http.POST;
+
 /**
  * Created by luciano on 18/10/15.
  */
-public class SaveFileService {
+
+class SaveFileBody{
+    public String email;
+    public String token;
+    public String name;
+    public String extension;
+    public String owner;
+    public List<String> tags;
+
+}
+
+public interface SaveFileService {
+    @POST("/files")
+    void saveFile(@Body SaveFileBody body, Callback<RequestAnswer> callback);
 }

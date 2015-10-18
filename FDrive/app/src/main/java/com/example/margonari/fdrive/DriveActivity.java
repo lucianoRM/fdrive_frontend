@@ -18,6 +18,7 @@ import com.example.margonari.fdrive.requests.RequestMaker;
 import com.example.margonari.fdrive.requests.ServiceGenerator;
 import com.example.margonari.fdrive.requests.UserSignUpService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -43,7 +44,14 @@ public class DriveActivity extends AppCompatActivity {
         setToolbar();
         setOnActionButtonClickListener();
 
-        RequestMaker.signUp("http://192.168.0.5:8000","Pasaasfa","pass");
+        /*RequestMaker.logIn("http://192.168.0.5:8000", "Luciano", "pass");
+        try {
+            Thread.sleep(2000);
+        }catch (InterruptedException e){
+
+        }*/
+        List<String> tags = Arrays.asList("quico","caco");
+        RequestMaker.saveFile("http://192.168.0.5:8000", "Luciano", "zLOZ2nOXpPIhMFSv8kP0", "archivito", ".cpp", "Luciano", tags);
 
     }
 
