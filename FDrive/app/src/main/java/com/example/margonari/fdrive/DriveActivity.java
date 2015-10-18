@@ -4,18 +4,27 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
+import com.example.margonari.fdrive.requests.RequestMaker;
+import com.example.margonari.fdrive.requests.ServiceGenerator;
+import com.example.margonari.fdrive.requests.UserSignUpService;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by luciano on 13/10/15.
@@ -34,7 +43,10 @@ public class DriveActivity extends AppCompatActivity {
         setToolbar();
         setOnActionButtonClickListener();
 
+        RequestMaker.signUp("http://192.168.0.5:8000","Pasaasfa","pass");
+
     }
+
 
 
 
