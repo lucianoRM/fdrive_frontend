@@ -37,6 +37,7 @@ public class DriveActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private String drawerTitle;
+    private List<FileCard> fileCards; //Where all file cards are stored
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,28 +53,12 @@ public class DriveActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        List<File> files = new ArrayList<>();
-        files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".cpp","100kb"));
-        files.add(new File("archivo3", ".txt", "200kb"));
-        files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".3gp","100kb"));
-        files.add(new File("archivo3",".txt","200kb"));
-        files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".pl","100kb"));
-        files.add(new File("archivo3",".txt","200kb"));
-        files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".avi","100kb"));
-        files.add(new File("archivo3",".txt","200kb"));
-        files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".cpp","100kb"));
-        files.add(new File("archivo3",".txt","200kb"));
-        files.add(new File("archivo1",".jpg","50kb"));
-        files.add(new File("archivo2",".cpp","100kb"));
-        files.add(new File("archivo3",".txt","200kb"));
+        this.fileCards  = new ArrayList<>();
+        fileCards.add(new FileCard("archivo1",".jpg","50kb"));
+        fileCards.add(new FileCard("archivo2",".cpp","100kb"));
+        fileCards.add(new FileCard("archivo3", ".txt", "200kb"));
 
-
-        CardAdapter adapter = new CardAdapter(files);
+        CardAdapter adapter = new CardAdapter(fileCards);
         recyclerView.setAdapter(adapter);
 
 

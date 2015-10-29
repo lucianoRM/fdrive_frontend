@@ -31,8 +31,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.FileViewHolder
         }
     }
 
-    List<File> files;
-    CardAdapter(List<File> files){
+    List<FileCard> files;
+    CardAdapter(List<FileCard> files){
         this.files = files;
     }
 
