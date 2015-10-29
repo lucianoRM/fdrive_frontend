@@ -38,6 +38,7 @@ public class DriveActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private String drawerTitle;
     private List<FileCard> fileCards; //Where all file cards are stored
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +49,17 @@ public class DriveActivity extends AppCompatActivity {
         setToolbar();
         setOnActionButtonClickListener();
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_files_view);
+        //Initialize recyclerView for showing file cards
+        this.recyclerView = (RecyclerView) findViewById(R.id.recycler_files_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        this.recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setLayoutManager(layoutManager);
-
-        this.fileCards  = new ArrayList<>();
+        /*this.fileCards  = new ArrayList<>();
         fileCards.add(new FileCard("archivo1",".jpg","50kb"));
         fileCards.add(new FileCard("archivo2",".cpp","100kb"));
-        fileCards.add(new FileCard("archivo3", ".txt", "200kb"));
+        fileCards.add(new FileCard("archivo3", ".txt", "200kb"));*/
 
-        CardAdapter adapter = new CardAdapter(fileCards);
-        recyclerView.setAdapter(adapter);
+        updateFileCards();
 
 
         List<String> tags = Arrays.asList("quico","caco");
@@ -133,9 +133,15 @@ public class DriveActivity extends AppCompatActivity {
         FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
         floatingButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-               pickFile(view);
+                pickFile(view);
             }
         });
+
+    }
+
+    private void updateFileCards(){
+        CardAdapter adapter = new CardAdapter(this.fileCards);
+        this.recyclerView.setAdapter(adapter);
 
     }
 
