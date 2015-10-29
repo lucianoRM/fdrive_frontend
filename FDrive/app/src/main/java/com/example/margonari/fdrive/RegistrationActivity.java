@@ -182,7 +182,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 buttonNewAccount.setBackgroundResource(R.color.errorRed);
             }else{
                 Log.d("test", String.valueOf(requestAnswer.result) + requestAnswer.errors.toString());
-                buttonNewAccount.setBackgroundResource(R.color.successGreen);
+                MainActivity.toLogInActivity(MainActivity.mainView);
             }
         }
 

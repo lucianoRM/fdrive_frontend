@@ -40,6 +40,7 @@ public class DriveActivity extends AppCompatActivity {
     private String drawerTitle;
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
     private RecyclerView recyclerView;
+    public static String email = "",token = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,8 @@ public class DriveActivity extends AppCompatActivity {
 
         updateFileCards();
 
+        Log.d("test",token);
 
-        List<String> tags = Arrays.asList("quico","caco");
-        RequestMaker.saveFile("http://192.168.0.5:8000", "Luciano", "zLOZ2nOXpPIhMFSv8kP0", "archivito", ".cpp", "Luciano", tags);
 
     }
 

@@ -47,7 +47,7 @@
         android:height="60dp"
         android:focusableInTouchMode="false"
         android:nestedScrollingEnabled="false"
-        android:onClick="checkFields"
+        android:onClick="requestLogin"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/editTextPasswordLogIn"
         android:layout_alignParentLeft="true" />

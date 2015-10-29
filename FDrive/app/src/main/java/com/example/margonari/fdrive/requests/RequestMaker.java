@@ -4,6 +4,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.example.margonari.fdrive.DriveActivity;
+import com.example.margonari.fdrive.LogInActivity;
 import com.example.margonari.fdrive.R;
 import com.example.margonari.fdrive.RegistrationActivity;
 
@@ -71,8 +72,9 @@ public class RequestMaker {
         client.loginUser(email, password, new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
-                //What to do when success
-                Log.d("Test", "Result: " + String.valueOf(answer.result) + " Token: "  + answer.token);
+                Log.d("test","Called" + answer.result + answer.token);
+                LogInActivity.requestAnswer = answer;
+                LogInActivity.onSuccess();
             }
 
             @Override
