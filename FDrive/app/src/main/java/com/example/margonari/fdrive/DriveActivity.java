@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.RequestAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
@@ -47,8 +48,13 @@ public class DriveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive);
 
+        //Set drawer layout and shown email
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        TextView drawerEmail = (TextView)findViewById(R.id.email);
+        drawerEmail.setText(email);
+
         setToolbar();
+
         setOnActionButtonClickListener();
 
         //Initialize recyclerView for showing file cards
@@ -56,14 +62,13 @@ public class DriveActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         this.recyclerView.setLayoutManager(layoutManager);
 
-        /*this.fileCards  = new ArrayList<>();
+        this.fileCards  = new ArrayList<>();
         fileCards.add(new FileCard("archivo1",".jpg","50kb"));
         fileCards.add(new FileCard("archivo2",".cpp","100kb"));
-        fileCards.add(new FileCard("archivo3", ".txt", "200kb"));*/
+        fileCards.add(new FileCard("archivo3", ".txt", "200kb"));
 
         updateFileCards();
 
-        Log.d("test",token);
 
 
     }

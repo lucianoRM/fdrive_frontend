@@ -16,7 +16,7 @@
         android:layout_height="@dimen/perfil_image_size"
         android:layout_marginBottom="16dp"
         android:scaleType="centerCrop"
-        app:border_color="@android:color/white"
+        app:border_color="@android:color/black"
         app:border_width="1dp" />
 
     <!-- Nombre de Usuario -->
@@ -34,6 +34,7 @@
         style="@style/Widget.AppCompat.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
         android:text="acairiaelmaildeusu@rio.com"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
