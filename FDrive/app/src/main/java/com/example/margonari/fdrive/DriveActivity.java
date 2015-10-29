@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.margonari.fdrive.requests.RequestAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
 import com.example.margonari.fdrive.requests.ServiceGenerator;
 import com.example.margonari.fdrive.requests.UserSignUpService;
@@ -37,7 +38,7 @@ public class DriveActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private String drawerTitle;
-    private List<FileCard> fileCards; //Where all file cards are stored
+    private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
     private RecyclerView recyclerView;
 
     @Override
@@ -144,6 +145,7 @@ public class DriveActivity extends AppCompatActivity {
         this.recyclerView.setAdapter(adapter);
 
     }
+
 
 }
 

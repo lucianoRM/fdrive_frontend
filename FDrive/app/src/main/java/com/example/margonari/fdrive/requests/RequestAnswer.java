@@ -1,5 +1,6 @@
 package com.example.margonari.fdrive.requests;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 public class RequestAnswer {
 
     public boolean result;
-    public List<String> errors;
+    public List<String> errors = new ArrayList<String>();
     public String token;
     public String name;
     public String extension;

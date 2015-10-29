@@ -3,7 +3,9 @@ package com.example.margonari.fdrive.requests;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.example.margonari.fdrive.DriveActivity;
 import com.example.margonari.fdrive.R;
+import com.example.margonari.fdrive.RegistrationActivity;
 
 import java.util.List;
 
@@ -25,8 +27,10 @@ public class RequestMaker {
         client.registerUser(email,password,new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
-                //What to do when success
-                Log.d("Test",String.valueOf(answer.result));
+                Log.d("test","Called" + answer.result);
+                RegistrationActivity.requestAnswer = answer;
+                RegistrationActivity.onSuccess();
+
             }
 
             @Override

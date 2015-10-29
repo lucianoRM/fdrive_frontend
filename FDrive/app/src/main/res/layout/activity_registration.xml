@@ -122,9 +122,9 @@
         android:height="60dp"
         android:focusableInTouchMode="false"
         android:nestedScrollingEnabled="false"
-        android:onClick="checkFields"
         android:layout_below="@+id/editTextPasswordConf"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="requestRegister" />
 
     <TextView
         android:layout_width="wrap_content"

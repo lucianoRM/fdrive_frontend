@@ -1,6 +1,8 @@
 package com.example.margonari.fdrive;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -8,20 +10,31 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.margonari.fdrive.requests.RequestAnswer;
+import com.example.margonari.fdrive.requests.RequestMaker;
+
+import retrofit.client.Response;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText textName, textSurname, textEmail, textPassword, textConfirmPassword;
     private TextView labelErrorName, labelErrorSurname, labelErrorEmail, labelErrorPassword;
+    private static Button buttonNewAccount;
+    public static RequestAnswer requestAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        buttonNewAccount = (Button) findViewById(R.id.buttonNewAccount);
 
         labelErrorName = (TextView) findViewById(R.id.textViewErrorName);
         labelErrorSurname = (TextView) findViewById(R.id.textViewErrorSurname);
@@ -100,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void checkFields(View view) {
+    public boolean checkFields(View view) {
         String name = textName.getText().toString();
         String surname = textSurname.getText().toString();
         String email = textEmail.getText().toString();
@@ -111,6 +124,7 @@ public class RegistrationActivity extends AppCompatActivity {
         if (name.equals("")) {
             labelErrorName.setVisibility(View.VISIBLE);
             textName.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            return false;
         } else {
             labelErrorName.setVisibility(View.INVISIBLE);
         }
@@ -118,6 +132,7 @@ public class RegistrationActivity extends AppCompatActivity {
         if (surname.equals("")) {
             labelErrorSurname.setVisibility(View.VISIBLE);
             textSurname.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            return false;
         } else {
             labelErrorSurname.setVisibility(View.INVISIBLE);
         }
@@ -125,6 +140,7 @@ public class RegistrationActivity extends AppCompatActivity {
         if (email.equals("")) {
             labelErrorEmail.setVisibility(View.VISIBLE);
             textEmail.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            return false;
         } else {
             labelErrorEmail.setVisibility(View.INVISIBLE);
         }
@@ -133,15 +149,46 @@ public class RegistrationActivity extends AppCompatActivity {
             labelErrorPassword.setVisibility(View.VISIBLE);
             labelErrorPassword.setText("The password must have at least 6 characters");
             textPassword.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            return false;
         } else {
             labelErrorPassword.setVisibility(View.INVISIBLE);
             if (! password.contentEquals(passwordConfirm)) {
                 labelErrorPassword.setVisibility(View.VISIBLE);
                 labelErrorPassword.setText("The password confirmation does not match");
                 textPassword.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                return false;
             }
+        }
+        return true;
+    }
+
+    public void requestRegister(View view){
+
+        //Prevents the button from being clicked more than once
+        buttonNewAccount.setClickable(false);
+
+        boolean isOk = checkFields(view);
+        if(isOk) {
+            RequestMaker.signUp(getString(R.string.baseURL), textEmail.getText().toString(), textPassword.getText().toString());
         }
     }
 
+
+    public static void onSuccess(){
+
+        if(requestAnswer != null) {
+            if (requestAnswer.result == false) {
+                Log.d("test",String.valueOf(requestAnswer.result) + requestAnswer.errors.toString());
+                buttonNewAccount.setBackgroundResource(R.color.errorRed);
+            }else{
+                Log.d("test", String.valueOf(requestAnswer.result) + requestAnswer.errors.toString());
+                buttonNewAccount.setBackgroundResource(R.color.successGreen);
+            }
+        }
+
+        //Sets the button back to clickable
+        buttonNewAccount.setClickable(true);
+
+    }
 
 }
