@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +28,19 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText textName, textSurname, textEmail, textPassword, textConfirmPassword;
     private TextView labelErrorName, labelErrorSurname, labelErrorEmail, labelErrorPassword;
     private static Button buttonNewAccount;
+    private static ProgressBar progressBar;
     public static RequestAnswer requestAnswer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        //Sets the progress bar as invisible
+        progressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
+
 
         buttonNewAccount = (Button) findViewById(R.id.buttonNewAccount);
 

@@ -6,6 +6,6 @@
     <string name="settings">Settings</string>
     <string name="logout">Log Out</string>
     <string name="options_title">Options</string>
-    <string name="baseURL">http://192.168.0.6:8000</string>
+    <string name="baseURL">http://10.1.156.196:8000</string>
 
 </resources>

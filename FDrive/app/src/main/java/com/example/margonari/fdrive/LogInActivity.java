@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.RequestAnswer;
@@ -21,12 +22,17 @@ public class LogInActivity extends AppCompatActivity {
 
     private static EditText textEmail, textPassword;
     private static Button buttonLogin;
+    private static ProgressBar progressBar;
     public static RequestAnswer requestAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+        //Sets the progress bar as invisible
+        progressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
 
         buttonLogin = (Button) findViewById(R.id.buttonLogIn);
 

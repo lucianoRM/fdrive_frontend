@@ -23,6 +23,7 @@
 
         <include layout="@layout/main_content" />
 
+
     </LinearLayout>
     <!-- Menú Deslizante -->
     <android.support.design.widget.NavigationView

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.RequestAnswer;
@@ -41,12 +42,18 @@ public class DriveActivity extends AppCompatActivity {
     private String drawerTitle;
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
     private RecyclerView recyclerView;
+    private static ProgressBar progressBar;
     public static String email = "",token = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive);
+
+        //Sets the progress bar as invisible
+        progressBar = (ProgressBar) findViewById(R.id.driveProgressBar);
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
+
 
         //Set drawer layout and shown email
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
