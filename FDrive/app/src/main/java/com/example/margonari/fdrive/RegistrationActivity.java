@@ -173,11 +173,14 @@ public class RegistrationActivity extends AppCompatActivity {
     public void requestRegister(View view){
 
         //Prevents the button from being clicked more than once
-        buttonNewAccount.setClickable(false);
+        toggleUi(false);
 
         boolean isOk = checkFields(view);
         if(isOk) {
             RequestMaker.signUp(getString(R.string.baseURL), textEmail.getText().toString(), textPassword.getText().toString());
+        }else{
+            //If the fields are wrong, enables the button, there is no request
+            toggleUi(true);
         }
     }
 
@@ -195,7 +198,22 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         //Sets the button back to clickable
-        buttonNewAccount.setClickable(true);
+        toggleUi(true);
+
+    }
+
+    private static void toggleUi(boolean enable){
+        if(enable){
+            //Sets the button back to clickable
+            buttonNewAccount.setClickable(true);
+            progressBar.setVisibility(ProgressBar.INVISIBLE);
+        }else{
+            //Prevents the button from being clicked more than once
+            buttonNewAccount.setClickable(false);
+
+            //show progress bar
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+        }
 
     }
 

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -29,6 +30,7 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
 
         //Sets the progress bar as invisible
         progressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
@@ -66,8 +68,8 @@ public class LogInActivity extends AppCompatActivity {
 
     public void requestLogin(View view){
 
-        //Prevents the button from being clicked more than once
-        buttonLogin.setClickable(false);
+        //disable button
+        toggleUi(false);
 
         RequestMaker.logIn(getString(R.string.baseURL), textEmail.getText().toString(), textPassword.getText().toString());
 
@@ -92,7 +94,26 @@ public class LogInActivity extends AppCompatActivity {
         }
 
         //Sets the button back to clickable
-        buttonLogin.setClickable(true);
+        toggleUi(true);
 
     }
+
+    private static void toggleUi(boolean enable){
+        if(enable){
+            //Sets the button back to clickable
+            buttonLogin.setClickable(true);
+            progressBar.setVisibility(ProgressBar.INVISIBLE);
+        }else{
+            //Prevents the button from being clicked more than once
+            buttonLogin.setClickable(false);
+
+            //show progress bar
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+        }
+
+    }
+
 }
+
+
+

@@ -95,7 +95,6 @@ public class RequestMaker {
         body.token = token;
         body.fileId = fileId;
 
-        // Fetch and print a list of the contributors to this library.
         client.deleteFile(body, new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
