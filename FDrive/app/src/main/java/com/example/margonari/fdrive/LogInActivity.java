@@ -71,7 +71,7 @@ public class LogInActivity extends AppCompatActivity {
         //disable button
         toggleUi(false);
 
-        RequestMaker.logIn(getString(R.string.baseURL), textEmail.getText().toString(), textPassword.getText().toString());
+        RequestMaker.logIn(textEmail.getText().toString(), textPassword.getText().toString());
 
     }
 

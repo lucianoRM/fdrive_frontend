@@ -177,7 +177,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         boolean isOk = checkFields(view);
         if(isOk) {
-            RequestMaker.signUp(getString(R.string.baseURL), textEmail.getText().toString(), textPassword.getText().toString());
+            RequestMaker.signUp(textEmail.getText().toString(), textPassword.getText().toString());
         }else{
             //If the fields are wrong, enables the button, there is no request
             toggleUi(true);

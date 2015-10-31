@@ -24,7 +24,9 @@
         </activity>
         <activity android:name=".RegistrationActivity" >
         </activity>
-        <activity android:name=".DriveActivity"
+        <activity android:name=".DriveActivity">
+        </activity>
+        <activity android:name=".ConfigurationActivity">
             android:theme="@style/DrawerActivityTheme">
         </activity>
         <activity android:name=".LogInActivity" >

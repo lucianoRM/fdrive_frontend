@@ -1,5 +1,8 @@
 package com.example.margonari.fdrive.requests;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
@@ -19,7 +22,18 @@ import retrofit.client.Response;
  */
 public class RequestMaker {
 
-    public static void signUp(String baseUrl,String email,String password){
+
+    private static String baseUrl = "http://192.168.0.1:8000";
+
+    public static void setIp(String newIP){
+
+       baseUrl = newIP;
+
+    }
+
+
+
+    public static void signUp(String email,String password){
 
 
         UserSignUpService client = ServiceGenerator.createService(UserSignUpService.class,baseUrl);
@@ -42,7 +56,7 @@ public class RequestMaker {
 
     }
 
-    public static void loadFile(String baseUrl,String email,String token,int fileId){
+    public static void loadFile(String email,String token,int fileId){
 
 
         LoadFileService client = ServiceGenerator.createService(LoadFileService.class,baseUrl);
@@ -63,7 +77,7 @@ public class RequestMaker {
 
     }
 
-    public static void logIn(String baseUrl,String email,String password){
+    public static void logIn(String email,String password){
 
 
         UserLoginService client = ServiceGenerator.createService(UserLoginService.class,baseUrl);
@@ -85,7 +99,7 @@ public class RequestMaker {
 
     }
 
-    public static void deleteFile(String baseUrl,String email,String token,int fileId){
+    public static void deleteFile(String email,String token,int fileId){
 
 
         DeleteFileService client = ServiceGenerator.createService(DeleteFileService.class,baseUrl);
@@ -95,6 +109,7 @@ public class RequestMaker {
         body.token = token;
         body.fileId = fileId;
 
+        // Fetch and print a list of the contributors to this library.
         client.deleteFile(body, new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
@@ -111,7 +126,7 @@ public class RequestMaker {
     }
 
 
-    public static void saveFile(String baseUrl,String email,String token,String fileName,String fileExtension,String owner,List<String> tags){
+    public static void saveFile(String email,String token,String fileName,String fileExtension,String owner,List<String> tags){
 
 
         SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);

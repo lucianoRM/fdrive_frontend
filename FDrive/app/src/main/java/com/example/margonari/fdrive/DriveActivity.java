@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -11,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,20 +19,8 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.margonari.fdrive.requests.RequestAnswer;
-import com.example.margonari.fdrive.requests.RequestMaker;
-import com.example.margonari.fdrive.requests.ServiceGenerator;
-import com.example.margonari.fdrive.requests.UserSignUpService;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by luciano on 13/10/15.
@@ -40,6 +28,7 @@ import retrofit.client.Response;
 public class DriveActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private String drawerTitle;
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
     private RecyclerView recyclerView;
@@ -60,6 +49,31 @@ public class DriveActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         TextView drawerEmail = (TextView)findViewById(R.id.email);
         drawerEmail.setText(email);
+
+
+        navigationView = (NavigationView)findViewById(R.id.nav_view);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if(menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);
+
+                //Closing drawer on item click
+                drawerLayout.closeDrawers();
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()){
+                    case R.id.settings_button:
+                        startActivity(new Intent(DriveActivity.this,ConfigurationActivity.class));
+                }
+                return false;
+            }
+
+        });
+
 
         setToolbar();
 
@@ -120,6 +134,7 @@ public class DriveActivity extends AppCompatActivity {
     }
 
 
+
     protected void pickFile(View view){
 
         ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
@@ -127,7 +142,7 @@ public class DriveActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("file/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Choose File to Upload"),1);
+        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 1);
 
     }
 
@@ -158,6 +173,13 @@ public class DriveActivity extends AppCompatActivity {
         this.recyclerView.setAdapter(adapter);
 
     }
+
+
+
+
+
+
+
 
 
     private void toggleUi(boolean enable){

@@ -3,9 +3,12 @@ package com.example.margonari.fdrive;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.margonari.fdrive.requests.RequestMaker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +22,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mainContext = this;
         mainView = (View) findViewById(android.R.id.content);
+
+
+        //sets ip
+        SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
+        String ip = prefs.getString("ip", getResources().getString(R.string.baseURL));
+        RequestMaker.setIp(getResources().getString(R.string.baseURL));
 
 
     }
