@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         mainView = (View) findViewById(android.R.id.content);
         mainScreenWebView = (WebView) findViewById(R.id.mainScreenWebView);
         mainScreenWebView.loadUrl("file:///android_asset/giphy.gif");
+        mainScreenWebView.getSettings().setLoadWithOverviewMode(true);
+        mainScreenWebView.getSettings().setUseWideViewPort(true);
+
+
 
         //sets ip
         SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
