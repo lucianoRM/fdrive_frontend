@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mainContext = this;
         mainView = (View) findViewById(android.R.id.content);
-        /*mainScreenWebView = (WebView) findViewById(R.id.mainScreenWebView);
+        mainScreenWebView = (WebView) findViewById(R.id.mainScreenWebView);
         mainScreenWebView.loadUrl("file:///android_asset/giphy.gif");
         mainScreenWebView.getSettings().setLoadWithOverviewMode(true);
-        mainScreenWebView.getSettings().setUseWideViewPort(true);*/
+        mainScreenWebView.getSettings().setUseWideViewPort(true);
 
 
         setToolbar();
