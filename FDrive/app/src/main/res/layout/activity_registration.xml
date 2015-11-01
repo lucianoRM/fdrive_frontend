@@ -1,150 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.margonari.fdrive.RegistrationActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/registerProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminateTint="?attr/colorPrimary"
-        android:indeterminateTintMode="src_in"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-
-        />
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editTextName"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:autoText="false"
-        android:textCursorDrawable="@null"
-        android:hint="Name"
-        android:height="48dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp" />
+    <include layout="@layout/main_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editTextSurname"
-        android:autoText="false"
-        android:textCursorDrawable="@null"
-        android:hint="Surname"
-        android:layout_below="@+id/textViewErrorName"
-        android:layout_alignParentStart="true"
-        android:height="48dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.example.margonari.fdrive.LogInActivity">
+        <ProgressBar
+            android:id="@+id/registerProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="?attr/colorPrimary"
+            android:indeterminateTintMode="src_in"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/editTextEmail"
-        android:autoText="false"
-        android:textCursorDrawable="@null"
-        android:hint="E-mail address"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:layout_below="@+id/textViewErrorSurname"
-        android:layout_alignParentStart="true" />
+            />
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/editTextPassword"
-        android:autoText="false"
-        android:textCursorDrawable="@null"
-        android:hint="Password"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editTextName"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:autoText="false"
+            android:textCursorDrawable="@null"
+            android:hint="Name"
+            android:height="48dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" />
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/editTextPasswordConf"
-        android:autoText="false"
-        android:textCursorDrawable="@null"
-        android:hint="Password confirmation"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
-        android:visibility="visible"
-        android:layout_below="@+id/textViewErrorPassword"
-        android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" Please, enter your name"
-        android:id="@+id/textViewErrorName"
-        android:textColor="#ff0000"
-        android:layout_below="@+id/editTextName"
-        android:layout_alignParentStart="true"
-        android:visibility="invisible" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editTextSurname"
+            android:autoText="false"
+            android:textCursorDrawable="@null"
+            android:hint="Surname"
+            android:layout_below="@+id/textViewErrorName"
+            android:layout_alignParentStart="true"
+            android:height="48dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" Please, enter your surname"
-        android:id="@+id/textViewErrorSurname"
-        android:textColor="#ff0000"
-        android:layout_below="@+id/editTextSurname"
-        android:layout_alignParentStart="true"
-        android:visibility="invisible" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/editTextEmail"
+            android:autoText="false"
+            android:textCursorDrawable="@null"
+            android:hint="E-mail address"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_below="@+id/textViewErrorSurname"
+            android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" Enter a valid address"
-        android:id="@+id/textViewErrorEmail"
-        android:textColor="#ff0000"
-        android:layout_below="@+id/editTextEmail"
-        android:layout_alignParentStart="true"
-        android:visibility="invisible" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/editTextPassword"
+            android:autoText="false"
+            android:textCursorDrawable="@null"
+            android:hint="Password"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Create Account"
-        android:id="@+id/buttonNewAccount"
-        android:width="300dp"
-        android:background="#f42748db"
-        android:textColor="#ffffffff"
-        android:height="60dp"
-        android:focusableInTouchMode="false"
-        android:nestedScrollingEnabled="false"
-        android:layout_below="@+id/editTextPasswordConf"
-        android:layout_alignParentStart="true"
-        android:onClick="requestRegister" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/editTextPasswordConf"
+            android:autoText="false"
+            android:textCursorDrawable="@null"
+            android:hint="Password confirmation"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:visibility="visible"
+            android:layout_below="@+id/textViewErrorPassword"
+            android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="The Password confirmation does not match"
-        android:id="@+id/textViewErrorPassword"
-        android:textColor="#ff0000"
-        android:visibility="invisible"
-        android:layout_below="@+id/editTextPassword"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Please, enter your name"
+            android:id="@+id/textViewErrorName"
+            android:textColor="#ff0000"
+            android:layout_below="@+id/editTextName"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Please, enter your surname"
+            android:id="@+id/textViewErrorSurname"
+            android:textColor="#ff0000"
+            android:layout_below="@+id/editTextSurname"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Enter a valid address"
+            android:id="@+id/textViewErrorEmail"
+            android:textColor="#ff0000"
+            android:layout_below="@+id/editTextEmail"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:id="@+id/buttonNewAccount"
+            android:width="300dp"
+            android:background="#f42748db"
+            android:textColor="#ffffffff"
+            android:height="60dp"
+            android:focusableInTouchMode="false"
+            android:nestedScrollingEnabled="false"
+            android:layout_below="@+id/editTextPasswordConf"
+            android:layout_alignParentStart="true"
+            android:onClick="requestRegister" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Password confirmation does not match"
+            android:id="@+id/textViewErrorPassword"
+            android:textColor="#ff0000"
+            android:visibility="invisible"
+            android:layout_below="@+id/editTextPassword"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</LinearLayout>

@@ -102,7 +102,7 @@ public class DriveActivity extends AppCompatActivity {
 
 
     private void setToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.drive_action_bar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -112,6 +112,7 @@ public class DriveActivity extends AppCompatActivity {
         }
 
     }
+
 
 
 

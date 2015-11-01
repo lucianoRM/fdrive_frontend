@@ -17,7 +17,7 @@
         android:layout_height="match_parent">
 
         <!-- Contenido Principal -->
-        <include layout="@layout/toolbar"
+        <include layout="@layout/drive_action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

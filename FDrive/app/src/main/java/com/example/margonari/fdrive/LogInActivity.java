@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -37,6 +41,9 @@ public class LogInActivity extends AppCompatActivity {
         progressBar.setVisibility(ProgressBar.INVISIBLE);
 
         buttonLogin = (Button) findViewById(R.id.buttonLogIn);
+
+        setToolbar();
+
 
         textEmail = (EditText) findViewById(R.id.editTextEmailLogIn);
         textEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -111,6 +118,31 @@ public class LogInActivity extends AppCompatActivity {
             progressBar.setVisibility(ProgressBar.VISIBLE);
         }
 
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_action_bar);
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+    }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_action_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.main_action_bar_settings:
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
