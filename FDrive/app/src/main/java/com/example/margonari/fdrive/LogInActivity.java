@@ -139,6 +139,7 @@ public class LogInActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_action_bar_settings:
+                startActivity(new Intent(LogInActivity.this,ConfigurationActivity.class));
                 return true;
 
         }

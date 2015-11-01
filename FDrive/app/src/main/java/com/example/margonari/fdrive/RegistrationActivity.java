@@ -3,6 +3,7 @@ package com.example.margonari.fdrive;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -242,6 +243,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_action_bar_settings:
+                startActivity(new Intent(RegistrationActivity.this,ConfigurationActivity.class));
                 return true;
 
         }
