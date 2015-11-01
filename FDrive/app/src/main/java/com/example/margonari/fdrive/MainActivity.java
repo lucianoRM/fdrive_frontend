@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 
 import com.example.margonari.fdrive.requests.RequestMaker;
 
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context mainContext;
     public static View mainView;
+    private WebView mainScreenWebView;
 
 
     @Override
@@ -22,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mainContext = this;
         mainView = (View) findViewById(android.R.id.content);
-
+        mainScreenWebView = (WebView) findViewById(R.id.mainScreenWebView);
+        mainScreenWebView.loadUrl("file:///android_asset/giphy.gif");
 
         //sets ip
         SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);

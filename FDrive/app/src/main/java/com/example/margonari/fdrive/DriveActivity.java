@@ -19,6 +19,8 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.margonari.fdrive.requests.RequestMaker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,8 +155,7 @@ public class DriveActivity extends AppCompatActivity {
 
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             Uri selectedFile = data.getData();
-            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-            toolbar.setTitle(selectedFile.toString());
+            RequestMaker.uploadFile(this,selectedFile,"this is a file");
         }
     }
 

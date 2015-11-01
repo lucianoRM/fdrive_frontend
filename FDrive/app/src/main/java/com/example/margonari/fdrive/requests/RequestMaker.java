@@ -1,8 +1,10 @@
 package com.example.margonari.fdrive.requests;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
@@ -11,11 +13,14 @@ import com.example.margonari.fdrive.LogInActivity;
 import com.example.margonari.fdrive.R;
 import com.example.margonari.fdrive.RegistrationActivity;
 
+import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by luciano on 18/10/15.
@@ -33,12 +38,37 @@ public class RequestMaker {
 
 
 
+    public static void uploadFile(Context context,Uri uri,String description){
+
+        FileUploadService client = ServiceGenerator.createService(FileUploadService.class,baseUrl);
+
+        //Create typedFile to send
+        ContentResolver contentResolver = context.getContentResolver();
+        String fileType = contentResolver.getType(uri);
+        TypedFile file = new TypedFile(fileType,new File(uri.toString()));
+
+        client.uploadFile(file, description, new Callback<RequestAnswer>() {
+            @Override
+            public void success(RequestAnswer answer, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
+
+    }
+
+
     public static void signUp(String email,String password){
 
 
         UserSignUpService client = ServiceGenerator.createService(UserSignUpService.class,baseUrl);
 
-        // Fetch and print a list of the contributors to this library.
+
         client.registerUser(email,password,new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
