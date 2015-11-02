@@ -7,4 +7,5 @@
     <color name="floatingButtonColorPressed">#94892c</color>
     <color name="errorRed">#aa1122</color>
     <color name="successGreen">#006600</color>
+    <color name="buttonsColor">#f42748db</color>
 </resources>

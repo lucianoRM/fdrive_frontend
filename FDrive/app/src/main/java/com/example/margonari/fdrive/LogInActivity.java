@@ -2,7 +2,9 @@ package com.example.margonari.fdrive;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -28,13 +30,16 @@ public class LogInActivity extends AppCompatActivity {
     private static EditText textEmail, textPassword;
     private static Button buttonLogin;
     private static ProgressBar progressBar;
-    public static RequestAnswer requestAnswer;
+    private static SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+
+        //Instantiates prefenreces
+        preferences = getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
 
         //Sets the progress bar as invisible
         progressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
@@ -77,31 +82,36 @@ public class LogInActivity extends AppCompatActivity {
 
         //disable button
         toggleUi(false);
-
-        RequestMaker.logIn(textEmail.getText().toString(), textPassword.getText().toString());
+        buttonLogin.setBackgroundResource(R.color.buttonsColor);
+        RequestMaker.getInstance().logIn(textEmail.getText().toString(), textPassword.getText().toString());
 
     }
 
 
 
-    public static void onSuccess(){
+    public static void onLoginSuccess(String token){
 
-        if(requestAnswer != null) {
-            if (requestAnswer.result == false) {
-                Log.d("test", String.valueOf(requestAnswer.result) + requestAnswer.errors.toString());
-                buttonLogin.setBackgroundResource(R.color.errorRed);
-            }else{
-                Log.d("test", String.valueOf(requestAnswer.result) + requestAnswer.errors.toString());
+        //Persist token
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("token", token);
+        edit.commit();
 
-                //Loads information into drive to make file requests
-                DriveActivity.token = requestAnswer.token;
-                DriveActivity.email = textEmail.getText().toString();
-                MainActivity.openDrive(MainActivity.mainView);
-            }
-        }
+        //Open drive
+        MainActivity.openDrive(MainActivity.mainView);
 
         //Sets the button back to clickable
         toggleUi(true);
+
+    }
+
+    public static void onLoginFailure(String error) {
+
+        buttonLogin.setBackgroundResource(R.color.errorRed);
+        //Sets the button back to clickable
+        toggleUi(true);
+    }
+
+    public static void onConnectionError(String error) {
 
     }
 

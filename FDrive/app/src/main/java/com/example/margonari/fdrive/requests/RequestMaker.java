@@ -29,6 +29,13 @@ public class RequestMaker {
 
 
     private static String baseUrl = "http://192.168.0.1:8000";
+    private static RequestMaker instance = null;
+
+
+    public static RequestMaker getInstance(){
+        if(instance == null) instance = new RequestMaker();
+        return instance;
+    }
 
     public static void setIp(String newIP){
 
@@ -69,10 +76,10 @@ public class RequestMaker {
         UserSignUpService client = ServiceGenerator.createService(UserSignUpService.class,baseUrl);
 
 
-        client.registerUser(email,password,new Callback<RequestAnswer>() {
+        client.registerUser(email, password, new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
-                Log.d("test","Called" + answer.result);
+                Log.d("test", "Called" + answer.result);
                 RegistrationActivity.requestAnswer = answer;
                 RegistrationActivity.onSuccess();
 
@@ -107,7 +114,7 @@ public class RequestMaker {
 
     }
 
-    public static void logIn(String email,String password){
+    public void logIn(String email,String password){
 
 
         UserLoginService client = ServiceGenerator.createService(UserLoginService.class,baseUrl);
@@ -117,8 +124,14 @@ public class RequestMaker {
             @Override
             public void success(RequestAnswer answer, Response response) {
                 Log.d("test","Called" + answer.result + answer.token);
-                LogInActivity.requestAnswer = answer;
-                LogInActivity.onSuccess();
+
+                //login successful
+                if(answer.result == true) {
+                    LogInActivity.onLoginSuccess(answer.token);
+                }else{
+                    //login failure
+                    LogInActivity.onLoginFailure("Login error");
+                }
             }
 
             @Override
