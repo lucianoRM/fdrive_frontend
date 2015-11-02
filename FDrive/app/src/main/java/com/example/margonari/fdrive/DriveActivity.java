@@ -1,6 +1,8 @@
 package com.example.margonari.fdrive;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -35,7 +37,8 @@ public class DriveActivity extends AppCompatActivity {
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
     private RecyclerView recyclerView;
     private static ProgressBar progressBar;
-    public static String email = "",token = "";
+    private static String email,token,name,surname;
+    private static SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,9 @@ public class DriveActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         TextView drawerEmail = (TextView)findViewById(R.id.email);
         drawerEmail.setText(email);
+
+        //Instantiates preferences
+        preferences = getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
 
 
         navigationView = (NavigationView)findViewById(R.id.nav_view);
@@ -80,6 +86,8 @@ public class DriveActivity extends AppCompatActivity {
         setToolbar();
 
         setOnActionButtonClickListener();
+
+        setUserInformation();
 
         //Initialize recyclerView for showing file cards
         this.recyclerView = (RecyclerView) findViewById(R.id.recycler_files_view);
@@ -190,6 +198,25 @@ public class DriveActivity extends AppCompatActivity {
         }else{
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
+    }
+
+
+
+    //Sets the user information shown in the screen
+    private void setUserInformation(){
+        email = preferences.getString("email","email");
+        name = preferences.getString("name","name");
+        surname = preferences.getString("surname","surname");
+        token = preferences.getString("token","token");
+
+
+        //Show information
+        TextView uText = (TextView)drawerLayout.findViewById(R.id.username);
+        TextView eText = (TextView)drawerLayout.findViewById(R.id.email);
+
+        uText.setText(name + " " + surname);
+        eText.setText(email);
+
     }
 
 }

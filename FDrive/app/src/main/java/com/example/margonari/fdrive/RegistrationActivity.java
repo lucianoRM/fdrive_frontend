@@ -38,7 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private static Button buttonNewAccount;
     private static ProgressBar progressBar;
     private static SharedPreferences preferences;
-    private static String name,password,email;
+    private static String name,password,email,surname;
 
 
     @Override
@@ -196,6 +196,7 @@ public class RegistrationActivity extends AppCompatActivity {
             password = textPassword.getText().toString();
             name = textName.getText().toString();
             email = textEmail.getText().toString();
+            surname = textSurname.getText().toString();
             RequestMaker.getInstance().signUp(textEmail.getText().toString(), textPassword.getText().toString());
         }else{
             //If the fields are wrong, enables the button, there is no request
@@ -211,6 +212,7 @@ public class RegistrationActivity extends AppCompatActivity {
         edit.putString("password",password);
         edit.putString("name",name);
         edit.putString("email",email);
+        edit.putString("surname",surname);
         edit.commit();
 
         //Lauches login activity
