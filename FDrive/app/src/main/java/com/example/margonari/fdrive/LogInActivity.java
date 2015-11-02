@@ -41,6 +41,7 @@ public class LogInActivity extends AppCompatActivity {
         //Instantiates prefenreces
         preferences = getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
 
+
         //Sets the progress bar as invisible
         progressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
         progressBar.setVisibility(ProgressBar.INVISIBLE);
@@ -75,6 +76,11 @@ public class LogInActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        //Gets persisted information and loads the fields
+        textEmail.setText(preferences.getString("email",""));
+        
 
     }
 
