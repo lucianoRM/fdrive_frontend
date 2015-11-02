@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
 
+
     !-- Contenido Principal -->
     <include layout="@layout/main_action_bar"
         android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:width="300dp"
-                android:background="#f42748db"
+                android:background="@color/buttonsColor"
                 android:textColor="#ffffffff"
                 android:height="60dp"
                 android:focusableInTouchMode="false"
