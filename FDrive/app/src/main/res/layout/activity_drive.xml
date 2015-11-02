@@ -34,7 +34,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer_menu" />
+        app:menu="@menu/left_drawer_menu" />
 
     <android.support.design.widget.NavigationView
 
@@ -43,7 +43,15 @@
         android:layout_height="fill_parent"
         android:layout_gravity="end"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer_menu" />
+        app:headerLayout="@layout/drawer_header">
+
+        <include layout="@layout/right_drawer_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+    </android.support.design.widget.NavigationView>
+
+
+
 
 </android.support.v4.widget.DrawerLayout>
