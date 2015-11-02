@@ -70,7 +70,7 @@ public class RequestMaker {
     }
 
 
-    public static void signUp(String email,String password){
+    public void signUp(String email,String password){
 
 
         UserSignUpService client = ServiceGenerator.createService(UserSignUpService.class,baseUrl);
@@ -79,9 +79,16 @@ public class RequestMaker {
         client.registerUser(email, password, new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
-                Log.d("test", "Called" + answer.result);
-                RegistrationActivity.requestAnswer = answer;
-                RegistrationActivity.onSuccess();
+
+                //Registration successful
+                if(answer.result == true){
+                    RegistrationActivity.onRegistrationSuccess();
+                }else{ //registration failure
+                    RegistrationActivity.onRegistrationFailure("Error");
+                }
+
+
+
 
             }
 

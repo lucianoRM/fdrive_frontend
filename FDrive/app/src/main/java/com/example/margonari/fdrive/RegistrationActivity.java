@@ -3,7 +3,9 @@ package com.example.margonari.fdrive;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.margonari.fdrive.requests.RequestAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
+import com.example.margonari.fdrive.requests.SaveFileService;
 
 import retrofit.client.Response;
 
@@ -34,7 +37,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView labelErrorName, labelErrorSurname, labelErrorEmail, labelErrorPassword;
     private static Button buttonNewAccount;
     private static ProgressBar progressBar;
-    public static RequestAnswer requestAnswer;
+    private static SharedPreferences preferences;
+    private static String name,password,email;
 
 
     @Override
@@ -46,6 +50,8 @@ public class RegistrationActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
         progressBar.setVisibility(ProgressBar.INVISIBLE);
 
+        //instantiates shared preferences
+        preferences = getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
 
         setToolbar();
 
@@ -182,9 +188,15 @@ public class RegistrationActivity extends AppCompatActivity {
         //Prevents the button from being clicked more than once
         toggleUi(false);
 
+        //Sets the button color again
+        buttonNewAccount.setBackgroundResource(R.color.buttonsColor);
+
         boolean isOk = checkFields(view);
         if(isOk) {
-            RequestMaker.signUp(textEmail.getText().toString(), textPassword.getText().toString());
+            password = textPassword.getText().toString();
+            name = textName.getText().toString();
+            email = textEmail.getText().toString();
+            RequestMaker.getInstance().signUp(textEmail.getText().toString(), textPassword.getText().toString());
         }else{
             //If the fields are wrong, enables the button, there is no request
             toggleUi(true);
@@ -192,21 +204,30 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
-    public static void onSuccess(){
+    public static void onRegistrationSuccess(){
 
-        if(requestAnswer != null) {
-            if (requestAnswer.result == false) {
-                Log.d("test",String.valueOf(requestAnswer.result) + requestAnswer.errors.toString());
-                buttonNewAccount.setBackgroundResource(R.color.errorRed);
-            }else{
-                Log.d("test", String.valueOf(requestAnswer.result) + requestAnswer.errors.toString());
-                MainActivity.toLogInActivity(MainActivity.mainView);
-            }
-        }
+        //Persist information
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("password",password);
+        edit.putString("name",name);
+        edit.putString("email",email);
+        edit.commit();
+
+        //Lauches login activity
+        MainActivity.toLogInActivity(MainActivity.mainView);
 
         //Sets the button back to clickable
         toggleUi(true);
 
+    }
+
+
+    public static void onRegistrationFailure(String error){
+
+        //Sets the button red
+        buttonNewAccount.setBackgroundResource(R.color.errorRed);
+        //Sets the button back to clickable
+        toggleUi(true);
     }
 
     private static void toggleUi(boolean enable){

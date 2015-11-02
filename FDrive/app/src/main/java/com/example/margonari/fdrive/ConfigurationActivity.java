@@ -39,7 +39,6 @@ public class ConfigurationActivity extends Activity {
         SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
 
         SharedPreferences.Editor edit = prefs.edit();
-
         edit.putString("ip", ipString);
         edit.commit();
 
