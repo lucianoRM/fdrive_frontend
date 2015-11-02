@@ -32,7 +32,8 @@ import java.util.List;
 public class DriveActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    private NavigationView leftDrawerView;
+    private NavigationView rightDrawerView;
     private String drawerTitle;
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
     private RecyclerView recyclerView;
@@ -59,34 +60,24 @@ public class DriveActivity extends AppCompatActivity {
         preferences = getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
 
 
-        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        leftDrawerView = (NavigationView)findViewById(R.id.left_drawer_view);
+        rightDrawerView = (NavigationView)findViewById(R.id.right_drawer_view);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-                //Checking if the item is in checked state or not, if not make it in checked state
-                if(menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
-
-                //Closing drawer on item click
-                drawerLayout.closeDrawers();
-
-                //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()){
-                    case R.id.settings_button:
-                        startActivity(new Intent(DriveActivity.this,ConfigurationActivity.class));
-                }
-                return false;
-            }
-
-        });
+        //Disable right drawer gestures
+        configRightDrawerGestures();
 
 
+        //Set drawer listener
+        setLeftDrawerListener();
+        setRightDrawerListener();
+
+        //Enable action bar
         setToolbar();
 
+        //Set floating button listener
         setOnActionButtonClickListener();
 
+        //Display user information
         setUserInformation();
 
         //Initialize recyclerView for showing file cards
@@ -109,85 +100,110 @@ public class DriveActivity extends AppCompatActivity {
 
 
 
-    private void setToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.drive_action_bar);
-        setSupportActionBar(toolbar);
-        final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            // Poner ícono del drawer toggle
-            ab.setHomeAsUpIndicator(R.mipmap.ic_menu_white_24dp);
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
-
-    }
 
 
 
+    /*###########################################################################
+    ###################     DRAWERS     #########################################
+    #############################################################################
+     */
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            getMenuInflater().inflate(R.menu.drive_action_bar_menu, menu);
-            return true;
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
+    private void configRightDrawerGestures(){
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, rightDrawerView);
+        drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {}
 
-        }
-        return super.onOptionsItemSelected(item);
-    }
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                if(drawerView == rightDrawerView){
+                    //enable gestures
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, rightDrawerView);
+                }
 
-
-
-    protected void pickFile(View view){
-
-        ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
-
-        Intent intent = new Intent();
-        intent.setType("file/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 1);
-
-    }
-
-    //It's executed when leaving file system
-    @Override
-    protected void onActivityResult(int reqCode, int resCode, Intent data){
-        super.onActivityResult(reqCode, resCode, data);
-
-        if (reqCode == 1 && resCode == RESULT_OK && data != null) {
-            Uri selectedFile = data.getData();
-            RequestMaker.uploadFile(this,selectedFile,"this is a file");
-        }
-    }
-
-    public void setOnActionButtonClickListener(){
-        FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
-        floatingButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                pickFile(view);
             }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                if(drawerView == rightDrawerView){
+                    //disable gestures
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, rightDrawerView);
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {}
         });
 
+
     }
+
+
+    private void setLeftDrawerListener(){
+
+        NavigationView.OnNavigationItemSelectedListener listener = new NavigationView.OnNavigationItemSelectedListener(){
+
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if (menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);
+
+                //Closing drawer on item click
+                drawerLayout.closeDrawer(leftDrawerView);
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()) {
+                    case R.id.settings_button:
+                        startActivity(new Intent(DriveActivity.this, ConfigurationActivity.class));
+                    case R.id.logout_button:
+                        drawerLayout.openDrawer(rightDrawerView);
+                }
+                return false;
+            }
+
+        };
+        leftDrawerView.setNavigationItemSelectedListener(listener);
+    }
+
+
+    private void setRightDrawerListener(){
+
+        NavigationView.OnNavigationItemSelectedListener listener = new NavigationView.OnNavigationItemSelectedListener(){
+
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if (menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);
+
+                //Closing drawer on item click
+                drawerLayout.closeDrawer(rightDrawerView);
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()) {
+                }
+                return false;
+            }
+
+        };
+
+        rightDrawerView.setNavigationItemSelectedListener(listener);
+    }
+
+     /*###########################################################################
+    ###################     SHOWN INFORMATION     ################################
+    #############################################################################
+     */
 
     private void updateFileCards(){
         CardAdapter adapter = new CardAdapter(this.fileCards);
         this.recyclerView.setAdapter(adapter);
 
     }
-
-
-
-
-
 
 
 
@@ -218,6 +234,86 @@ public class DriveActivity extends AppCompatActivity {
         eText.setText(email);
 
     }
+
+
+     /*###########################################################################
+    ###################     TOOLBAR      #########################################
+    #############################################################################
+     */
+
+    private void setToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.drive_action_bar);
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            // Poner ícono del drawer toggle
+            ab.setHomeAsUpIndicator(R.mipmap.ic_menu_white_24dp);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!drawerLayout.isDrawerOpen(leftDrawerView)) {
+            getMenuInflater().inflate(R.menu.drive_action_bar_menu, menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(leftDrawerView);
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+     /*###########################################################################
+    ###################     FLOATING BUTTON      #################################
+    #############################################################################
+     */
+
+    public void setOnActionButtonClickListener(){
+        FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                pickFile(view);
+            }
+        });
+
+    }
+
+    protected void pickFile(View view){
+
+        ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
+
+        Intent intent = new Intent();
+        intent.setType("file/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 1);
+
+    }
+
+    //It's executed when leaving file system
+    @Override
+    protected void onActivityResult(int reqCode, int resCode, Intent data){
+        super.onActivityResult(reqCode, resCode, data);
+
+        if (reqCode == 1 && resCode == RESULT_OK && data != null) {
+            Uri selectedFile = data.getData();
+            RequestMaker.uploadFile(this, selectedFile, "this is a file");
+        }
+    }
+
+
+
+
 
 }
 

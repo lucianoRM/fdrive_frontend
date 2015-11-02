@@ -28,10 +28,20 @@
     <!-- Menú Deslizante -->
     <android.support.design.widget.NavigationView
 
-        android:id="@+id/nav_view"
+        android:id="@+id/left_drawer_view"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/drawer_header"
+        app:menu="@menu/drawer_menu" />
+
+    <android.support.design.widget.NavigationView
+
+        android:id="@+id/right_drawer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="end"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu" />
