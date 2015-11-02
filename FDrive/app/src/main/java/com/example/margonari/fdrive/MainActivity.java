@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         String ip = prefs.getString("ip", getResources().getString(R.string.baseURL));
         RequestMaker.setIp(getResources().getString(R.string.baseURL));
 
+        loginIfPossible();
 
     }
 
@@ -65,6 +67,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_action_bar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
+    }
+
+
+    //Checks if there is information to login, if positive, it logs automatically. Doesn't actually sends a login request, just enters the drive. If information is old(e.g: token out of date), it will logout automatically while in DriveActivity
+    private void loginIfPossible(){
+        SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
+        String email = prefs.getString("email", "");
+        String token = prefs.getString("token","");
+
+        Log.d("test", email + "a" + token);
+
+        if(!email.equals("") || !token.equals("")){
+            openDrive(mainView);
+        }
+
+
     }
 
 

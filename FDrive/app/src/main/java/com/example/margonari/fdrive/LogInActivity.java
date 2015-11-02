@@ -80,7 +80,7 @@ public class LogInActivity extends AppCompatActivity {
 
         //Gets persisted information and loads the fields
         textEmail.setText(preferences.getString("email",""));
-        
+
 
     }
 
