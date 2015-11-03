@@ -71,28 +71,37 @@
                 android:id="@+id/right_drawer_download_button"
                 android:contentDescription="downloadButton"
                 android:src="@mipmap/ic_file_download_black_24dp"
-                android:background="@android:color/transparent"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="?android:selectableItemBackgroundBorderless"
                 android:layout_weight="1"
-                />
+                android:clickable="true" />
             <ImageButton
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/right_drawer_share_button"
                 android:contentDescription="shareButton"
                 android:src="@mipmap/ic_share_black_24dp"
-                android:background="@android:color/transparent"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="?android:selectableItemBackgroundBorderless"
                 android:layout_weight="1"
-                />
+                android:clickable="true" />
             <ImageButton
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/right_drawer_delete_button"
                 android:contentDescription="deleteButton"
                 android:src="@mipmap/ic_delete_black_24dp"
-                android:background="@android:color/transparent"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="?android:selectableItemBackgroundBorderless"
                 android:layout_weight="1"
-                />
+                android:clickable="true"
+                android:contextClickable="true" />
 
 
     </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        </ListView>
 </LinearLayout>
