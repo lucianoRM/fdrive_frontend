@@ -2,6 +2,7 @@ package com.example.margonari.fdrive;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +18,20 @@ import java.util.List;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.FileViewHolder> {
 
     public static class FileViewHolder extends RecyclerView.ViewHolder{
-        CardView cardView;
+        View view;
+        FileCard currentItem;
         ImageView icon;
         TextView namePlusExtension;
         TextView size;
 
         FileViewHolder(View itemView){
             super(itemView);
+
             icon = (ImageView) itemView.findViewById(R.id.extension_photo);
             namePlusExtension = (TextView) itemView.findViewById(R.id.file_name);
             size = (TextView) itemView.findViewById(R.id.file_size);
 
+            this.view = itemView;
         }
     }
 
@@ -71,6 +75,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.FileViewHolder
 
 
         fileViewHolder.icon.setImageResource(resource);
+        fileViewHolder.currentItem = files.get(i);
     }
 
     @Override

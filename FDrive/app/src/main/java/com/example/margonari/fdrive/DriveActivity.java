@@ -14,14 +14,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.RequestMaker;
+
+import junit.framework.Test;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +90,9 @@ public class DriveActivity extends AppCompatActivity {
         this.recyclerView = (RecyclerView) findViewById(R.id.recycler_files_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         this.recyclerView.setLayoutManager(layoutManager);
+
+        //Sets the cards listener
+        setCardsListener();
 
         this.fileCards  = new ArrayList<>();
         fileCards.add(new FileCard("archivo1",".jpg","50kb"));
@@ -158,8 +167,7 @@ public class DriveActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.settings_button:
                         startActivity(new Intent(DriveActivity.this, ConfigurationActivity.class));
-                    case R.id.logout_button:
-                        drawerLayout.openDrawer(rightDrawerView);
+                        return true;
                 }
                 return false;
             }
@@ -234,6 +242,33 @@ public class DriveActivity extends AppCompatActivity {
         eText.setText(email);
 
     }
+
+    private void setCardsListener(){
+        this.recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                //Reads from clicked fileCard
+                TextView clickedFileName = (TextView) view.findViewById(R.id.file_name);
+                TextView clickedFileSize = (TextView) view.findViewById(R.id.file_size);
+                ImageView clickedFileIcon = (ImageView) view.findViewById(R.id.extension_photo);
+
+                //Writes to drawer file card
+                TextView rightDrawerFileName = (TextView) findViewById(R.id.right_drawer_file_name);
+                TextView rightDrawerFileSize = (TextView) findViewById(R.id.right_drawer_file_size);
+                ImageView rightDrawerExtensionPhoto = (ImageView) findViewById(R.id.right_drawer_extension_photo);
+
+                rightDrawerExtensionPhoto.setImageDrawable(clickedFileIcon.getDrawable());
+                rightDrawerFileName.setText(clickedFileName.getText().toString());
+                rightDrawerFileSize.setText(clickedFileSize.getText().toString());
+
+                drawerLayout.openDrawer(rightDrawerView);
+
+            }
+
+        }));
+    }
+
 
 
      /*###########################################################################
