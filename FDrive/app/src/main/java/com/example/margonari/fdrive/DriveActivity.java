@@ -368,7 +368,7 @@ public class DriveActivity extends AppCompatActivity {
         ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
 
         Intent intent = new Intent();
-        intent.setType("file/*");
+        intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 1);
 
