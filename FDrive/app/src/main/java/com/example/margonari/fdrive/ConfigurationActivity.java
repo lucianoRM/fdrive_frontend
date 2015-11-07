@@ -15,7 +15,7 @@ import com.example.margonari.fdrive.requests.RequestMaker;
  */
 public class ConfigurationActivity extends Activity {
 
-    private EditText ip;
+    private static EditText ip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,8 @@ public class ConfigurationActivity extends Activity {
         //Get saved ip and store it in ip
         SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
         ip.setText(prefs.getString("ip",getResources().getString(R.string.baseURL)));
-        RequestMaker.setIp(ip.getText().toString());
+
+
 
 
 
@@ -43,12 +44,14 @@ public class ConfigurationActivity extends Activity {
         edit.commit();
 
 
-        //Saves ip into requestMaker
-        RequestMaker.setIp(ipString);
-
         //Closes configurations
         finish();
 
+    }
+
+    public static String getIp(){
+
+        return ip.getText().toString();
     }
 
 }

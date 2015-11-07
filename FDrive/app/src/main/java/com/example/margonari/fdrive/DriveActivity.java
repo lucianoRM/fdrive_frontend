@@ -381,7 +381,7 @@ public class DriveActivity extends AppCompatActivity {
 
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             Uri selectedFile = data.getData();
-            RequestMaker.uploadFile(this, selectedFile, "this is a file");
+            RequestMaker.getInstance().uploadFile(this, selectedFile, "this is a file");
         }
     }
 

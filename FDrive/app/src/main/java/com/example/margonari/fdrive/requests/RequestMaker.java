@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.example.margonari.fdrive.ConfigurationActivity;
 import com.example.margonari.fdrive.DriveActivity;
 import com.example.margonari.fdrive.LogInActivity;
 import com.example.margonari.fdrive.R;
@@ -34,6 +35,7 @@ public class RequestMaker {
 
     public static RequestMaker getInstance(){
         if(instance == null) instance = new RequestMaker();
+        instance.setIp(ConfigurationActivity.getIp());
         return instance;
     }
 
@@ -44,8 +46,7 @@ public class RequestMaker {
     }
 
 
-
-    public static void uploadFile(Context context,Uri uri,String description){
+    public void uploadFile(Context context,Uri uri,String description){
 
         FileUploadService client = ServiceGenerator.createService(FileUploadService.class, baseUrl);
 
@@ -101,7 +102,7 @@ public class RequestMaker {
 
     }
 
-    public static void loadFile(String email,String token,int fileId){
+    public void loadFile(String email,String token,int fileId){
 
 
         LoadFileService client = ServiceGenerator.createService(LoadFileService.class,baseUrl);
@@ -150,7 +151,7 @@ public class RequestMaker {
 
     }
 
-    public static void deleteFile(String email,String token,int fileId){
+    public void deleteFile(String email,String token,int fileId){
 
 
         DeleteFileService client = ServiceGenerator.createService(DeleteFileService.class,baseUrl);
@@ -177,7 +178,7 @@ public class RequestMaker {
     }
 
 
-    public static void saveFile(String email,String token,String fileName,String fileExtension,String owner,List<String> tags){
+    public void saveFile(String email,String token,String fileName,String fileExtension,String owner,List<String> tags){
 
 
         SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
