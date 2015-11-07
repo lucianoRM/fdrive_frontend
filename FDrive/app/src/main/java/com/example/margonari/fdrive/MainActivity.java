@@ -31,18 +31,13 @@ public class MainActivity extends AppCompatActivity {
         mainContext = this;
         mainView = (View) findViewById(android.R.id.content);
         mainScreenWebView = (WebView) findViewById(R.id.mainScreenWebView);
-        mainScreenWebView.loadUrl("file:///android_asset/giphy.gif");
+        mainScreenWebView.loadUrl("file:///android_asset/math.gif");
         mainScreenWebView.getSettings().setLoadWithOverviewMode(true);
         mainScreenWebView.getSettings().setUseWideViewPort(true);
 
 
         setToolbar();
 
-
-        //sets ip
-        SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
-        String ip = prefs.getString("ip", getResources().getString(R.string.baseURL));
-        RequestMaker.setIp(getResources().getString(R.string.baseURL));
 
         loginIfPossible();
 
