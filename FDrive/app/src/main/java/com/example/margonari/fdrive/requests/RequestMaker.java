@@ -47,22 +47,23 @@ public class RequestMaker {
 
     public static void uploadFile(Context context,Uri uri,String description){
 
-        FileUploadService client = ServiceGenerator.createService(FileUploadService.class,baseUrl);
+        FileUploadService client = ServiceGenerator.createService(FileUploadService.class, baseUrl);
 
         //Create typedFile to send
         ContentResolver contentResolver = context.getContentResolver();
         String fileType = contentResolver.getType(uri);
-        TypedFile file = new TypedFile(fileType,new File(uri.toString()));
+        TypedFile file = new TypedFile(fileType,new File(uri.getPath()));
 
         client.uploadFile(file, description, new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
+                Log.d("test","success");
 
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.d("test","Error: " + error.toString());
             }
         });
 

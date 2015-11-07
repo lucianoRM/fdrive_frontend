@@ -13,6 +13,6 @@ import retrofit.mime.TypedFile;
  */
 public interface FileUploadService {
     @Multipart
-    @POST("/files")
-    void uploadFile(@Part("myfile") TypedFile file, @Part("description") String description, Callback<RequestAnswer> callback);
+    @POST("/filesupload")
+    void uploadFile(@Part("upload") TypedFile file, @Part("description") String description, Callback<RequestAnswer> callback);
 }

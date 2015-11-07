@@ -6,13 +6,40 @@
     android:orientation="vertical"
     android:id="@+id/linear_main">
 
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
+    <LinearLayout
         android:layout_height="match_parent"
-        android:id="@+id/recycler_files_view"
-        />
+        android:layout_width="match_parent"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Folders"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:id="@+id/recycler_folders_view"
+            android:layout_weight="0.5"
+            />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Files"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:id="@+id/recycler_files_view"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
     <ProgressBar
         android:id="@+id/driveProgressBar"
         android:layout_width="wrap_content"

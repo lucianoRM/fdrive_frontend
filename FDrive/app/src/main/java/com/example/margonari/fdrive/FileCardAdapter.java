@@ -1,8 +1,6 @@
 package com.example.margonari.fdrive;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import java.util.List;
 /**
  * Created by luciano on 18/10/15.
  */
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.FileViewHolder> {
+public class FileCardAdapter extends RecyclerView.Adapter<FileCardAdapter.FileViewHolder> {
 
     public static class FileViewHolder extends RecyclerView.ViewHolder{
         View view;
@@ -36,7 +34,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.FileViewHolder
     }
 
     List<FileCard> files;
-    CardAdapter(List<FileCard> files){
+    FileCardAdapter(List<FileCard> files){
         this.files = files;
     }
 

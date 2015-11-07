@@ -3,6 +3,8 @@
     package="com.example.margonari.fdrive" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 
     <application
@@ -15,21 +17,26 @@
 
 
 
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity" >
+        <activity android:name=".RegistrationActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".DriveActivity">
+        <activity android:name=".DriveActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ConfigurationActivity">
+        <activity android:name=".ConfigurationActivity"
+            android:screenOrientation="portrait">
             android:theme="@style/DrawerActivityTheme">
         </activity>
-        <activity android:name=".LogInActivity" >
+        <activity android:name=".LogInActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

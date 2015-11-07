@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -42,7 +43,8 @@ public class DriveActivity extends AppCompatActivity {
     private NavigationView rightDrawerView;
     private String drawerTitle;
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
-    private RecyclerView recyclerView;
+    private List<FolderCard> folderCards = new ArrayList<FolderCard>();
+    private RecyclerView recyclerFilesView,recyclerFoldersView;
     private static ProgressBar progressBar;
     private static String email,token,name,surname;
     private static SharedPreferences preferences;
@@ -87,20 +89,38 @@ public class DriveActivity extends AppCompatActivity {
         setUserInformation();
 
         //Initialize recyclerView for showing file cards
-        this.recyclerView = (RecyclerView) findViewById(R.id.recycler_files_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        this.recyclerView.setLayoutManager(layoutManager);
+        this.recyclerFilesView = (RecyclerView) findViewById(R.id.recycler_files_view);
+        LinearLayoutManager filesLayoutManager = new LinearLayoutManager(getApplicationContext());
+        this.recyclerFilesView.setLayoutManager(filesLayoutManager);
+
+        //Initialize recyclerView for showing file cards
+        this.recyclerFoldersView = (RecyclerView) findViewById(R.id.recycler_folders_view);
+        LinearLayoutManager foldersLayoutManager = new GridLayoutManager(getApplicationContext(),2);
+        this.recyclerFoldersView.setLayoutManager(foldersLayoutManager);
 
         //Sets the cards listener
-        setCardsListener();
+        setCardsListeners();
 
         this.fileCards  = new ArrayList<>();
-        fileCards.add(new FileCard("archivo1",".jpg","50kb"));
-        fileCards.add(new FileCard("archivo2",".cpp","100kb"));
+        fileCards.add(new FileCard("archivo1", ".jpg", "50kb"));
+        fileCards.add(new FileCard("archivo2", ".cpp", "100kb"));
         fileCards.add(new FileCard("archivo3", ".txt", "200kb"));
 
+        this.folderCards = new ArrayList<>();
+        folderCards.add(new FolderCard("Carpeta1"));
+        folderCards.add(new FolderCard("Carpeta2"));
+        folderCards.add(new FolderCard("Carpeta3"));
+        folderCards.add(new FolderCard("Carpeta1"));
+        folderCards.add(new FolderCard("Carpeta2"));
+        folderCards.add(new FolderCard("Carpeta3"));
+        folderCards.add(new FolderCard("Carpeta1"));
+        folderCards.add(new FolderCard("Carpeta2"));
+        folderCards.add(new FolderCard("Carpeta3"));
+        folderCards.add(new FolderCard("Carpeta1"));
+        folderCards.add(new FolderCard("Carpeta2"));
+        folderCards.add(new FolderCard("Carpeta3"));
         updateFileCards();
-
+        updateFolderCards();
 
 
     }
@@ -122,11 +142,12 @@ public class DriveActivity extends AppCompatActivity {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, rightDrawerView);
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {}
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+            }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                if(drawerView == rightDrawerView){
+                if (drawerView == rightDrawerView) {
                     //enable gestures
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, rightDrawerView);
                 }
@@ -135,14 +156,15 @@ public class DriveActivity extends AppCompatActivity {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                if(drawerView == rightDrawerView){
+                if (drawerView == rightDrawerView) {
                     //disable gestures
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, rightDrawerView);
                 }
             }
 
             @Override
-            public void onDrawerStateChanged(int newState) {}
+            public void onDrawerStateChanged(int newState) {
+            }
         });
 
 
@@ -208,9 +230,14 @@ public class DriveActivity extends AppCompatActivity {
      */
 
     private void updateFileCards(){
-        CardAdapter adapter = new CardAdapter(this.fileCards);
-        this.recyclerView.setAdapter(adapter);
+        FileCardAdapter adapter = new FileCardAdapter(this.fileCards);
+        this.recyclerFilesView.setAdapter(adapter);
 
+    }
+
+    private void updateFolderCards(){
+        FolderCardAdapter adapter  = new FolderCardAdapter(this.folderCards);
+        this.recyclerFoldersView.setAdapter(adapter);
     }
 
 
@@ -243,8 +270,8 @@ public class DriveActivity extends AppCompatActivity {
 
     }
 
-    private void setCardsListener(){
-        this.recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+    private void setCardsListeners(){
+        this.recyclerFilesView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
 
             @Override
             public void onItemClick(View view, int position) {
@@ -267,6 +294,18 @@ public class DriveActivity extends AppCompatActivity {
             }
 
         }));
+
+        this.recyclerFoldersView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                drawerLayout.openDrawer(rightDrawerView);
+
+            }
+
+        }));
+
+
     }
 
 
