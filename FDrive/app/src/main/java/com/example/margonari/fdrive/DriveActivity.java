@@ -376,7 +376,7 @@ public class DriveActivity extends AppCompatActivity {
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             Uri selectedFile = data.getData();
             ErrorDisplay.getInstance().showMessage(context,this.findViewById(android.R.id.content)
-                    ,"Pruebo con un mensaje zarpadamente largo porque capaz no sirve si los mensajes de error son demasiado largos, no los muestra o algo asi, no se, por las dudas pruebo. Eh entendelo, lo estoy probando");
+                    ,"123456789012345678901234567890123456789012345678901234567");
             RequestMaker.getInstance(this).uploadFile(this, selectedFile, "this is a file");
         }
     }

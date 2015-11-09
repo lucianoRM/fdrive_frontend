@@ -21,18 +21,29 @@ public class ErrorDisplay {
     }
 
     public void showMessage(final Context context,View view, final String message){
-        Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction("MORE", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-                        alertDialog.setTitle("Error");
-                        alertDialog.setMessage(message);
-                        alertDialog.show();
-                    }
-                })
-                .setActionTextColor(Color.WHITE)
-                .show();
+        if(message.length() > 56) {
+            Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)
+                    .setAction("MORE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                            alertDialog.setTitle("Error");
+                            alertDialog.setMessage(message);
+                            alertDialog.show();
+                        }
+                    })
+                    .setActionTextColor(Color.WHITE)
+                    .show();
+        }else{
+            Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)
+                    .setAction("CLOSE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    })
+                    .setActionTextColor(Color.WHITE)
+                    .show();
+        }
 
     }
 
