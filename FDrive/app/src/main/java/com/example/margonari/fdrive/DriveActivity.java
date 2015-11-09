@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +27,8 @@ import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import junit.framework.Test;
 
@@ -348,10 +349,20 @@ public class DriveActivity extends AppCompatActivity {
      */
 
     public void setOnActionButtonClickListener(){
-        FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.floatingButton);
-        floatingButton.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionsMenu floatingMenu = (FloatingActionsMenu) findViewById(R.id.add_file_folder_floating_button);
+        FloatingActionButton addFileButton = (FloatingActionButton) findViewById(R.id.add_file_floating_button);
+        final FloatingActionButton addFolderButton = (FloatingActionButton) findViewById(R.id.add_folder_floating_button);
+        addFileButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 pickFile(view);
+                floatingMenu.collapse();
+
+            }
+        });
+        addFolderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                floatingMenu.collapse();
             }
         });
 
