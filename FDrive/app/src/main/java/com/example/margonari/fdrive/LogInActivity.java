@@ -1,7 +1,6 @@
 package com.example.margonari.fdrive;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,17 +11,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.example.margonari.fdrive.requests.RequestAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
 
 public class LogInActivity extends AppCompatActivity {
@@ -89,7 +84,7 @@ public class LogInActivity extends AppCompatActivity {
         //disable button
         toggleUi(false);
         buttonLogin.setBackgroundResource(R.color.buttonsColor);
-        RequestMaker.getInstance().logIn(textEmail.getText().toString(), textPassword.getText().toString());
+        RequestMaker.getInstance(this).logIn(textEmail.getText().toString(), textPassword.getText().toString());
 
     }
 

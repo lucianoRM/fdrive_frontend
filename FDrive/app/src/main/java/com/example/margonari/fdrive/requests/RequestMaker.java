@@ -1,11 +1,9 @@
 package com.example.margonari.fdrive.requests;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.example.margonari.fdrive.ConfigurationActivity;
@@ -13,9 +11,10 @@ import com.example.margonari.fdrive.DriveActivity;
 import com.example.margonari.fdrive.LogInActivity;
 import com.example.margonari.fdrive.R;
 import com.example.margonari.fdrive.RegistrationActivity;
+import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
+import com.example.margonari.fdrive.requests.Answers.RequestAnswer;
 
 import java.io.File;
-import java.net.URI;
 import java.util.List;
 
 import retrofit.Callback;
@@ -29,13 +28,16 @@ import retrofit.mime.TypedFile;
 public class RequestMaker {
 
 
-    private static String baseUrl = "http://192.168.0.1:8000";
+    private static String baseUrl;
     private static RequestMaker instance = null;
 
 
-    public static RequestMaker getInstance(){
+    public static RequestMaker getInstance(Context context){
         if(instance == null) instance = new RequestMaker();
-        instance.setIp(ConfigurationActivity.getIp());
+        //retrieve saved ip
+        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.sharedConf), Context.MODE_PRIVATE);
+        String ipString = prefs.getString("ip", context.getResources().getString(R.string.baseURL));
+        instance.setIp(ipString);
         return instance;
     }
 
@@ -83,13 +85,11 @@ public class RequestMaker {
             public void success(RequestAnswer answer, Response response) {
 
                 //Registration successful
-                if(answer.result == true){
+                if (answer.result == true) {
                     RegistrationActivity.onRegistrationSuccess();
-                }else{ //registration failure
+                } else { //registration failure
                     RegistrationActivity.onRegistrationFailure("Error");
                 }
-
-
 
 
             }
@@ -132,12 +132,12 @@ public class RequestMaker {
         client.loginUser(email, password, new Callback<RequestAnswer>() {
             @Override
             public void success(RequestAnswer answer, Response response) {
-                Log.d("test","Called" + answer.result + answer.token);
+                Log.d("test", "Called" + answer.result + answer.token);
 
                 //login successful
-                if(answer.result == true) {
+                if (answer.result == true) {
                     LogInActivity.onLoginSuccess(answer.token);
-                }else{
+                } else {
                     //login failure
                     LogInActivity.onLoginFailure("Login error");
                 }
@@ -202,6 +202,25 @@ public class RequestMaker {
             @Override
             public void failure(RetrofitError error) {
                 Log.d("Test", error.toString());
+            }
+        });
+
+    }
+
+    public void getUserFiles(String email,String token,String path){
+
+        GetUserFilesService client = ServiceGenerator.createService(GetUserFilesService.class,baseUrl);
+
+        client.getUserFiles(email, token, path, new Callback<GetUserFilesAnswer>() {
+            @Override
+            public void success(GetUserFilesAnswer getUserFilesAnswer, Response response) {
+                Log.d("test", "getUserFilesSuccess, result: " + getUserFilesAnswer.result);
+                DriveActivity.onGetUserFilesSuccess(getUserFilesAnswer);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("test","Error: " + error.toString()  );
             }
         });
 

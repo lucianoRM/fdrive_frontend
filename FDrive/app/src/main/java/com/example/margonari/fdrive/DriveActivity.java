@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
 
 import junit.framework.Test;
@@ -299,7 +300,8 @@ public class DriveActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(View view, int position) {
-                drawerLayout.openDrawer(rightDrawerView);
+
+                RequestMaker.getInstance(getApplicationContext()).getUserFiles(email,token,"root");
 
             }
 
@@ -381,12 +383,24 @@ public class DriveActivity extends AppCompatActivity {
 
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             Uri selectedFile = data.getData();
-            RequestMaker.getInstance().uploadFile(this, selectedFile, "this is a file");
+            RequestMaker.getInstance(this).uploadFile(this, selectedFile, "this is a file");
         }
     }
 
 
+     /*###########################################################################
+    ###################     AFTER REQUESTS      #################################
+    #############################################################################
+     */
 
+    public static void onGetUserFilesSuccess(GetUserFilesAnswer answer){
+
+        List<Integer> files = answer.files;
+        List<String> folders = answer.folders;
+        Log.d("test",files.toString());
+        Log.d("test",folders.toString());
+
+    }
 
 
 }

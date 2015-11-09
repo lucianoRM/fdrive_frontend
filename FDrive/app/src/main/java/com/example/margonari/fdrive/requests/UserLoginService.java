@@ -1,14 +1,10 @@
 package com.example.margonari.fdrive.requests;
 
-import java.util.List;
-import java.util.Map;
+import com.example.margonari.fdrive.requests.Answers.RequestAnswer;
 
 
-import retrofit.client.Response;
-import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.Callback;
-import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**

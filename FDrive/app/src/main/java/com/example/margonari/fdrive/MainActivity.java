@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
         String email = prefs.getString("email", "");
         String token = prefs.getString("token","");
 
-        Log.d("test", email + "a" + token);
 
         if(!email.equals("") || !token.equals("")){
+            Log.d("test", "Email guardado: " + email +  " token guardado: " + token);
             openDrive(mainView);
         }
 

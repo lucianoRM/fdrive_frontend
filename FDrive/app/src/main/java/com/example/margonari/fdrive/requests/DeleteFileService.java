@@ -1,10 +1,10 @@
 package com.example.margonari.fdrive.requests;
 
+import com.example.margonari.fdrive.requests.Answers.RequestAnswer;
+
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
-import retrofit.http.GET;
-import retrofit.http.Query;
 
 /**
  * Created by luciano on 18/10/15.

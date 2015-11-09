@@ -1,11 +1,9 @@
 package com.example.margonari.fdrive.requests;
 
-import org.json.JSONObject;
+import com.example.margonari.fdrive.requests.Answers.RequestAnswer;
 
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.http.GET;
-import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**

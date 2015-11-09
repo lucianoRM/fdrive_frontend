@@ -2,6 +2,7 @@ package com.example.margonari.fdrive;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -15,20 +16,19 @@ import com.example.margonari.fdrive.requests.RequestMaker;
  */
 public class ConfigurationActivity extends Activity {
 
-    private static EditText ip;
+    private static EditText ipView;
+    private static String ipString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configurations_layout);
 
-        ip = (EditText)findViewById(R.id.ip);
+        ipView = (EditText)findViewById(R.id.ip);
         //Get saved ip and store it in ip
         SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
-        ip.setText(prefs.getString("ip",getResources().getString(R.string.baseURL)));
-
-
-
+        ipString = prefs.getString("ip", getResources().getString(R.string.baseURL));
+        ipView.setText(ipString);
 
 
     }
@@ -36,7 +36,7 @@ public class ConfigurationActivity extends Activity {
 
     public void saveIp(View view){
 
-        String ipString = ip.getText().toString();
+        ipString = ipView.getText().toString();
         SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
 
         SharedPreferences.Editor edit = prefs.edit();
@@ -49,9 +49,6 @@ public class ConfigurationActivity extends Activity {
 
     }
 
-    public static String getIp(){
 
-        return ip.getText().toString();
-    }
 
 }

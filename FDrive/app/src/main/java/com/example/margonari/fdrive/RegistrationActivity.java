@@ -1,21 +1,16 @@
 package com.example.margonari.fdrive;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,13 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.margonari.fdrive.requests.RequestAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
-import com.example.margonari.fdrive.requests.SaveFileService;
-
-import retrofit.client.Response;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -197,7 +187,7 @@ public class RegistrationActivity extends AppCompatActivity {
             name = textName.getText().toString();
             email = textEmail.getText().toString();
             surname = textSurname.getText().toString();
-            RequestMaker.getInstance().signUp(textEmail.getText().toString(), textPassword.getText().toString());
+            RequestMaker.getInstance(this).signUp(textEmail.getText().toString(), textPassword.getText().toString());
         }else{
             //If the fields are wrong, enables the button, there is no request
             toggleUi(true);
