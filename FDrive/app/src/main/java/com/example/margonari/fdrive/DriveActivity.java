@@ -3,10 +3,12 @@ package com.example.margonari.fdrive;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -373,6 +375,8 @@ public class DriveActivity extends AppCompatActivity {
 
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             Uri selectedFile = data.getData();
+            ErrorDisplay.getInstance().showMessage(context,this.findViewById(android.R.id.content)
+                    ,"Pruebo con un mensaje zarpadamente largo porque capaz no sirve si los mensajes de error son demasiado largos, no los muestra o algo asi, no se, por las dudas pruebo. Eh entendelo, lo estoy probando");
             RequestMaker.getInstance(this).uploadFile(this, selectedFile, "this is a file");
         }
     }
