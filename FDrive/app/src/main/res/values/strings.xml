@@ -9,5 +9,10 @@
     <string name="baseURL">http://192.168.0.6:8000</string>
     <string name="sharedConf">conf</string>
     <string name="trash">Trash</string>
+    <string-array name="right_drawer_spinner_default">
+        <item>Array Item One</item>
+        <item>Array Item Two</item>
+        <item>Array Item Three</item>
+    </string-array>
 
 </resources>
