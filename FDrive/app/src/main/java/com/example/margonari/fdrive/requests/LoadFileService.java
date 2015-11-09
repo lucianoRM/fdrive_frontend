@@ -11,7 +11,7 @@ import retrofit.http.Query;
  * Created by luciano on 18/10/15.
  */
 public interface LoadFileService {
-    @GET("/users")
+    @GET("/files")
     void loadFile(@Query("email") String email,@Query("token") String password,@Query("id") int id, Callback<FileMetadata> callback);
 
 }

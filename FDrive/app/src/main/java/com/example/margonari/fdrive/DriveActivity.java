@@ -51,6 +51,7 @@ public class DriveActivity extends AppCompatActivity {
     private static SharedPreferences preferences;
     private static Context context;
     private static int totFiles = 0;
+    private static Path path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,27 +108,10 @@ public class DriveActivity extends AppCompatActivity {
 
         //Saves context
         context = this;
+        path = new Path();
 
-        this.fileCards  = new ArrayList<>();
-        fileCards.add(new FileCard("archivo1", ".jpg", "50kb"));
-        fileCards.add(new FileCard("archivo2", ".cpp", "100kb"));
-        fileCards.add(new FileCard("archivo3", ".txt", "200kb"));
-
-        this.folderCards = new ArrayList<>();
-        folderCards.add(new FolderCard("Carpeta1"));
-        folderCards.add(new FolderCard("Carpeta2"));
-        folderCards.add(new FolderCard("Carpeta3"));
-        folderCards.add(new FolderCard("Carpeta1"));
-        folderCards.add(new FolderCard("Carpeta2"));
-        folderCards.add(new FolderCard("Carpeta3"));
-        folderCards.add(new FolderCard("Carpeta1"));
-        folderCards.add(new FolderCard("Carpeta2"));
-        folderCards.add(new FolderCard("Carpeta3"));
-        folderCards.add(new FolderCard("Carpeta1"));
-        folderCards.add(new FolderCard("Carpeta2"));
-        folderCards.add(new FolderCard("Carpeta3"));
-        updateFileCards();
-        updateFolderCards();
+        //Gets root information
+        RequestMaker.getInstance(context).getUserFiles(email,token,"root");
 
 
     }
@@ -306,8 +290,8 @@ public class DriveActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(View view, int position) {
-
-                RequestMaker.getInstance(getApplicationContext()).getUserFiles(email,token,"root");
+                TextView clickedFolder = (TextView) view.findViewById(R.id.folder_name);
+                RequestMaker.getInstance(getApplicationContext()).getUserFiles(email,token,path.goTo(clickedFolder.getText().toString()));
 
             }
 
@@ -407,6 +391,7 @@ public class DriveActivity extends AppCompatActivity {
         totFiles = files.size();
         //Empty previous folders
         folderCards = new ArrayList<>();
+        folderCards.add(new FolderCard(".."));
 
         //Save folders in list
         for(int i = 0; i<folders.size(); i++){
