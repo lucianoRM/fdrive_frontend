@@ -43,12 +43,14 @@ public class DriveActivity extends AppCompatActivity {
     private NavigationView leftDrawerView;
     private NavigationView rightDrawerView;
     private String drawerTitle;
-    private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
-    private List<FolderCard> folderCards = new ArrayList<FolderCard>();
-    private RecyclerView recyclerFilesView,recyclerFoldersView;
+    private static List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
+    private static List<FolderCard> folderCards = new ArrayList<FolderCard>();
+    private static RecyclerView recyclerFilesView,recyclerFoldersView;
     private static ProgressBar progressBar;
     private static String email,token,name,surname;
     private static SharedPreferences preferences;
+    private static Context context;
+    private static int totFiles = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,10 @@ public class DriveActivity extends AppCompatActivity {
 
         //Sets the cards listener
         setCardsListeners();
+
+
+        //Saves context
+        context = this;
 
         this.fileCards  = new ArrayList<>();
         fileCards.add(new FileCard("archivo1", ".jpg", "50kb"));
@@ -230,15 +236,15 @@ public class DriveActivity extends AppCompatActivity {
     #############################################################################
      */
 
-    private void updateFileCards(){
-        FileCardAdapter adapter = new FileCardAdapter(this.fileCards);
-        this.recyclerFilesView.setAdapter(adapter);
+    private static void updateFileCards(){
+        FileCardAdapter adapter = new FileCardAdapter(fileCards);
+        recyclerFilesView.setAdapter(adapter);
 
     }
 
-    private void updateFolderCards(){
-        FolderCardAdapter adapter  = new FolderCardAdapter(this.folderCards);
-        this.recyclerFoldersView.setAdapter(adapter);
+    private static void updateFolderCards(){
+        FolderCardAdapter adapter  = new FolderCardAdapter(folderCards);
+        recyclerFoldersView.setAdapter(adapter);
     }
 
 
@@ -395,13 +401,38 @@ public class DriveActivity extends AppCompatActivity {
 
     public static void onGetUserFilesSuccess(GetUserFilesAnswer answer){
 
-        List<Integer> files = answer.files;
-        List<String> folders = answer.folders;
-        Log.d("test",files.toString());
-        Log.d("test",folders.toString());
+        List<Integer> files = answer.content.files;
+        List<String> folders = answer.content.folders;
+
+        totFiles = files.size();
+        //Empty previous folders
+        folderCards = new ArrayList<>();
+
+        //Save folders in list
+        for(int i = 0; i<folders.size(); i++){
+            folderCards.add(new FolderCard(folders.get(i)));
+        }
+
+        //empty files
+        fileCards = new ArrayList<>();
+        for(int i = 0; i<files.size();i++){
+            //gets every file in folder
+            RequestMaker.getInstance(context).loadFile(email,token,files.get(i)); //The fileCards are loaded in success
+        }
 
     }
 
+    public static void onLoadFileSuccess(FileMetadata file){
+        totFiles--; //Substract one to know which file is it
+        fileCards.add(new FileCard(file.name,file.extension,Integer.toString(20)));
+
+        if(totFiles == 0){
+            updateFileCards();
+            updateFolderCards();
+        }
+
+
+    }
 
 }
 

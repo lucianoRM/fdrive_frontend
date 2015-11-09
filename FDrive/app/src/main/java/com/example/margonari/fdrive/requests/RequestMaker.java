@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.margonari.fdrive.ConfigurationActivity;
 import com.example.margonari.fdrive.DriveActivity;
+import com.example.margonari.fdrive.FileMetadata;
 import com.example.margonari.fdrive.LogInActivity;
 import com.example.margonari.fdrive.R;
 import com.example.margonari.fdrive.RegistrationActivity;
@@ -108,11 +109,10 @@ public class RequestMaker {
         LoadFileService client = ServiceGenerator.createService(LoadFileService.class,baseUrl);
 
         // Fetch and print a list of the contributors to this library.
-        client.loadFile(email, token, fileId, new Callback<RequestAnswer>() {
+        client.loadFile(email, token, fileId, new Callback<FileMetadata>() {
             @Override
-            public void success(RequestAnswer answer, Response response) {
-                //What to do when success
-                Log.d("Test", String.valueOf(answer.result));
+            public void success(FileMetadata answer, Response response) {
+                DriveActivity.onLoadFileSuccess(answer);
             }
 
             @Override
@@ -215,6 +215,7 @@ public class RequestMaker {
             @Override
             public void success(GetUserFilesAnswer getUserFilesAnswer, Response response) {
                 Log.d("test", "getUserFilesSuccess, result: " + getUserFilesAnswer.result);
+                Log.d("test", "Response: " + response.toString());
                 DriveActivity.onGetUserFilesSuccess(getUserFilesAnswer);
             }
 

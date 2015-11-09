@@ -1,5 +1,6 @@
 package com.example.margonari.fdrive.requests;
 
+import com.example.margonari.fdrive.FileMetadata;
 import com.example.margonari.fdrive.requests.Answers.RequestAnswer;
 
 import retrofit.Callback;
@@ -11,6 +12,6 @@ import retrofit.http.Query;
  */
 public interface LoadFileService {
     @GET("/users")
-    void loadFile(@Query("email") String email,@Query("token") String password,@Query("id") int id, Callback<RequestAnswer> callback);
+    void loadFile(@Query("email") String email,@Query("token") String password,@Query("id") int id, Callback<FileMetadata> callback);
 
 }
