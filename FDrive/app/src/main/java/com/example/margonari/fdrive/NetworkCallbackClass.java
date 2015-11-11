@@ -39,6 +39,7 @@ public class NetworkCallbackClass {
     public void onConnectionError(){
         callback.onConnectionError();
     }
+    public void onFileUploadProgress(long progress) {callback.onFileUploadProgress(progress);}
 
     public interface NetworkCallback {
         public void onLogoutSuccess();
@@ -47,6 +48,7 @@ public class NetworkCallbackClass {
         public void onUploadFileSuccess(String message);
         public void onRequestFailure(List<String> errors);
         public void onConnectionError();
+        public void onFileUploadProgress(long progress);
     }
 
 

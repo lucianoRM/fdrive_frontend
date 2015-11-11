@@ -1,5 +1,10 @@
 package com.example.margonari.fdrive;
 
+import android.os.RecoverySystem;
+import android.util.Log;
+
+import com.example.margonari.fdrive.requests.ProgressListener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,13 +24,14 @@ public class TypedInputStream implements TypedInput, TypedOutput {
     private final InputStream stream;
     private final String name;
     private final long size;
+    final NetworkCallbackClass activityCallback;
 
     /**
      * Constructs a new typed file.
      *
      * @throws NullPointerException if file or mimeType is null
      */
-    public TypedInputStream(String name,String mimeType,long size, InputStream newInputStream) {
+    public TypedInputStream(String name,String mimeType,long size, InputStream newInputStream,NetworkCallbackClass callback) {
         if (mimeType == null) {
             throw new NullPointerException("mimeType");
         }
@@ -38,10 +44,14 @@ public class TypedInputStream implements TypedInput, TypedOutput {
         if(size <= 0){
             throw new NullPointerException("size");
         }
+        if(callback == null){
+            throw new NullPointerException("callback");
+        }
         this.mimeType = mimeType;
         this.stream = newInputStream;
         this.name = name;
         this.size = size;
+        this.activityCallback = callback;
     }
 
 
@@ -66,8 +76,13 @@ public class TypedInputStream implements TypedInput, TypedOutput {
         InputStream in = this.stream;
         try {
             int read;
+            long total = 0;
             while ((read = in.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
+                Log.d("test","Total: " + total);
+                Log.d("test","Read: " + read);
+                total+=read;
+                this.activityCallback.onFileUploadProgress((total * 100) / this.size);
             }
         } finally {
             in.close();

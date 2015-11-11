@@ -57,27 +57,11 @@ public class RequestMaker {
     }
 
 
-    public void uploadFile(final NetworkCallbackClass activityCallback,Context context,Uri uri,String description){
+    public void uploadFile(final NetworkCallbackClass activityCallback,TypedInputStream inputStream,String description){
 
         FileUploadService client = ServiceGenerator.createService(FileUploadService.class, baseUrl);
 
-        //Create typedFile to send
-        ContentResolver contentResolver = context.getContentResolver();
-        String fileType = contentResolver.getType(uri);
-        Cursor returnCursor = contentResolver.query(uri, null, null, null, null);
-        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
-        returnCursor.moveToFirst();
-
-        InputStream is = null;
-        try {
-            is = contentResolver.openInputStream(uri);
-        }catch(FileNotFoundException e){}
-        TypedInputStream file = new TypedInputStream(returnCursor.getString(nameIndex),fileType,returnCursor.getLong(sizeIndex),is);
-        Log.d("test", "Size: " + Long.toString(returnCursor.getLong(sizeIndex)));
-
-
-        client.uploadFile(file, description, new Callback<SimpleRequestAnswer>() {
+        client.uploadFile(inputStream, description, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 activityCallback.networkMethod();

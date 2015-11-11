@@ -1,12 +1,15 @@
 package com.example.margonari.fdrive;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.OpenableColumns;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
+import com.example.margonari.fdrive.requests.ProgressListener;
 import com.example.margonari.fdrive.requests.RequestMaker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -35,6 +39,8 @@ import junit.framework.Test;
 
 import org.w3c.dom.Text;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +72,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private View view;
     private Path path;
     public NetworkCallbackClass activityCallback;
+
+    private TextView t;
+
+
 
 
     @Override
@@ -129,6 +139,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         //Gets root information
         path = new Path(getResources().getString(R.string.root_folder));
         getUserFiles();
+
+        t = (TextView) findViewById(R.id.a);
 
     }
 
@@ -415,10 +427,22 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent data){
         super.onActivityResult(reqCode, resCode, data);
-
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             Uri selectedFile = data.getData();
-            RequestMaker.getInstance().uploadFile(activityCallback,this,selectedFile, "this is a file");
+            //Create typedFile to send
+            ContentResolver contentResolver = this.getContentResolver();
+            String fileType = contentResolver.getType(selectedFile);
+            Cursor returnCursor = contentResolver.query(selectedFile, null, null, null, null);
+            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+            returnCursor.moveToFirst();
+            InputStream is = null;
+            try {
+                is = contentResolver.openInputStream(selectedFile);
+            }catch(FileNotFoundException e){}
+            TypedInputStream file = new TypedInputStream(returnCursor.getString(nameIndex), fileType, returnCursor.getLong(sizeIndex), is,activityCallback);
+
+            RequestMaker.getInstance().uploadFile(activityCallback,file, "this is a file");
             toggleUi(false);
         }
     }
@@ -468,7 +492,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void onLoadFileSuccess(FileMetadata file){
         totFiles--; //Substract one to know which file is it
-        fileCards.add(new FileCard(file.name,file.extension,Integer.toString(20)));
+        fileCards.add(new FileCard(file.name, file.extension, Integer.toString(20)));
 
         if(totFiles == 0){
             updateFileCards();
@@ -496,7 +520,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void onConnectionError(){
-        ErrorDisplay.getInstance().showMessage(context,view,"Connection error,check configured ip or try again later");
+        ErrorDisplay.getInstance().showMessage(context, view, "Connection error,check configured ip or try again later");
         toggleUi(true);
     }
 
@@ -504,7 +528,15 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         toggleUi(true);
     }
 
+    public void onFileUploadProgress(final long progress){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                t.setText(Long.toString(progress));
+            }
+        });
 
+    }
 }
 
 
