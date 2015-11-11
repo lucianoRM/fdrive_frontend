@@ -92,7 +92,7 @@ public class LogInActivity extends AppCompatActivity {
         toggleUi(false);
         buttonLogin.setBackgroundResource(R.color.buttonsColor);
         email = textEmail.getText().toString();
-        RequestMaker.getInstance(this).logIn(email, textPassword.getText().toString());
+        RequestMaker.getInstance().logIn(email, textPassword.getText().toString());
 
     }
 

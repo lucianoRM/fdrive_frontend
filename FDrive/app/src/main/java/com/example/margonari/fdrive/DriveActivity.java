@@ -43,21 +43,30 @@ import java.util.List;
  */
 public class DriveActivity extends AppCompatActivity implements NetworkCallbackClass.NetworkCallback {
 
+    //View
     private DrawerLayout drawerLayout;
     private NavigationView leftDrawerView;
     private NavigationView rightDrawerView;
-    private String drawerTitle;
+    private ProgressBar progressBar;
+    private RecyclerView recyclerFilesView,recyclerFoldersView;
+
+    //Cards
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
     private List<FolderCard> folderCards = new ArrayList<FolderCard>();
-    private RecyclerView recyclerFilesView,recyclerFoldersView;
-    private ProgressBar progressBar;
+
+
+
+    //Info
+    private int totFiles = 0;
     private String email,token,name,surname;
-    private SharedPreferences preferences;
+
+
+    //Aux
     private Context context;
     private View view;
-    private int totFiles = 0;
     private Path path;
     public NetworkCallbackClass activityCallback;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +82,6 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         TextView drawerEmail = (TextView)findViewById(R.id.email);
         drawerEmail.setText(email);
-
-        //Instantiates preferences
-        preferences = getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
 
 
         leftDrawerView = (NavigationView)findViewById(R.id.left_drawer_view);
@@ -121,7 +127,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
 
         //Gets root information
-        RequestMaker.getInstance(context).getUserFiles(activityCallback,email,token,"root");
+        RequestMaker.getInstance().getUserFiles(activityCallback,email,token,"root");
+        toggleUi(false);
 
     }
 
@@ -191,7 +198,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         startActivity(new Intent(DriveActivity.this, ConfigurationActivity.class));
                         return true;
                     case R.id.logout_button:
-                        RequestMaker.getInstance(getApplicationContext()).logout(activityCallback, email,token);
+                        RequestMaker.getInstance().logout(activityCallback, email,token);
+                        toggleUi(false);
+                        return true;
                 }
                 return false;
             }
@@ -248,8 +257,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private void toggleUi(boolean enable){
         if(enable){
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            progressBar.setVisibility(ProgressBar.INVISIBLE);
         }else{
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            progressBar.setVisibility(ProgressBar.VISIBLE);
         }
     }
 
@@ -257,10 +268,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     //Sets the user information shown in the screen
     private void setUserInformation(){
-        email = preferences.getString("email","email");
-        name = preferences.getString("name","name");
-        surname = preferences.getString("surname","surname");
-        token = preferences.getString("token","token");
+        email = Database.getInstance().get("email", "email");
+        name = Database.getInstance().get("name","name");
+        surname = Database.getInstance().get("surname","surname");
+        token = Database.getInstance().get("token","token");
 
 
         //Show information
@@ -302,7 +313,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             @Override
             public void onItemClick(View view, int position) {
                 TextView clickedFolder = (TextView) view.findViewById(R.id.folder_name);
-                RequestMaker.getInstance(getApplicationContext()).getUserFiles(activityCallback,email,token,path.goTo(clickedFolder.getText().toString()));
+                RequestMaker.getInstance().getUserFiles(activityCallback,email,token,path.goTo(clickedFolder.getText().toString()));
+                toggleUi(false);
 
             }
 
@@ -394,7 +406,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             Uri selectedFile = data.getData();
-            RequestMaker.getInstance(this).uploadFile(activityCallback,this, selectedFile, "this is a file");
+            RequestMaker.getInstance().uploadFile(activityCallback,this,selectedFile, "this is a file");
+            toggleUi(false);
         }
     }
 
@@ -423,10 +436,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         fileCards = new ArrayList<>();
         for(int i = 0; i<files.size();i++){
             //gets every file in folder
-            RequestMaker.getInstance(context).loadFile(activityCallback,email,token,files.get(i)); //The fileCards are loaded in success
-            SystemClock.sleep(0);
+            RequestMaker.getInstance().loadFile(activityCallback,email,token,files.get(i)); //The fileCards are loaded in success
+            toggleUi(false);
         }
-
+        toggleUi(true);
     }
 
     public void onLoadFileSuccess(FileMetadata file){
@@ -436,6 +449,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         if(totFiles == 0){
             updateFileCards();
             updateFolderCards();
+            toggleUi(true);
         }
 
 
@@ -443,10 +457,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void onLogoutSuccess(){
         //Erase token from "persistence" db
-        SharedPreferences.Editor edit = preferences.edit();
-        edit.putString("token","");
-        edit.commit();
 
+        Database.getInstance().put("token", "");
+        toggleUi(true);
         finish();
 
     }
@@ -454,18 +467,22 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public void onRequestFailure(List<String> errors){
 
         ErrorDisplay.getInstance().showMessages(context, view, errors);
+        toggleUi(true);
 
     }
 
     public void onConnectionError(){
         ErrorDisplay.getInstance().showMessage(context,view,"Connection error,check configured ip or try again later");
+        toggleUi(true);
     }
 
     public void onUploadFileSuccess(String message){
-        Log.d("test",message);
+        toggleUi(true);
     }
 
 
 }
+
+
 
 

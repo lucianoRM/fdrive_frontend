@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.margonari.fdrive.Database;
 import com.example.margonari.fdrive.DriveActivity;
 import com.example.margonari.fdrive.FileMetadata;
 import com.example.margonari.fdrive.LogInActivity;
@@ -35,11 +36,10 @@ public class RequestMaker {
     private static RequestMaker instance = null;
 
 
-    public static RequestMaker getInstance(Context context){
+    public static RequestMaker getInstance(){
         if(instance == null) instance = new RequestMaker();
         //retrieve saved ip
-        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.sharedConf), Context.MODE_PRIVATE);
-        String ipString = prefs.getString("ip", context.getResources().getString(R.string.baseURL));
+        String ipString = Database.getInstance().get("ip","http://192.168.0.1:8000");
         instance.setIp(ipString);
         return instance;
     }

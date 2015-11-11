@@ -193,7 +193,7 @@ public class RegistrationActivity extends AppCompatActivity {
             name = textName.getText().toString();
             email = textEmail.getText().toString();
             surname = textSurname.getText().toString();
-            RequestMaker.getInstance(this).signUp(textEmail.getText().toString(), textPassword.getText().toString());
+            RequestMaker.getInstance().signUp(textEmail.getText().toString(), textPassword.getText().toString());
         }else{
             //If the fields are wrong, enables the button, there is no request
             toggleUi(true);

@@ -25,9 +25,9 @@ public class ConfigurationActivity extends Activity {
         setContentView(R.layout.configurations_layout);
 
         ipView = (EditText)findViewById(R.id.ip);
+
         //Get saved ip and store it in ip
-        SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
-        ipString = prefs.getString("ip", getResources().getString(R.string.baseURL));
+        ipString = Database.getInstance().get("ip",getResources().getString(R.string.baseURL));
         ipView.setText(ipString);
 
 
@@ -37,12 +37,7 @@ public class ConfigurationActivity extends Activity {
     public void saveIp(View view){
 
         ipString = ipView.getText().toString();
-        SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor edit = prefs.edit();
-        edit.putString("ip", ipString);
-        edit.commit();
-
+        Database.getInstance().put("ip",ipString);
 
         //Closes configurations
         finish();
