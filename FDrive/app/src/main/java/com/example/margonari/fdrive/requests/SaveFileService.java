@@ -1,6 +1,6 @@
 package com.example.margonari.fdrive.requests;
 
-import com.example.margonari.fdrive.requests.Answers.RequestAnswer;
+import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
 import java.util.List;
 
@@ -24,5 +24,5 @@ class SaveFileBody{
 
 public interface SaveFileService {
     @POST("/files")
-    void saveFile(@Body SaveFileBody body, Callback<RequestAnswer> callback);
+    void saveFile(@Body SaveFileBody body, Callback<SimpleRequestAnswer> callback);
 }

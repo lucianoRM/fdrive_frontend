@@ -26,6 +26,7 @@ public class LogInActivity extends AppCompatActivity {
     private static Button buttonLogin;
     private static ProgressBar progressBar;
     private static SharedPreferences preferences;
+    private static String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,8 @@ public class LogInActivity extends AppCompatActivity {
         //disable button
         toggleUi(false);
         buttonLogin.setBackgroundResource(R.color.buttonsColor);
-        RequestMaker.getInstance(this).logIn(textEmail.getText().toString(), textPassword.getText().toString());
+        email = textEmail.getText().toString();
+        RequestMaker.getInstance(this).logIn(email, textPassword.getText().toString());
 
     }
 
@@ -95,6 +97,7 @@ public class LogInActivity extends AppCompatActivity {
         //Persist token
         SharedPreferences.Editor edit = preferences.edit();
         edit.putString("token", token);
+        edit.putString("email",email);
         edit.commit();
 
         //Open drive

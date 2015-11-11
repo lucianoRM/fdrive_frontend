@@ -11,7 +11,7 @@ public class GetUserFilesAnswer {
         public List<Integer> files;
         public List<String> folders;
     }
-
+    public List<String> errors;
     public boolean result;
     public Content content;
 

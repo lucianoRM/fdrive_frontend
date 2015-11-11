@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -40,7 +41,7 @@ import java.util.List;
 /**
  * Created by luciano on 13/10/15.
  */
-public class DriveActivity extends AppCompatActivity {
+public class DriveActivity extends AppCompatActivity implements NetworkCallbackClass.NetworkCallback {
 
     private DrawerLayout drawerLayout;
     private NavigationView leftDrawerView;
@@ -53,8 +54,10 @@ public class DriveActivity extends AppCompatActivity {
     private static String email,token,name,surname;
     private static SharedPreferences preferences;
     private static Context context;
+    private static View view;
     private static int totFiles = 0;
     private static Path path;
+    public NetworkCallbackClass activityCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,11 +114,13 @@ public class DriveActivity extends AppCompatActivity {
 
         //Saves context
         context = this;
+        view = this.findViewById(android.R.id.content);
         path = new Path();
 
         //Gets root information
         RequestMaker.getInstance(context).getUserFiles(email,token,"root");
 
+        activityCallback = new NetworkCallbackClass(this);
 
     }
 
@@ -184,6 +189,8 @@ public class DriveActivity extends AppCompatActivity {
                     case R.id.settings_button:
                         startActivity(new Intent(DriveActivity.this, ConfigurationActivity.class));
                         return true;
+                    case R.id.logout_button:
+                        RequestMaker.getInstance(getApplicationContext()).logout(email,token);
                 }
                 return false;
             }
@@ -386,9 +393,7 @@ public class DriveActivity extends AppCompatActivity {
 
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             Uri selectedFile = data.getData();
-            ErrorDisplay.getInstance().showMessage(context,this.findViewById(android.R.id.content)
-                    ,"123456789012345678901234567890123456789012345678901234567");
-            RequestMaker.getInstance(this).uploadFile(this, selectedFile, "this is a file");
+            RequestMaker.getInstance(this).uploadFile(this, selectedFile, "this is a file",activityCallback);
         }
     }
 
@@ -418,6 +423,7 @@ public class DriveActivity extends AppCompatActivity {
         for(int i = 0; i<files.size();i++){
             //gets every file in folder
             RequestMaker.getInstance(context).loadFile(email,token,files.get(i)); //The fileCards are loaded in success
+            SystemClock.sleep(0);
         }
 
     }
@@ -433,6 +439,35 @@ public class DriveActivity extends AppCompatActivity {
 
 
     }
+
+    public static void onLogoutSuccess(){
+        //Erase token from "persistence" db
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("token","");
+        edit.commit();
+
+        context.startActivity(new Intent(context, MainActivity.class));
+
+    }
+
+    public static void onRequestFailure(List<String> errors){
+        String wholeMessage = "";
+        for(int i = 0;i < errors.size(); i++){
+            wholeMessage+=errors.get(i);
+            if(i != errors.size() - 1) wholeMessage+="\n";
+        }
+        ErrorDisplay.getInstance().showMessage(context, view, wholeMessage);
+
+    }
+
+    public static void onConnectionError(){
+        ErrorDisplay.getInstance().showMessage(context,view,"Connection error,check configured ip or try again later");
+    }
+
+    public void onUploadFileSuccess(String message){
+        Log.d("test",message);
+    }
+
 
 }
 
