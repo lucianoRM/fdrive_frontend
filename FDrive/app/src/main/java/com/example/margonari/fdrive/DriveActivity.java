@@ -121,14 +121,14 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         //Saves context
         context = this;
         view = this.findViewById(android.R.id.content);
-        path = new Path(getResources().getString(R.string.root_folder));
+
 
         activityCallback = new NetworkCallbackClass(this);
 
 
         //Gets root information
-        RequestMaker.getInstance().getUserFiles(activityCallback,email,token,path.toAbsolutePath());
-        toggleUi(false);
+        path = new Path(getResources().getString(R.string.root_folder));
+        getUserFiles();
 
     }
 
@@ -203,18 +203,15 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         return true;
                     case R.id.my_drive_button:
                         path = new Path(getResources().getString(R.string.root_folder));
-                        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
-                        toggleUi(false);
+                        getUserFiles();
                         return true;
                     case R.id.shared_whith_me_button:
                         path = new Path(getResources().getString(R.string.shared_folder));
-                        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
-                        toggleUi(false);
+                        getUserFiles();
                         return true;
                     case R.id.trash_folder_icon:
                         path = new Path(getResources().getString(R.string.trash_folder));
-                        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
-                        toggleUi(false);
+                        getUserFiles();
                         return true;
                 }
                 return false;
@@ -425,6 +422,18 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             toggleUi(false);
         }
     }
+
+    /*###########################################################################
+    ###################     REQUESTS      #################################
+    #############################################################################
+     */
+
+    private void getUserFiles(){
+
+        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
+        toggleUi(false);
+    }
+
 
 
      /*###########################################################################
