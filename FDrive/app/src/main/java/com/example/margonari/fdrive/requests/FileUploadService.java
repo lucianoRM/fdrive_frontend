@@ -1,5 +1,6 @@
 package com.example.margonari.fdrive.requests;
 
+import com.example.margonari.fdrive.TypedInputStream;
 import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
 import retrofit.Callback;
@@ -14,5 +15,5 @@ import retrofit.mime.TypedFile;
 public interface FileUploadService {
     @Multipart
     @POST("/filesupload")
-    void uploadFile(@Part("upload") TypedFile file, @Part("description") String description, Callback<SimpleRequestAnswer> callback);
+    void uploadFile(@Part("upload") TypedInputStream file, @Part("description") String description, Callback<SimpleRequestAnswer> callback);
 }

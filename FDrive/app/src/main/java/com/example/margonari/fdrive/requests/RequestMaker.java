@@ -3,7 +3,9 @@ package com.example.margonari.fdrive.requests;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.util.Log;
 
 import com.example.margonari.fdrive.Database;
@@ -13,11 +15,15 @@ import com.example.margonari.fdrive.LogInActivity;
 import com.example.margonari.fdrive.NetworkCallbackClass;
 import com.example.margonari.fdrive.R;
 import com.example.margonari.fdrive.RegistrationActivity;
+import com.example.margonari.fdrive.TypedInputStream;
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 import com.example.margonari.fdrive.requests.Answers.LoginAnswer;
 import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +64,18 @@ public class RequestMaker {
         //Create typedFile to send
         ContentResolver contentResolver = context.getContentResolver();
         String fileType = contentResolver.getType(uri);
-        TypedFile file = new TypedFile(fileType,new File(uri.getPath()));
+        Cursor returnCursor = contentResolver.query(uri, null, null, null, null);
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+        returnCursor.moveToFirst();
+
+        InputStream is = null;
+        try {
+            is = contentResolver.openInputStream(uri);
+        }catch(FileNotFoundException e){}
+        TypedInputStream file = new TypedInputStream(returnCursor.getString(nameIndex),fileType,returnCursor.getLong(sizeIndex),is);
+        Log.d("test", "Size: " + Long.toString(returnCursor.getLong(sizeIndex)));
+
 
         client.uploadFile(file, description, new Callback<SimpleRequestAnswer>() {
             @Override
