@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.RequestMaker;
 
+import java.util.List;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText textName, textSurname, textEmail, textPassword, textConfirmPassword;
@@ -29,6 +31,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private static ProgressBar progressBar;
     private static SharedPreferences preferences;
     private static String name,password,email,surname;
+    private static View view;
+    private static Context context;
 
 
     @Override
@@ -120,6 +124,8 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
 
+        context = this;
+        view = findViewById(android.R.id.content);
 
     }
 
@@ -214,11 +220,15 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
-    public static void onRegistrationFailure(String error){
+    public static void onRegistrationFailure(List<String> errors){
 
-        //Sets the button red
-        buttonNewAccount.setBackgroundResource(R.color.errorRed);
+        ErrorDisplay.getInstance().showMessages(context, view, errors);
         //Sets the button back to clickable
+        toggleUi(true);
+    }
+
+    public static void onConnectionError(){
+        ErrorDisplay.getInstance().showMessage(context, view, "Connection error,check configured ip or try again later");
         toggleUi(true);
     }
 

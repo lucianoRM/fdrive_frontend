@@ -20,6 +20,8 @@ import android.widget.ProgressBar;
 
 import com.example.margonari.fdrive.requests.RequestMaker;
 
+import java.util.List;
+
 public class LogInActivity extends AppCompatActivity {
 
     private static EditText textEmail, textPassword;
@@ -27,6 +29,8 @@ public class LogInActivity extends AppCompatActivity {
     private static ProgressBar progressBar;
     private static SharedPreferences preferences;
     private static String email;
+    private static Context context;
+    private static View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,8 @@ public class LogInActivity extends AppCompatActivity {
         //Gets persisted information and loads the fields
         textEmail.setText(preferences.getString("email",""));
 
+        context = this;
+        view = findViewById(android.R.id.content);
 
     }
 
@@ -108,16 +114,19 @@ public class LogInActivity extends AppCompatActivity {
 
     }
 
-    public static void onLoginFailure(String error) {
+    public static void onLoginFailure(List<String> errors) {
 
-        buttonLogin.setBackgroundResource(R.color.errorRed);
+
+        ErrorDisplay.getInstance().showMessages(context,view, errors);
         //Sets the button back to clickable
         toggleUi(true);
     }
 
-    public static void onConnectionError(String error) {
-
+    public static void onConnectionError(){
+        ErrorDisplay.getInstance().showMessage(context,view,"Connection error,check configured ip or try again later");
+        toggleUi(true);
     }
+
 
     private static void toggleUi(boolean enable){
         if(enable){

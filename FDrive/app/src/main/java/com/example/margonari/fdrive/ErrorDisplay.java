@@ -9,6 +9,8 @@ import android.view.View;
 
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 
+import java.util.List;
+
 /**
  * Created by luciano on 09/11/15.
  */
@@ -46,6 +48,16 @@ public class ErrorDisplay {
         }
 
     }
+
+    public void showMessages(final Context context,View view, final List<String> messages){
+        String wholeMessage = "";
+        for(int i = 0;i < messages.size(); i++){
+            wholeMessage+=messages.get(i);
+            if(i != messages.size() - 1) wholeMessage+="\n";
+        }
+        showMessage(context,view,wholeMessage);
+    }
+
 
 
 

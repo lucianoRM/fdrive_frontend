@@ -452,12 +452,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void onRequestFailure(List<String> errors){
-        String wholeMessage = "";
-        for(int i = 0;i < errors.size(); i++){
-            wholeMessage+=errors.get(i);
-            if(i != errors.size() - 1) wholeMessage+="\n";
-        }
-        ErrorDisplay.getInstance().showMessage(context, view, wholeMessage);
+
+        ErrorDisplay.getInstance().showMessages(context, view, errors);
 
     }
 

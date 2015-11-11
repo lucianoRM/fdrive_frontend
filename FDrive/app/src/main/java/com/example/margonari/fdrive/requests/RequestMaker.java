@@ -17,6 +17,7 @@ import com.example.margonari.fdrive.requests.Answers.LoginAnswer;
 import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -68,7 +69,7 @@ public class RequestMaker {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("test","Error: " + error.toString());
+                Log.d("test", "Error: " + error.toString());
             }
         });
 
@@ -90,7 +91,7 @@ public class RequestMaker {
                 if (answer.result == true) {
                     RegistrationActivity.onRegistrationSuccess();
                 } else { //registration failure
-                    RegistrationActivity.onRegistrationFailure("Error");
+                    RegistrationActivity.onRegistrationFailure(answer.errors);
                 }
 
 
@@ -98,7 +99,8 @@ public class RequestMaker {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("Test", error.toString());
+
+                RegistrationActivity.onConnectionError();
             }
         });
 
@@ -135,17 +137,17 @@ public class RequestMaker {
             public void success(LoginAnswer answer, Response response) {
                 Log.d("test", "Called" + answer.result + answer.token);
                 //login successful
-                if (answer.result == true) {
+                if (answer.result) {
                     LogInActivity.onLoginSuccess(answer.token);
                 } else {
                     //login failure
-                    LogInActivity.onLoginFailure("Login error");
+                    LogInActivity.onLoginFailure(answer.errors);
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("Test", error.toString());
+                LogInActivity.onConnectionError();
             }
         });
 
