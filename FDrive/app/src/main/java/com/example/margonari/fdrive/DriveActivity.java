@@ -121,13 +121,13 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         //Saves context
         context = this;
         view = this.findViewById(android.R.id.content);
-        path = new Path();
+        path = new Path(getResources().getString(R.string.root_folder));
 
         activityCallback = new NetworkCallbackClass(this);
 
 
         //Gets root information
-        RequestMaker.getInstance().getUserFiles(activityCallback,email,token,"root");
+        RequestMaker.getInstance().getUserFiles(activityCallback,email,token,path.toAbsolutePath());
         toggleUi(false);
 
     }
@@ -198,7 +198,22 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         startActivity(new Intent(DriveActivity.this, ConfigurationActivity.class));
                         return true;
                     case R.id.logout_button:
-                        RequestMaker.getInstance().logout(activityCallback, email,token);
+                        RequestMaker.getInstance().logout(activityCallback, email, token);
+                        toggleUi(false);
+                        return true;
+                    case R.id.my_drive_button:
+                        path = new Path(getResources().getString(R.string.root_folder));
+                        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
+                        toggleUi(false);
+                        return true;
+                    case R.id.shared_whith_me_button:
+                        path = new Path(getResources().getString(R.string.shared_folder));
+                        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
+                        toggleUi(false);
+                        return true;
+                    case R.id.trash_folder_icon:
+                        path = new Path(getResources().getString(R.string.trash_folder));
+                        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
                         toggleUi(false);
                         return true;
                 }

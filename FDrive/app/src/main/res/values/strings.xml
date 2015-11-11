@@ -14,5 +14,8 @@
         <item>Array Item Two</item>
         <item>Array Item Three</item>
     </string-array>
+    <string name="root_folder">root</string>
+    <string name="shared_folder">shared</string>
+    <string name="trash_folder">trash</string>
 
 </resources>

@@ -10,19 +10,19 @@ public class Path {
 
     List<String> path = new ArrayList<>();
 
-    public Path(){
+    public Path(String root){
 
-        path.add("root");
+        path.add(root);
 
     }
 
-    private String toAbsolutePath(){
+    public String toAbsolutePath(){
         String absolutePath = "";
         for(int i = 0; i < path.size();i++){
             absolutePath+=path.get(i);
             absolutePath+="/";
         }
-        return absolutePath;
+        return absolutePath.substring(0,absolutePath.length() - 1);
 
     }
 
