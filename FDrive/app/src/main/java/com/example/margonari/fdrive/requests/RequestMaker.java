@@ -50,7 +50,7 @@ public class RequestMaker {
     }
 
 
-    public void uploadFile(Context context,Uri uri,String description, final NetworkCallbackClass activityCallback){
+    public void uploadFile(final NetworkCallbackClass activityCallback,Context context,Uri uri,String description){
 
         FileUploadService client = ServiceGenerator.createService(FileUploadService.class, baseUrl);
 
@@ -104,7 +104,7 @@ public class RequestMaker {
 
     }
 
-    public void loadFile(String email,String token,int fileId){
+    public void loadFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId){
 
 
         LoadFileService client = ServiceGenerator.createService(LoadFileService.class,baseUrl);
@@ -113,7 +113,7 @@ public class RequestMaker {
         client.loadFile(email, token, fileId, new Callback<FileMetadata>() {
             @Override
             public void success(FileMetadata answer, Response response) {
-                DriveActivity.onLoadFileSuccess(answer);
+                activityCallback.onLoadFileSuccess(answer);
             }
 
             @Override
@@ -151,7 +151,7 @@ public class RequestMaker {
 
     }
 
-    public void deleteFile(String email,String token,int fileId){
+    public void deleteFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId){
 
 
         DeleteFileService client = ServiceGenerator.createService(DeleteFileService.class,baseUrl);
@@ -178,7 +178,7 @@ public class RequestMaker {
     }
 
 
-    public void saveFile(String email,String token,String fileName,String fileExtension,String owner,List<String> tags){
+    public void saveFile(final NetworkCallbackClass activityCallback,String email,String token,String fileName,String fileExtension,String owner,List<String> tags){
 
 
         SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
@@ -207,7 +207,7 @@ public class RequestMaker {
 
     }
 
-    public void getUserFiles(String email,String token,String path){
+    public void getUserFiles(final NetworkCallbackClass activityCallback,String email,String token,String path){
 
         GetUserFilesService client = ServiceGenerator.createService(GetUserFilesService.class,baseUrl);
 
@@ -215,9 +215,9 @@ public class RequestMaker {
             @Override
             public void success(GetUserFilesAnswer getUserFilesAnswer, Response response) {
                 if (getUserFilesAnswer.result)
-                    DriveActivity.onGetUserFilesSuccess(getUserFilesAnswer);
+                    activityCallback.onGetUserFilesSuccess(getUserFilesAnswer);
                 else {
-                    DriveActivity.onRequestFailure(getUserFilesAnswer.errors);
+                    activityCallback.onRequestFailure(getUserFilesAnswer.errors);
                 }
             }
 
@@ -229,7 +229,7 @@ public class RequestMaker {
 
     }
 
-    public void logout(String email,String token){
+    public void logout(final NetworkCallbackClass activityCallback,String email,String token){
 
        UserLogoutService client = ServiceGenerator.createService(UserLogoutService.class,baseUrl);
 
@@ -237,16 +237,15 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if(answer.result) {
-                    DriveActivity.onLogoutSuccess();
+                    activityCallback.onLogoutSuccess();
                 }
                 else {
-                    DriveActivity.onRequestFailure(answer.errors);
+                    activityCallback.onRequestFailure(answer.errors);
                 }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                DriveActivity.onConnectionError();
+            public void failure(RetrofitError error){ activityCallback.onConnectionError();
             }
         });
 

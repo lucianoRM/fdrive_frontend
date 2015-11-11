@@ -4,6 +4,7 @@ import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Query;
 
 /**
@@ -11,7 +12,7 @@ import retrofit.http.Query;
  */
 
 public interface UserSignUpService{
-    @GET("/users")
+    @POST("/users")
     void registerUser(@Query("email") String email,@Query("password") String password, Callback<SimpleRequestAnswer> callback);
 }
 
