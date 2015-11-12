@@ -10,12 +10,14 @@ public class FileCard {
     public String name;
     public String extension;
     public String size;
+    public FileMetadata metadata;
 
-    FileCard(String name,String extension,String size){
+    FileCard(FileMetadata newMetadata){
 
-        this.name = name;
-        this.extension = extension;
-        this.size = size;
+        this.name = newMetadata.name;
+        this.extension = newMetadata.extension;
+        this.size = Integer.toString(newMetadata.size);
+        this.metadata = newMetadata;
     }
 
 

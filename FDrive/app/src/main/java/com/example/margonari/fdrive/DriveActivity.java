@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Paint;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -16,10 +17,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -66,6 +69,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private Context context;
     private View view;
     private Path path;
+    private FileCard selectedFileCard;
     public NetworkCallbackClass activityCallback;
 
 
@@ -236,27 +240,47 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     private void setRightDrawerListener(){
 
-        NavigationView.OnNavigationItemSelectedListener listener = new NavigationView.OnNavigationItemSelectedListener(){
+        ImageButton deleteFile = (ImageButton)findViewById(R.id.right_drawer_delete_button);
+        ImageButton shareFile = (ImageButton)findViewById(R.id.right_drawer_share_button);
+        ImageButton uploadFile = (ImageButton)findViewById(R.id.right_drawer_upload_button);
+        ImageButton editFile = (ImageButton)findViewById(R.id.right_drawer_edit_button);
+        ImageButton dowloadFile = (ImageButton)findViewById(R.id.right_drawer_download_button);
 
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-                //Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
-
+            public void onClick(View v) {
                 //Closing drawer on item click
                 drawerLayout.closeDrawer(rightDrawerView);
+                Log.d("test","Entra");
 
                 //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()) {
+                switch (v.getId()) {
+                    case R.id.right_drawer_delete_button:
+                        Log.d("test","Delete button");
+                        break;
+                    case R.id.right_drawer_edit_button:
+                        Log.d("test","Edit button");
+                        break;
+                    case R.id.right_drawer_download_button:
+                        Log.d("test","Download button");
+                        break;
+                    case R.id.right_drawer_share_button:
+                        Log.d("test","Share button");
+                        break;
+                    case R.id.right_drawer_upload_button:
+                        Log.d("test","Upload button");
+                        break;
                 }
-                return false;
             }
 
         };
 
-        rightDrawerView.setNavigationItemSelectedListener(listener);
+        deleteFile.setOnClickListener(listener);
+        shareFile.setOnClickListener(listener);
+        uploadFile.setOnClickListener(listener);
+        dowloadFile.setOnClickListener(listener);
+        editFile.setOnClickListener(listener);
+
     }
 
      /*###########################################################################
@@ -343,6 +367,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 rightDrawerExtensionPhoto.setImageDrawable(clickedFileIcon.getDrawable());
                 rightDrawerFileName.setText(clickedFileName.getText().toString());
                 rightDrawerFileSize.setText(clickedFileSize.getText().toString());
+
+                //sets selected file card
+                selectedFileCard = fileCards.get(position);
 
                 drawerLayout.openDrawer(rightDrawerView);
 
@@ -510,7 +537,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void onLoadFileSuccess(FileMetadata file){
         totFiles--; //Substract one to know which file is it
-        fileCards.add(new FileCard(file.name, file.extension, Integer.toString(20)));
+        fileCards.add(new FileCard(file));
 
         if(totFiles == 0){
             updateFileCards();
