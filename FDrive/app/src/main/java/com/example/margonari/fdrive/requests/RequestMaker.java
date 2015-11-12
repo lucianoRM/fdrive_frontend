@@ -110,10 +110,10 @@ public class RequestMaker {
     public void getFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId){
 
 
-        LoadFileService client = ServiceGenerator.createService(LoadFileService.class,baseUrl);
+        GetFileService client = ServiceGenerator.createService(GetFileService.class,baseUrl);
 
         // Fetch and print a list of the contributors to this library.
-        client.loadFile(email, token, fileId, new Callback<FileMetadata>() {
+        client.getFile(email, token, fileId, new Callback<FileMetadata>() {
             @Override
             public void success(FileMetadata answer, Response response) {
                 activityCallback.onGetFileSuccess(answer);
