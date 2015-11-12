@@ -40,14 +40,19 @@ public class NetworkCallbackClass {
         callback.onConnectionError();
     }
     public void onFileUploadProgress(long progress) {callback.onFileUploadProgress(progress);}
+    public void onDeleteFileSuccess() {callback.onDeleteFileSuccess();}
 
     public interface NetworkCallback {
         public void onLogoutSuccess();
         public void onLoadFileSuccess(FileMetadata file);
         public void onGetUserFilesSuccess(GetUserFilesAnswer answer);
         public void onUploadFileSuccess(String message);
+        public void onDeleteFileSuccess();
+
         public void onRequestFailure(List<String> errors);
+
         public void onConnectionError();
+
         public void onFileUploadProgress(long progress);
     }
 

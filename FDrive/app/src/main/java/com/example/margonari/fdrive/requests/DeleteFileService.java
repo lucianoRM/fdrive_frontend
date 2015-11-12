@@ -5,20 +5,15 @@ import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
+import retrofit.http.Query;
 
 /**
  * Created by luciano on 18/10/15.
  */
 
-class DeleteFileBody{
-    public String email;
-    public String token;
-    public int fileId;
-
-}
 
 public interface DeleteFileService {
     @DELETE("/files")
-    void deleteFile(@Body DeleteFileBody body, Callback<SimpleRequestAnswer> callback);
+    void deleteFile(@Query("email") String email,@Query("token") String token,@Query("path") String path,@Query("id") int id, Callback<SimpleRequestAnswer> callback);
 
 }

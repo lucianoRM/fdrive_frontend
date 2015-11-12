@@ -154,27 +154,26 @@ public class RequestMaker {
 
     }
 
-    public void deleteFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId){
+    public void deleteFile(final NetworkCallbackClass activityCallback,String email,String token,String path,int fileId){
 
 
         DeleteFileService client = ServiceGenerator.createService(DeleteFileService.class,baseUrl);
 
-        DeleteFileBody body = new DeleteFileBody();
-        body.email = email;
-        body.token = token;
-        body.fileId = fileId;
 
         // Fetch and print a list of the contributors to this library.
-        client.deleteFile(body, new Callback<SimpleRequestAnswer>() {
+        client.deleteFile(email,token,path,fileId, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                //What to do when success
-                Log.d("Test", String.valueOf(answer.result));
+                if(answer.result){
+                    activityCallback.onDeleteFileSuccess();
+                }else{
+                    activityCallback.onRequestFailure(answer.errors);
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("Test", error.toString());
+                activityCallback.onConnectionError();
             }
         });
 

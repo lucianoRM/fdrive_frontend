@@ -256,7 +256,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 //Check to see which item was being clicked and perform appropriate action
                 switch (v.getId()) {
                     case R.id.right_drawer_delete_button:
-                        Log.d("test","Delete button");
+                        deleteSelectedFile();
                         break;
                     case R.id.right_drawer_edit_button:
                         Log.d("test","Edit button");
@@ -497,6 +497,13 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     #############################################################################
      */
 
+    private void deleteSelectedFile(){
+        int id = selectedFileCard.metadata.id;
+        String actualPath = path.toAbsolutePath();
+        RequestMaker.getInstance().deleteFile(activityCallback,email,token,actualPath,id);
+        toggleUi(false);
+    }
+
     private void getUserFiles(){
 
         RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
@@ -531,6 +538,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             //gets every file in folder
             RequestMaker.getInstance().loadFile(activityCallback,email,token,files.get(i)); //The fileCards are loaded in success
             toggleUi(false);
+        }
+        if(files.size() == 0){
+            updateFileCards();
+            updateFolderCards();
         }
         toggleUi(true);
     }
@@ -571,8 +582,15 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void onUploadFileSuccess(String message){
         onFileUploadToggleUI(true);
-        ErrorDisplay.getInstance().showMessage(context,view,"Upload Successful");
+        ErrorDisplay.getInstance().showMessage(context, view, "Upload Successful");
     }
+
+
+    public void onDeleteFileSuccess(){
+        ErrorDisplay.getInstance().showMessage(context, view, "File deleted");
+        getUserFiles();
+    }
+
 
     public void onFileUploadProgress(final long progress){
         runOnUiThread(new Runnable() {
@@ -584,6 +602,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         });
 
     }
+
 }
 
 
