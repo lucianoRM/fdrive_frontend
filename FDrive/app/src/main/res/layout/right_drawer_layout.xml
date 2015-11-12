@@ -61,7 +61,6 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
             android:paddingTop="20dp">
 
             <ImageButton
@@ -95,6 +94,38 @@
                 android:layout_weight="1"
                 android:clickable="true"
                 android:contextClickable="true" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
+
+
+        <ImageButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/right_drawer_edit_button"
+            android:contentDescription="editButton"
+            android:src="@mipmap/ic_edit_black_24dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:layout_weight="1"
+            android:clickable="true" />
+        <ImageButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/right_drawer_upload_button"
+            android:contentDescription="downloadButton"
+            android:src="@mipmap/ic_publish_black_24dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:layout_weight="1"
+            android:clickable="true" />
 
 
     </LinearLayout>
@@ -241,16 +272,7 @@
                 android:entries="@array/right_drawer_spinner_default"
                 android:id="@+id/right_drawer_metadata_shared"/>
         </LinearLayout>
-        <ImageButton
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/right_drawer_edit_button"
-            android:contentDescription="editButton"
-            android:src="@mipmap/ic_edit_black_24dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_gravity="center_horizontal"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:clickable="true" />
+
 
     </LinearLayout>
 </LinearLayout>
