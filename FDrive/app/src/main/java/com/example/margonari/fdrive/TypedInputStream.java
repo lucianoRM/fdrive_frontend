@@ -1,12 +1,7 @@
 package com.example.margonari.fdrive;
 
-import android.os.RecoverySystem;
 import android.util.Log;
 
-import com.example.margonari.fdrive.requests.ProgressListener;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -79,8 +74,6 @@ public class TypedInputStream implements TypedInput, TypedOutput {
             long total = 0;
             while ((read = in.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
-                Log.d("test","Total: " + total);
-                Log.d("test","Read: " + read);
                 total+=read;
                 this.activityCallback.onFileUploadProgress((total * 100) / this.size);
             }

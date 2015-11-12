@@ -3,16 +3,12 @@ package com.example.margonari.fdrive;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.OpenableColumns;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,24 +16,19 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
-import com.example.margonari.fdrive.requests.ProgressListener;
 import com.example.margonari.fdrive.requests.RequestMaker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
-import junit.framework.Test;
-
-import org.w3c.dom.Text;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -55,6 +46,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private NavigationView rightDrawerView;
     private ProgressBar progressBar;
     private RecyclerView recyclerFilesView,recyclerFoldersView;
+    private ProgressBar horizontalProgressBar;
+    private TextView progressBarPercentage;
+    private LinearLayout progressBarLayout;
 
     //Cards
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
@@ -73,7 +67,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private Path path;
     public NetworkCallbackClass activityCallback;
 
-    private TextView t;
+
 
 
 
@@ -84,9 +78,13 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         setContentView(R.layout.activity_drive);
 
         //Sets the progress bar as invisible
-        progressBar = (ProgressBar) findViewById(R.id.driveProgressBar);
+        progressBar = (ProgressBar) findViewById(R.id.drive_circular_progress_bar);
         progressBar.setVisibility(ProgressBar.INVISIBLE);
 
+        horizontalProgressBar = (ProgressBar) findViewById(R.id.drive_horizontal_progress_bar);
+        progressBarLayout = (LinearLayout) findViewById(R.id.progress_bar_layout);
+        progressBarPercentage = (TextView) findViewById(R.id.horizontal_progress_bar_percentage);
+        progressBarLayout.setVisibility(View.GONE);
 
         //Set drawer layout and shown email
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -140,7 +138,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         path = new Path(getResources().getString(R.string.root_folder));
         getUserFiles();
 
-        t = (TextView) findViewById(R.id.a);
+
 
     }
 
@@ -443,6 +441,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             TypedInputStream file = new TypedInputStream(returnCursor.getString(nameIndex), fileType, returnCursor.getLong(sizeIndex), is,activityCallback);
 
             RequestMaker.getInstance().uploadFile(activityCallback,file, "this is a file");
+            progressBarLayout.setVisibility(View.VISIBLE);
             toggleUi(false);
         }
     }
@@ -525,6 +524,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void onUploadFileSuccess(String message){
+        progressBarLayout.setVisibility(View.GONE);
         toggleUi(true);
     }
 
@@ -532,7 +532,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                t.setText(Long.toString(progress));
+                horizontalProgressBar.setProgress((int)progress);
+                progressBarPercentage.setText(Long.toString(progress));
             }
         });
 
