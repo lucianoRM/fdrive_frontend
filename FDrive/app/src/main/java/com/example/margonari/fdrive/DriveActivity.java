@@ -49,6 +49,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private ProgressBar horizontalProgressBar;
     private TextView progressBarPercentage;
     private LinearLayout progressBarLayout;
+    private com.getbase.floatingactionbutton.FloatingActionButton uploadFileButton;
 
     //Cards
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
@@ -107,6 +108,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         setToolbar();
 
         //Set floating button listener
+        uploadFileButton = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.add_file_floating_button);
         setOnActionButtonClickListener();
 
         //Display user information
@@ -305,6 +307,24 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
+    private void onFileUploadToggleUI(boolean enable){
+
+        if(enable){
+            //Hide progress bar
+            progressBarLayout.setVisibility(View.GONE);
+            //Enable floating action button
+            uploadFileButton.setClickable(true);
+        }else{
+            //Hide progress bar
+            progressBarLayout.setVisibility(View.VISIBLE);
+            //Enable floating action button
+            uploadFileButton.setClickable(false);
+        }
+
+
+
+    }
+
     private void setCardsListeners(){
         this.recyclerFilesView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
 
@@ -441,8 +461,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             TypedInputStream file = new TypedInputStream(returnCursor.getString(nameIndex), fileType, returnCursor.getLong(sizeIndex), is,activityCallback);
 
             RequestMaker.getInstance().uploadFile(activityCallback,file, "this is a file");
-            progressBarLayout.setVisibility(View.VISIBLE);
-            toggleUi(false);
+            onFileUploadToggleUI(false);
         }
     }
 
@@ -524,8 +543,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void onUploadFileSuccess(String message){
-        progressBarLayout.setVisibility(View.GONE);
-        toggleUi(true);
+        onFileUploadToggleUI(true);
+        ErrorDisplay.getInstance().showMessage(context,view,"Upload Successful");
     }
 
     public void onFileUploadProgress(final long progress){
