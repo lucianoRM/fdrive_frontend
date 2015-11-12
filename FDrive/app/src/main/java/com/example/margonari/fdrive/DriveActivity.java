@@ -266,7 +266,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         Log.d("test","Edit button");
                         break;
                     case R.id.right_drawer_download_button:
-                        Log.d("test","Download button");
+                        RequestMaker.getInstance().downloadFile(activityCallback,email,token,0);
                         break;
                     case R.id.right_drawer_share_button:
                         Log.d("test","Share button");
@@ -571,7 +571,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         fileCards = new ArrayList<>();
         for(int i = 0; i<files.size();i++){
             //gets every file in folder
-            RequestMaker.getInstance().loadFile(activityCallback,email,token,files.get(i)); //The fileCards are loaded in success
+            RequestMaker.getInstance().getFile(activityCallback,email,token,files.get(i)); //The fileCards are loaded in success
             toggleUi(false);
         }
         if(files.size() == 0){
@@ -581,7 +581,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         toggleUi(true);
     }
 
-    public void onLoadFileSuccess(FileMetadata file){
+    public void onGetFileSuccess(FileMetadata file){
         totFiles--; //Substract one to know which file is it
         fileCards.add(new FileCard(file));
 

@@ -107,7 +107,7 @@ public class RequestMaker {
 
     }
 
-    public void loadFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId){
+    public void getFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId){
 
 
         LoadFileService client = ServiceGenerator.createService(LoadFileService.class,baseUrl);
@@ -116,7 +116,7 @@ public class RequestMaker {
         client.loadFile(email, token, fileId, new Callback<FileMetadata>() {
             @Override
             public void success(FileMetadata answer, Response response) {
-                activityCallback.onLoadFileSuccess(answer);
+                activityCallback.onGetFileSuccess(answer);
             }
 
             @Override
@@ -161,12 +161,12 @@ public class RequestMaker {
 
 
         // Fetch and print a list of the contributors to this library.
-        client.deleteFile(email,token,path,fileId, new Callback<SimpleRequestAnswer>() {
+        client.deleteFile(email, token, path, fileId, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                if(answer.result){
+                if (answer.result) {
                     activityCallback.onDeleteFileSuccess();
-                }else{
+                } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -238,18 +238,39 @@ public class RequestMaker {
         client.logoutUser(email, token, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                if(answer.result) {
+                if (answer.result) {
                     activityCallback.onLogoutSuccess();
-                }
-                else {
+                } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
 
             @Override
-            public void failure(RetrofitError error){ activityCallback.onConnectionError();
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
             }
         });
+
+    }
+
+    public void downloadFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId){
+
+        FileDownloadService client = ServiceGenerator.createService(FileDownloadService.class,baseUrl);
+
+        client.downloadFile(email, token, fileId, new Callback<SimpleRequestAnswer>() {
+            @Override
+            public void success(SimpleRequestAnswer answer, Response response) {
+                Log.d("test","Download success");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
+
+
+
 
     }
 

@@ -23,8 +23,8 @@ public class NetworkCallbackClass {
     public void onLogoutSuccess(){
         callback.onLogoutSuccess();
     }
-    public void onLoadFileSuccess(FileMetadata file){
-        callback.onLoadFileSuccess(file);
+    public void onGetFileSuccess(FileMetadata file){
+        callback.onGetFileSuccess(file);
     }
     public void onGetUserFilesSuccess(GetUserFilesAnswer answer){
         callback.onGetUserFilesSuccess(answer);
@@ -44,7 +44,7 @@ public class NetworkCallbackClass {
 
     public interface NetworkCallback {
         public void onLogoutSuccess();
-        public void onLoadFileSuccess(FileMetadata file);
+        public void onGetFileSuccess(FileMetadata file);
         public void onGetUserFilesSuccess(GetUserFilesAnswer answer);
         public void onUploadFileSuccess(String message);
         public void onDeleteFileSuccess();
