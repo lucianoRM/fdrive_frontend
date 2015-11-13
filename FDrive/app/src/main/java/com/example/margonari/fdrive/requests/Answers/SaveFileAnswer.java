@@ -11,7 +11,7 @@ import java.util.List;
 public class SaveFileAnswer {
 
     public boolean result;
-    public int id;
+    public int fileID;
     public List<String> errors = new ArrayList<String>();
 
 

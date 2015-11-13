@@ -65,13 +65,18 @@ public class RequestMaker {
         client.uploadFile(inputStream,email,token,fileId,new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                activityCallback.networkMethod();
+                if(answer.result){
+                    activityCallback.onUploadFileSuccess();
+                }else{
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+
 
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("test", "Error: " + error.toString());
+                activityCallback.onConnectionError();
             }
         });
 
@@ -181,7 +186,7 @@ public class RequestMaker {
     }
 
 
-    public void saveFile(final NetworkCallbackClass activityCallback,String email,String token,String fileName,String fileExtension,String owner,List<String> tags){
+    public void saveFile(final NetworkCallbackClass activityCallback,String email,String token,String fileName,String fileExtension,String owner,long size,String path){
 
 
         SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
@@ -192,19 +197,21 @@ public class RequestMaker {
         body.name = fileName;
         body.extension = fileExtension;
         body.owner = owner;
-        body.tags = tags;
-        body.size = 1;
-        body.path = "root";
+        body.tags = new ArrayList<>();
+        body.size = (int)(size/1000);
+        body.path = path;
 
         // Fetch and print a list of the contributors to this library.
         client.saveFile(body, new Callback<SaveFileAnswer>() {
             @Override
             public void success(SaveFileAnswer answer, Response response) {
                 //What to do when success
-                if (answer.result)
-                    activityCallback.onSaveFileSuccess(answer.id);
-                else
+                if (answer.result) {
+                    Log.d("test","id: " + answer.fileID);
+                    activityCallback.onSaveFileSuccess(answer.fileID);
+                }else {
                     activityCallback.onRequestFailure(answer.errors);
+                }
             }
 
             @Override

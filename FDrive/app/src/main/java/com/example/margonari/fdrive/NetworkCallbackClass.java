@@ -15,10 +15,6 @@ public class NetworkCallbackClass {
         this.callback = callback;
     }
 
-    public void networkMethod() {
-        String message = "This came from YourCallbackClass";
-        callback.onUploadFileSuccess(message);
-    }
 
     public void onLogoutSuccess(){
         callback.onLogoutSuccess();
@@ -30,8 +26,8 @@ public class NetworkCallbackClass {
         callback.onGetUserFilesSuccess(answer);
     }
 
-    public void onUploadFileSuccess(String message){
-        callback.onUploadFileSuccess(message);
+    public void onUploadFileSuccess(){
+        callback.onUploadFileSuccess();
     }
     public void onRequestFailure(List<String> errors){
         callback.onRequestFailure(errors);
@@ -48,7 +44,7 @@ public class NetworkCallbackClass {
         public void onLogoutSuccess();
         public void onGetFileSuccess(FileMetadata file);
         public void onGetUserFilesSuccess(GetUserFilesAnswer answer);
-        public void onUploadFileSuccess(String message);
+        public void onUploadFileSuccess();
         public void onDeleteFileSuccess();
         public void onSaveFileSuccess(int id);
         public void onCreateFolderSuccess();
