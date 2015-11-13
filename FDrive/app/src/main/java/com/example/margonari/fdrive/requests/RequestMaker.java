@@ -18,6 +18,7 @@ import com.example.margonari.fdrive.RegistrationActivity;
 import com.example.margonari.fdrive.TypedInputStream;
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 import com.example.margonari.fdrive.requests.Answers.LoginAnswer;
+import com.example.margonari.fdrive.requests.Answers.SaveFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
 import java.io.File;
@@ -57,11 +58,11 @@ public class RequestMaker {
     }
 
 
-    public void uploadFile(final NetworkCallbackClass activityCallback,TypedInputStream inputStream,String description){
+    public void uploadFile(final NetworkCallbackClass activityCallback,TypedInputStream inputStream,String email,String token,int fileId){
 
         FileUploadService client = ServiceGenerator.createService(FileUploadService.class, baseUrl);
 
-        client.uploadFile(inputStream, description, new Callback<SimpleRequestAnswer>() {
+        client.uploadFile(inputStream,email,token,fileId,new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 activityCallback.networkMethod();
@@ -192,18 +193,23 @@ public class RequestMaker {
         body.extension = fileExtension;
         body.owner = owner;
         body.tags = tags;
+        body.size = 1;
+        body.path = "root";
 
         // Fetch and print a list of the contributors to this library.
-        client.saveFile(body, new Callback<SimpleRequestAnswer>() {
+        client.saveFile(body, new Callback<SaveFileAnswer>() {
             @Override
-            public void success(SimpleRequestAnswer answer, Response response) {
+            public void success(SaveFileAnswer answer, Response response) {
                 //What to do when success
-                Log.d("Test", answer.errors.toString());
+                if(answer.result)
+                    activityCallback.onSaveFileSuccess(answer.id);
+                else
+                    activityCallback.onRequestFailure(answer.errors);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("Test", error.toString());
+                activityCallback.onConnectionError();
             }
         });
 

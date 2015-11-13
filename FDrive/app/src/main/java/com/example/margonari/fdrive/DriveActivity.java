@@ -75,6 +75,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private Path path;
     private FileCard selectedFileCard;
     public NetworkCallbackClass activityCallback;
+    public TypedInputStream fileToUpload;
 
 
 
@@ -520,10 +521,12 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             try {
                 is = contentResolver.openInputStream(selectedFile);
             }catch(FileNotFoundException e){}
-            TypedInputStream file = new TypedInputStream(returnCursor.getString(nameIndex), fileType, returnCursor.getLong(sizeIndex), is,activityCallback);
+            fileToUpload = new TypedInputStream(returnCursor.getString(nameIndex), fileType, returnCursor.getLong(sizeIndex), is,activityCallback);
 
-            RequestMaker.getInstance().uploadFile(activityCallback,file, "this is a file");
+            RequestMaker.getInstance().saveFile(activityCallback,email,token,returnCursor.getString(nameIndex),".txt",email,new ArrayList<String>());
             onFileUploadToggleUI(false);
+            /*RequestMaker.getInstance().uploadFile(activityCallback,file, "this is a file");
+            onFileUploadToggleUI(false);*/
         }
     }
 
@@ -592,6 +595,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         }
 
 
+    }
+
+    public void onSaveFileSuccess(int id){
+        RequestMaker.getInstance().uploadFile(activityCallback,fileToUpload,email,token,id);
     }
 
     public void onLogoutSuccess(){
