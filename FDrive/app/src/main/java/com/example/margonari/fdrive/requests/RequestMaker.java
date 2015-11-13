@@ -201,7 +201,7 @@ public class RequestMaker {
             @Override
             public void success(SaveFileAnswer answer, Response response) {
                 //What to do when success
-                if(answer.result)
+                if (answer.result)
                     activityCallback.onSaveFileSuccess(answer.id);
                 else
                     activityCallback.onRequestFailure(answer.errors);
@@ -266,7 +266,7 @@ public class RequestMaker {
         client.downloadFile(email, token, fileId, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                Log.d("test","Download success");
+                Log.d("test", "Download success");
             }
 
             @Override
@@ -275,7 +275,28 @@ public class RequestMaker {
             }
         });
 
+    }
 
+    public void createFolder(final NetworkCallbackClass activityClass,String email,String token,String path,String folderName){
+
+        CreateFolderService client = ServiceGenerator.createService(CreateFolderService.class, baseUrl);
+
+        client.createFolder(email, token, path,folderName, new Callback<SimpleRequestAnswer>() {
+            @Override
+            public void success(SimpleRequestAnswer answer, Response response) {
+                if(answer.result) {
+                    activityClass.onCreateFolderSuccess();
+                }
+                else{
+                    activityClass.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityClass.onConnectionError();
+            }
+        });
 
 
     }

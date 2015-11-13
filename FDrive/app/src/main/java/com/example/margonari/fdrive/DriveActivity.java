@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -487,11 +488,41 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         addFolderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                createNewFolderDialog();
                 floatingMenu.collapse();
             }
         });
 
     }
+
+    private void createNewFolderDialog(){
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.create_folder_alert_dialog, null);
+        dialogBuilder.setView(dialogView);
+        AlertDialog alertDialog = dialogBuilder.create();
+        setupCreateFolderAlertDialogListener(dialogView, alertDialog);
+        alertDialog.show();
+
+    }
+
+    private void setupCreateFolderAlertDialogListener(final View dialogView,final AlertDialog alertDialog){
+
+        Button alertDialogSearchButton = (Button) dialogView.findViewById(R.id.create_folder_alert_dialog_button);
+        alertDialogSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText newNameEditText = (EditText) dialogView.findViewById(R.id.create_folder_alert_dialog_text);
+                String newName = newNameEditText.getText().toString();
+                RequestMaker.getInstance().createFolder(activityCallback,email,token,path.toAbsolutePath(),newName);
+                alertDialog.hide();
+
+
+            }
+        });
+    }
+
 
     protected void pickFile(View view){
 
@@ -598,7 +629,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void onSaveFileSuccess(int id){
-        RequestMaker.getInstance().uploadFile(activityCallback,fileToUpload,email,token,id);
+        RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token, id);
     }
 
     public void onLogoutSuccess(){
@@ -630,6 +661,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void onDeleteFileSuccess(){
         ErrorDisplay.getInstance().showMessage(context, view, "File deleted");
+        getUserFiles();
+    }
+
+
+    public void onCreateFolderSuccess(){
         getUserFiles();
     }
 
