@@ -16,6 +16,7 @@ import com.example.margonari.fdrive.NetworkCallbackClass;
 import com.example.margonari.fdrive.R;
 import com.example.margonari.fdrive.RegistrationActivity;
 import com.example.margonari.fdrive.TypedInputStream;
+import com.example.margonari.fdrive.requests.Answers.DownloadFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 import com.example.margonari.fdrive.requests.Answers.LoginAnswer;
 import com.example.margonari.fdrive.requests.Answers.SaveFileAnswer;
@@ -24,7 +25,10 @@ import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,12 +66,12 @@ public class RequestMaker {
 
         FileUploadService client = ServiceGenerator.createService(FileUploadService.class, baseUrl);
 
-        client.uploadFile(inputStream,email,token,fileId,new Callback<SimpleRequestAnswer>() {
+        client.uploadFile(inputStream, email, token, fileId, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                if(answer.result){
+                if (answer.result) {
                     activityCallback.onUploadFileSuccess();
-                }else{
+                } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
 
@@ -207,9 +211,9 @@ public class RequestMaker {
             public void success(SaveFileAnswer answer, Response response) {
                 //What to do when success
                 if (answer.result) {
-                    Log.d("test","id: " + answer.fileID);
+                    Log.d("test", "id: " + answer.fileID);
                     activityCallback.onSaveFileSuccess(answer.fileID);
-                }else {
+                } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -270,14 +274,63 @@ public class RequestMaker {
 
         FileDownloadService client = ServiceGenerator.createService(FileDownloadService.class,baseUrl);
 
-        client.downloadFile(email, token, fileId, new Callback<SimpleRequestAnswer>() {
+        client.downloadFile(email, token, fileId, new Callback<Response>() {
             @Override
-            public void success(SimpleRequestAnswer answer, Response response) {
-                Log.d("test", "Download success");
+            public void success(final Response answer, final Response response) {
+                new Thread(new Runnable() {
+                    public void run() {
+                        Log.d("test", "Download success");
+                        File targetFile = new File("path");
+                        targetFile.deleteOnExit();
+                        try {
+                            InputStream inputStream = null;
+                            OutputStream outputStream = null;
+
+                                try {
+                                    inputStream = response.getBody().in();
+                                    byte[] buff = new byte[4096];
+                                    long downloaded = 0;
+                                    long target = response.getBody().length();
+
+                                    Log.d("test", "File size is: " + Long.toString(target));
+                                    OutputStream outStream = new FileOutputStream(targetFile);
+                                    while (true) {
+
+                                        int read = inputStream.read(buff);
+                                        if (read == -1) {
+                                            break;
+                                        }
+                                        outStream.write(buff,0,read);
+                                        //write buff
+                                        downloaded += read;
+                                        Log.d("test",Long.toString(read));
+                                        Log.d("test",Long.toString(downloaded));
+
+                                    }
+
+                                    outStream.flush();
+
+                                } catch (IOException ignore) {
+                                    ignore.printStackTrace();
+                                } finally {
+                                    if (inputStream != null) {
+                                        inputStream.close();
+                                    }
+                                    if (outputStream != null) {
+                                        outputStream.close();
+                                    }
+                                }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
             }
 
             @Override
             public void failure(RetrofitError error) {
+                Log.d("test",error.toString());
                 activityCallback.onConnectionError();
             }
         });

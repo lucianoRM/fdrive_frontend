@@ -55,7 +55,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private ProgressBar progressBar;
     private RecyclerView recyclerFilesView,recyclerFoldersView;
     private ProgressBar horizontalProgressBar;
-    private TextView progressBarPercentage;
+    private TextView progressBarPercentage,progressBarMethod;
     private LinearLayout progressBarLayout;
     private com.getbase.floatingactionbutton.FloatingActionButton uploadFileButton;
 
@@ -95,6 +95,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         horizontalProgressBar = (ProgressBar) findViewById(R.id.drive_horizontal_progress_bar);
         progressBarLayout = (LinearLayout) findViewById(R.id.progress_bar_layout);
         progressBarPercentage = (TextView) findViewById(R.id.horizontal_progress_bar_percentage);
+        progressBarMethod = (TextView) findViewById(R.id.horizontal_progress_bar_method);
         progressBarLayout.setVisibility(View.GONE);
 
         //Set drawer layout and shown email
@@ -268,7 +269,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         Log.d("test","Edit button");
                         break;
                     case R.id.right_drawer_download_button:
-                        RequestMaker.getInstance().downloadFile(activityCallback,email,token,0);
+                        RequestMaker.getInstance().downloadFile(activityCallback,email,token,selectedFileCard.metadata.id);
                         break;
                     case R.id.right_drawer_share_button:
                         Log.d("test","Share button");
@@ -345,15 +346,33 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             //Enable floating action button
             uploadFileButton.setClickable(true);
         }else{
-            //Hide progress bar
+            //Set method
+            progressBarMethod.setText("Uploading file: ");
+            //Show progress bar
             progressBarLayout.setVisibility(View.VISIBLE);
-            //Enable floating action button
+            //Disable floating action button
             uploadFileButton.setClickable(false);
         }
 
+    }
 
+    private void onFileDownloadToggleUI(boolean enable){
+
+        if(enable){
+            //Hide progress bar
+            progressBarLayout.setVisibility(View.GONE);
+
+        }else{
+            //Set method
+            progressBarMethod.setText("Downloading file: ");
+
+            //Show progress bar
+            progressBarLayout.setVisibility(View.VISIBLE);
+
+        }
 
     }
+
 
     private void setCardsListeners(){
         this.recyclerFilesView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
@@ -671,6 +690,17 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
 
     public void onFileUploadProgress(final long progress){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                horizontalProgressBar.setProgress((int) progress);
+                progressBarPercentage.setText(Long.toString(progress));
+            }
+        });
+
+    }
+
+    public void onFileDownloadProgress(final long progress){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

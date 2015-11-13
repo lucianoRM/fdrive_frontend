@@ -2,9 +2,11 @@ package com.example.margonari.fdrive.requests;
 
 import com.example.margonari.fdrive.FileMetadata;
 import com.example.margonari.fdrive.TypedInputStream;
+import com.example.margonari.fdrive.requests.Answers.DownloadFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
@@ -18,5 +20,5 @@ import retrofit.http.Streaming;
 public interface FileDownloadService {
     @GET("/filesdownload")
     @Streaming
-    void downloadFile(@Query("email") String email,@Query("token") String password,@Query("id") int id, Callback<SimpleRequestAnswer> callback);
+    void downloadFile(@Query("email") String email, @Query("token") String password, @Query("id") int id, Callback<Response> callback);
 }
