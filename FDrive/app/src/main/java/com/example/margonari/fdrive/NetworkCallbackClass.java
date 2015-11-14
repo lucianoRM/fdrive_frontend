@@ -39,6 +39,8 @@ public class NetworkCallbackClass {
     public void onDeleteFileSuccess() {callback.onDeleteFileSuccess();}
     public void onSaveFileSuccess(int id) {callback.onSaveFileSuccess(id);}
     public void onCreateFolderSuccess() {callback.onCreateFolderSuccess();}
+    public void onFileDownloadProgress(long progress) {callback.onFileDownloadProgress(progress);}
+    public void onFileDownloadSuccess() {callback.onFileDownloadSuccess();}
 
     public interface NetworkCallback {
         public void onLogoutSuccess();
@@ -48,12 +50,14 @@ public class NetworkCallbackClass {
         public void onDeleteFileSuccess();
         public void onSaveFileSuccess(int id);
         public void onCreateFolderSuccess();
+        public void onFileDownloadSuccess();
 
         public void onRequestFailure(List<String> errors);
 
         public void onConnectionError();
 
         public void onFileUploadProgress(long progress);
+        public void onFileDownloadProgress(long progress);
     }
 
 

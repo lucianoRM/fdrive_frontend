@@ -269,7 +269,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         Log.d("test","Edit button");
                         break;
                     case R.id.right_drawer_download_button:
-                        RequestMaker.getInstance().downloadFile(activityCallback,email,token,selectedFileCard.metadata.id);
+                        FileMetadata metadata = selectedFileCard.metadata;
+                        RequestMaker.getInstance().downloadFile(activityCallback,email,token,metadata.id,metadata.name,metadata.extension);
+                        onFileDownloadToggleUI(false);
                         break;
                     case R.id.right_drawer_share_button:
                         Log.d("test","Share button");
@@ -559,23 +561,25 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     protected void onActivityResult(int reqCode, int resCode, Intent data){
         super.onActivityResult(reqCode, resCode, data);
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
+            //Get selected uri
             Uri selectedFile = data.getData();
-            //Create typedFile to send
+            //Get file information and create typedFile to send
             ContentResolver contentResolver = this.getContentResolver();
             String fileType = contentResolver.getType(selectedFile);
             Cursor returnCursor = contentResolver.query(selectedFile, null, null, null, null);
             int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
             returnCursor.moveToFirst();
+            String completeFileName = returnCursor.getString(nameIndex);
+            String fileName = completeFileName.split("\\.")[0];
+            String fileExtension = completeFileName.split("\\.")[1];
             InputStream is = null;
             try {
                 is = contentResolver.openInputStream(selectedFile);
             }catch(FileNotFoundException e){}
-            fileToUpload = new TypedInputStream(returnCursor.getString(nameIndex), fileType, returnCursor.getLong(sizeIndex), is,activityCallback);
+            fileToUpload = new TypedInputStream(fileName, fileType, returnCursor.getLong(sizeIndex),is,activityCallback);
 
-            RequestMaker.getInstance().saveFile(activityCallback, email, token, returnCursor.getString(nameIndex), ".txt", email,returnCursor.getLong(sizeIndex),path.toAbsolutePath());
-            /*RequestMaker.getInstance().uploadFile(activityCallback,file, "this is a file");
-            onFileUploadToggleUI(false);*/
+            RequestMaker.getInstance().saveFile(activityCallback, email, token, fileName, "."+fileExtension, email,returnCursor.getLong(sizeIndex),path.toAbsolutePath());
         }
     }
 
@@ -610,8 +614,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         List<String> folders = answer.content.folders;
 
         totFiles = files.size();
+
         //Empty previous folders
         folderCards = new ArrayList<>();
+        //add return folder
         folderCards.add(new FolderCard(".."));
 
         //Save folders in list
@@ -675,6 +681,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public void onUploadFileSuccess(){
         onFileUploadToggleUI(true);
         ErrorDisplay.getInstance().showMessage(context, view, "Upload Successful");
+        getUserFiles();
     }
 
 
@@ -700,6 +707,17 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
+    public void onFileDownloadSuccess(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ErrorDisplay.getInstance().showMessage(context, view, "Download Complete");
+                onFileDownloadToggleUI(true);
+            }
+        });
+
+    }
+
     public void onFileDownloadProgress(final long progress){
         runOnUiThread(new Runnable() {
             @Override
@@ -710,6 +728,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         });
 
     }
+
 
 }
 

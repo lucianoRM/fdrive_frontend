@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
@@ -270,69 +272,63 @@ public class RequestMaker {
 
     }
 
-    public void downloadFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId){
+    public void downloadFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId,final String fileName,final String fileExtension){
 
         FileDownloadService client = ServiceGenerator.createService(FileDownloadService.class,baseUrl);
 
         client.downloadFile(email, token, fileId, new Callback<Response>() {
             @Override
-            public void success(final Response answer, final Response response) {
+            public void success(Response answer, final Response response) {
                 new Thread(new Runnable() {
                     public void run() {
-                        Log.d("test", "Download success");
-                        File targetFile = new File("path");
+                        File targetFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/" + fileName + fileExtension);
                         targetFile.deleteOnExit();
                         try {
                             InputStream inputStream = null;
                             OutputStream outputStream = null;
 
-                                try {
-                                    inputStream = response.getBody().in();
-                                    byte[] buff = new byte[4096];
-                                    long downloaded = 0;
-                                    long target = response.getBody().length();
-
-                                    Log.d("test", "File size is: " + Long.toString(target));
-                                    OutputStream outStream = new FileOutputStream(targetFile);
-                                    while (true) {
-
-                                        int read = inputStream.read(buff);
-                                        if (read == -1) {
-                                            break;
-                                        }
-                                        outStream.write(buff,0,read);
-                                        //write buff
-                                        downloaded += read;
-                                        Log.d("test",Long.toString(read));
-                                        Log.d("test",Long.toString(downloaded));
-
+                            try {
+                                inputStream = response.getBody().in();
+                                byte[] buff = new byte[4096];
+                                long downloaded = 0;
+                                long target = response.getBody().length();
+                                OutputStream outStream = new FileOutputStream(targetFile);
+                                while (true) {
+                                    int read = inputStream.read(buff);
+                                    if (read == -1) {
+                                        break;
                                     }
-
-                                    outStream.flush();
-
-                                } catch (IOException ignore) {
-                                    ignore.printStackTrace();
-                                } finally {
-                                    if (inputStream != null) {
-                                        inputStream.close();
-                                    }
-                                    if (outputStream != null) {
-                                        outputStream.close();
-                                    }
+                                    outStream.write(buff,0,read);
+                                    //write buff
+                                    downloaded += read;
+                                    activityCallback.onFileDownloadProgress((downloaded * 100) / target);
                                 }
+                                outStream.flush();
+
+                            } catch (IOException ignore) {
+                            } finally {
+                                if (inputStream != null) {
+                                    inputStream.close();
+                                }
+                                if (outputStream != null) {
+                                    outputStream.close();
+                                }
+                            }
                         } catch (IOException e) {
-                            e.printStackTrace();
                         }
+                    activityCallback.onFileDownloadSuccess();
                     }
                 }).start();
+
 
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("test",error.toString());
                 activityCallback.onConnectionError();
             }
+
+
         });
 
     }
