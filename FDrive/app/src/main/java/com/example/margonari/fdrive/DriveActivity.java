@@ -252,6 +252,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         ImageButton uploadFile = (ImageButton)findViewById(R.id.right_drawer_upload_button);
         ImageButton editFile = (ImageButton)findViewById(R.id.right_drawer_edit_button);
         ImageButton dowloadFile = (ImageButton)findViewById(R.id.right_drawer_download_button);
+        ImageButton addTag = (ImageButton) findViewById(R.id.right_drawer_add_tag_button);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -279,6 +280,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                     case R.id.right_drawer_upload_button:
                         Log.d("test","Upload button");
                         break;
+                    case R.id.right_drawer_add_tag_button:
+                        Log.d("test","Add tag");
+                        break;
                 }
             }
 
@@ -289,6 +293,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         uploadFile.setOnClickListener(listener);
         dowloadFile.setOnClickListener(listener);
         editFile.setOnClickListener(listener);
+        addTag.setOnClickListener(listener);
 
     }
 
@@ -481,8 +486,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             @Override
             public void onClick(View v) {
                 Spinner searchTypeOptions = (Spinner) dialogView.findViewById(R.id.search_alert_dialog_spinner);
+                EditText searchElement = (EditText) dialogView.findViewById(R.id.search_alert_dialog_text);
                 String searchSelectedType = searchTypeOptions.getSelectedItem().toString();
-                Log.d("test",searchSelectedType);
+                String element = searchElement.getText().toString();
+                path.goTo("search");
+                RequestMaker.getInstance().search(activityCallback,email,token,searchSelectedType.toLowerCase(),element);
                 alertDialog.hide();
 
 
@@ -695,6 +703,26 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         getUserFiles();
     }
 
+    public void onSearchSuccess(List<Integer> files){
+        totFiles = files.size();
+        //Empty previous folders
+        folderCards = new ArrayList<>();
+        //add return folder
+        folderCards.add(new FolderCard(".."));
+
+        //empty files
+        fileCards = new ArrayList<>();
+        for(int i = 0; i<files.size();i++){
+            //gets every file in folder
+            RequestMaker.getInstance().getFile(activityCallback,email,token,files.get(i)); //The fileCards are loaded in success
+            toggleUi(false);
+        }
+        if(files.size() == 0){
+            updateFileCards();
+            updateFolderCards();
+        }
+        toggleUi(true);
+    }
 
     public void onFileUploadProgress(final long progress){
         runOnUiThread(new Runnable() {
@@ -728,6 +756,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         });
 
     }
+
+
 
 
 }

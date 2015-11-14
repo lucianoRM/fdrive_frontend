@@ -37,7 +37,7 @@ public class Path {
             }
 
         }else{
-            path.add(newFolder);
+            if(path.get(path.size() - 1) != "search") path.add(newFolder);
         }
         return toAbsolutePath();
     }

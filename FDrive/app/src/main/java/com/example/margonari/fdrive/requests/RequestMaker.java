@@ -22,6 +22,7 @@ import com.example.margonari.fdrive.requests.Answers.DownloadFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 import com.example.margonari.fdrive.requests.Answers.LoginAnswer;
 import com.example.margonari.fdrive.requests.Answers.SaveFileAnswer;
+import com.example.margonari.fdrive.requests.Answers.SearchAnswer;
 import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
 import java.io.File;
@@ -298,7 +299,7 @@ public class RequestMaker {
                                     if (read == -1) {
                                         break;
                                     }
-                                    outStream.write(buff,0,read);
+                                    outStream.write(buff, 0, read);
                                     //write buff
                                     downloaded += read;
                                     activityCallback.onFileDownloadProgress((downloaded * 100) / target);
@@ -316,7 +317,7 @@ public class RequestMaker {
                             }
                         } catch (IOException e) {
                         }
-                    activityCallback.onFileDownloadSuccess();
+                        activityCallback.onFileDownloadSuccess();
                     }
                 }).start();
 
@@ -337,13 +338,12 @@ public class RequestMaker {
 
         CreateFolderService client = ServiceGenerator.createService(CreateFolderService.class, baseUrl);
 
-        client.createFolder(email, token, path,folderName, new Callback<SimpleRequestAnswer>() {
+        client.createFolder(email, token, path, folderName, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                if(answer.result) {
+                if (answer.result) {
                     activityClass.onCreateFolderSuccess();
-                }
-                else{
+                } else {
                     activityClass.onRequestFailure(answer.errors);
                 }
             }
@@ -353,6 +353,26 @@ public class RequestMaker {
                 activityClass.onConnectionError();
             }
         });
+
+
+    }
+
+    public void search(final NetworkCallbackClass activityCallback,String email,String token,String searchType,String element){
+
+        SearchService client = ServiceGenerator.createService(SearchService.class,baseUrl);
+
+        client.search(email, token, searchType, element, new Callback<SearchAnswer>() {
+            @Override
+            public void success(SearchAnswer answer, Response response) {
+                Log.d("test",Integer.toString(answer.content.files.get(0)));
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
+
 
 
     }

@@ -41,6 +41,7 @@ public class NetworkCallbackClass {
     public void onCreateFolderSuccess() {callback.onCreateFolderSuccess();}
     public void onFileDownloadProgress(long progress) {callback.onFileDownloadProgress(progress);}
     public void onFileDownloadSuccess() {callback.onFileDownloadSuccess();}
+    public void onSearchSuccess(List<Integer> files) {callback.onSearchSuccess(files);};
 
     public interface NetworkCallback {
         public void onLogoutSuccess();
@@ -51,6 +52,7 @@ public class NetworkCallbackClass {
         public void onSaveFileSuccess(int id);
         public void onCreateFolderSuccess();
         public void onFileDownloadSuccess();
+        public void onSearchSuccess(List<Integer> files);
 
         public void onRequestFailure(List<String> errors);
 
