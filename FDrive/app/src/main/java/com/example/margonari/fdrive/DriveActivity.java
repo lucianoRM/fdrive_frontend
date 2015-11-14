@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,12 +41,17 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by luciano on 13/10/15.
  */
+
+
 public class DriveActivity extends AppCompatActivity implements NetworkCallbackClass.NetworkCallback {
 
     //View
@@ -147,6 +153,17 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         activityCallback = new NetworkCallbackClass(this);
 
 
+        String uriString = Database.getInstance().get(email,"");
+        Log.d("test","Leo: " + uriString);
+        if(uriString != ""){
+            Uri imageUri = Uri.parse(uriString);
+            CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
+
+            circleImageView.setImageURI(imageUri);
+
+
+        }
+
         //Gets root information
         path = new Path(getResources().getString(R.string.root_folder));
         getUserFiles();
@@ -242,6 +259,23 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
         };
         leftDrawerView.setNavigationItemSelectedListener(listener);
+
+        CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                final int takeFlags = intent.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+// Check for the freshest data.
+                startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 2);
+            }
+        });
+
+
     }
 
 
@@ -336,12 +370,16 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         token = Database.getInstance().get("token","token");
 
 
+
         //Show information
         TextView uText = (TextView)drawerLayout.findViewById(R.id.username);
         TextView eText = (TextView)drawerLayout.findViewById(R.id.email);
 
+
+
         uText.setText(name + " " + surname);
         eText.setText(email);
+
 
     }
 
@@ -490,7 +528,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 String searchSelectedType = searchTypeOptions.getSelectedItem().toString();
                 String element = searchElement.getText().toString();
                 path.goTo("search");
-                RequestMaker.getInstance().search(activityCallback,email,token,searchSelectedType.toLowerCase(),element);
+                RequestMaker.getInstance().search(activityCallback, email, token, searchSelectedType.toLowerCase(), element);
                 alertDialog.hide();
 
 
@@ -544,7 +582,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             public void onClick(View v) {
                 EditText newNameEditText = (EditText) dialogView.findViewById(R.id.create_folder_alert_dialog_text);
                 String newName = newNameEditText.getText().toString();
-                RequestMaker.getInstance().createFolder(activityCallback,email,token,path.toAbsolutePath(),newName);
+                RequestMaker.getInstance().createFolder(activityCallback, email, token, path.toAbsolutePath(), newName);
                 alertDialog.hide();
 
 
@@ -557,10 +595,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
         ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
 
-        Intent intent = new Intent();
-        intent.setType("*/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 1);
+
 
     }
 
@@ -568,6 +603,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent data){
         super.onActivityResult(reqCode, resCode, data);
+        //Uploading file
         if (reqCode == 1 && resCode == RESULT_OK && data != null) {
             //Get selected uri
             Uri selectedFile = data.getData();
@@ -588,6 +624,18 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             fileToUpload = new TypedInputStream(fileName, fileType, returnCursor.getLong(sizeIndex),is,activityCallback);
 
             RequestMaker.getInstance().saveFile(activityCallback, email, token, fileName, "."+fileExtension, email,returnCursor.getLong(sizeIndex),path.toAbsolutePath());
+        }
+
+        //Updating user image
+        if (reqCode == 2 && resCode == RESULT_OK && data != null){
+            Uri uri = data.getData();
+            //Persisit image
+            Database.getInstance().put(email, uri.toString());
+            Log.d("test", "Pongo: " + uri.getScheme());
+
+            CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
+            circleImageView.setImageURI(uri);
+
         }
     }
 
