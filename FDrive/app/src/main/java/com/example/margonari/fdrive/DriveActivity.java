@@ -153,17 +153,6 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         activityCallback = new NetworkCallbackClass(this);
 
 
-        String uriString = Database.getInstance().get(email,"");
-        Log.d("test","Leo: " + uriString);
-        if(uriString != ""){
-            Uri imageUri = Uri.parse(uriString);
-            CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
-
-            circleImageView.setImageURI(imageUri);
-
-
-        }
-
         //Gets root information
         path = new Path(getResources().getString(R.string.root_folder));
         getUserFiles();
@@ -267,6 +256,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                //needed for image persistence
                 final int takeFlags = intent.getFlags()
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -369,6 +359,14 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         surname = Database.getInstance().get("surname","surname");
         token = Database.getInstance().get("token","token");
 
+        String uriString = Database.getInstance().get(email,"");
+        Log.d("test","Leo: " + uriString);
+        if(uriString != ""){
+            Uri imageUri = Uri.parse(uriString);
+            CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
+
+            circleImageView.setImageURI(imageUri);
+        }
 
 
         //Show information

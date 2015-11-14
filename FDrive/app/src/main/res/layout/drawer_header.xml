@@ -18,9 +18,8 @@
         android:layout_height="@dimen/perfil_image_size"
         android:layout_marginBottom="16dp"
         android:scaleType="centerCrop"
-        app:border_color="@android:color/white"
         app:border_width="1dp"
-        android:src="@drawable/download"/>
+        android:src="@drawable/user_default"/>
 
     <!-- Nombre de Usuario -->
     <TextView
