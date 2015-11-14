@@ -71,12 +71,12 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="end"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/drawer_header">
+        android:fitsSystemWindows="true">
 
         <include layout="@layout/right_drawer_layout"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            />
 
     </android.support.design.widget.NavigationView>
 

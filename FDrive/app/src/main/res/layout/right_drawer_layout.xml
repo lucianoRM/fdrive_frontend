@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="@dimen/header_height">
+    android:paddingTop="@dimen/activity_horizontal_margin">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -23,6 +23,7 @@
             android:padding="16dp"
             >
 
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,28 +31,39 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
-                android:src="@mipmap/ic_insert_drive_file_black_24dp"
                 />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/right_drawer_file_name"
-                android:layout_toEndOf="@+id/right_drawer_extension_photo"
-                android:text="archivo.txt"
-                android:layout_centerVertical="true"
-                android:textSize="20sp"
-                />
+                android:orientation="vertical"
+                android:layout_toEndOf="@id/right_drawer_extension_photo">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/right_drawer_file_size"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:text="50kb"
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/right_drawer_file_name"
+                    android:textSize="20sp"
+                    />
 
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/right_drawer_file_size"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/file_kb"
+                        android:text=" kb"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -122,6 +134,29 @@
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:layout_weight="1"
                 android:clickable="true" />
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/right_drawer_add_tag_button"
+                    android:src="@android:drawable/ic_input_add"
+                    android:layout_gravity="center_horizontal"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:clickable="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="tag"/>
+
+            </LinearLayout>
+
+
             <ImageButton
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -153,11 +188,6 @@
                 android:text="Name: "
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"/>
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/right_drawer_rename_button"
-                android:src="@android:drawable/ic_menu_edit"/>
             <TextView
                 android:text="Nombre"
                 android:layout_height="wrap_content"
@@ -261,11 +291,6 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"/>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/right_drawer_add_tag_button"
-                android:src="@android:drawable/ic_menu_add"/>
 
             <Spinner
                 android:text="Nombre"
