@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -74,6 +77,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     //Info
     private int totFiles = 0;
     private String email,token,name,surname;
+    private Location lastLocation;
 
 
     //Aux
@@ -144,6 +148,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         //Sets the cards listener
         setCardsListeners();
 
+        //Sets locationListener
+        setLocationListener();
 
         //Saves context
         context = this;
@@ -450,12 +456,40 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             @Override
             public void onItemClick(View view, int position) {
                 TextView clickedFolder = (TextView) view.findViewById(R.id.folder_name);
-                RequestMaker.getInstance().getUserFiles(activityCallback,email,token,path.goTo(clickedFolder.getText().toString()));
+                RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.goTo(clickedFolder.getText().toString()));
                 toggleUi(false);
 
             }
 
         }));
+
+
+    }
+
+    private void setLocationListener(){
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                lastLocation = location;
+                Log.d("test",Double.toString(location.getLatitude()) + ";" + Double.toString(location.getLongitude()));
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            @Override
+            public void onProviderEnabled(String provider) {}
+
+            @Override
+            public void onProviderDisabled(String provider) {}
+        };
+
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,0, locationListener);
+
 
 
     }
