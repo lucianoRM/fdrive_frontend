@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class AlertDialogManager {
 
-    public static void createShareAlertDialog(Context context, final List<String> users){
+    public static void createShareAlertDialog(final NetworkCallbackClass activityCallback,Context context, final List<String> users){
         final CharSequence[] usersSequence = users.toArray(new CharSequence[users.size()]);
         final List<Integer> seletedItems = new ArrayList<>();
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -40,7 +40,7 @@ public class AlertDialogManager {
                 for(int i = 0;i<seletedItems.size();i++){
                     selectedUsers.add(users.get(seletedItems.get(i)));
                 }
-                Log.d("test",selectedUsers.toString());
+                activityCallback.share(selectedUsers);
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

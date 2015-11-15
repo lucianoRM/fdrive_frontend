@@ -14,5 +14,5 @@ import retrofit.http.Query;
 public interface UserLoginService {
     @GET("/login")
     void loginUser(@Query("email") String email,@Query("password") String password,Callback<LoginAnswer> callback);
-    }
+}
 

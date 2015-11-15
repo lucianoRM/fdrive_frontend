@@ -47,6 +47,10 @@ public class NetworkCallbackClass {
     public void createFolder(String newFolder) {callback.createFolder(newFolder);}
     public void renameFile(String newName) {callback.renameFile(newName);}
     public void onMetadataUploadSuccess() {callback.onMetadataUploadSuccess();}
+    public void onShareSuccess() {callback.onShareSuccess();}
+    public void onGetUsersForSharingSuccess(List<String> users) {callback.onGetUsersForSharingSuccess(users);}
+    public void share(List<String> selectedUsers) {callback.share(selectedUsers);}
+
 
 
 
@@ -64,6 +68,8 @@ public class NetworkCallbackClass {
         public void onFileDownloadSuccess();
         public void onSearchSuccess(List<Integer> files);
         public void onMetadataUploadSuccess();
+        public void onShareSuccess();
+        public void onGetUsersForSharingSuccess(List<String> users);
 
         //On failure methods
         public void onRequestFailure(List<String> errors);
@@ -80,6 +86,7 @@ public class NetworkCallbackClass {
 
         //Non network related methods
         public void search(String typeOfSearch,String element);
+        public void share(List<String> selectedUsers);
         public void addTag(String newTag);
         public void createFolder(String newFolder);
         public void renameFile(String newName);

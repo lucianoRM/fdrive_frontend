@@ -319,11 +319,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         onFileDownloadToggleUI(false);
                         break;
                     case R.id.right_drawer_share_button:
-                        List<String> a = new ArrayList<String>();
-                        a.add("a");
-                        a.add("b");
-                        a.add("c");
-                        AlertDialogManager.createShareAlertDialog(context, a);
+                        RequestMaker.getInstance().getUsers(activityCallback,email,token);
                         break;
                     case R.id.right_drawer_upload_button:
                         Log.d("test","Upload button");
@@ -595,6 +591,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
+    public void share(List<String> selectedUsers){
+        RequestMaker.getInstance().shareFile(activityCallback,email,token,selectedFileCard.metadata.id,selectedUsers);
+
+    }
 
     public void createFolder(String newFolder){
         RequestMaker.getInstance().createFolder(activityCallback, email, token, path.toAbsolutePath(), newFolder);
@@ -761,7 +761,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     //When updating a file
     public void onMetadataUploadSuccess(){
-        RequestMaker.getInstance().getUserFiles(activityCallback,email,token,path.toAbsolutePath());
+        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
     }
 
 
@@ -822,6 +822,14 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             updateFolderCards();
         }
         toggleUi(true);
+    }
+
+    public void onGetUsersForSharingSuccess(List<String> users){
+        AlertDialogManager.createShareAlertDialog(activityCallback,context, users);
+    }
+
+    public void onShareSuccess(){
+        getUserFiles();
     }
 
     public void onFileUploadProgress(final long progress){

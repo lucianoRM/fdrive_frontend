@@ -21,6 +21,7 @@ import com.example.margonari.fdrive.TypedInputStream;
 import com.example.margonari.fdrive.requests.Answers.DownloadFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.GetFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
+import com.example.margonari.fdrive.requests.Answers.GetUsersAnswer;
 import com.example.margonari.fdrive.requests.Answers.LoginAnswer;
 import com.example.margonari.fdrive.requests.Answers.SaveFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.SearchAnswer;
@@ -408,7 +409,7 @@ public class RequestMaker {
         client.search(email, token, searchType, element, new Callback<SearchAnswer>() {
             @Override
             public void success(SearchAnswer answer, Response response) {
-                Log.d("test",Integer.toString(answer.content.files.get(0)));
+                Log.d("test", Integer.toString(answer.content.files.get(0)));
             }
 
             @Override
@@ -417,6 +418,65 @@ public class RequestMaker {
             }
         });
 
+
+
+    }
+
+    public void shareFile(final NetworkCallbackClass activityCallback,String email,String token,int fileid,List<String> users){
+
+        ShareFileService client = ServiceGenerator.createService(ShareFileService.class,baseUrl);
+
+        ShareFileBody body = new ShareFileBody();
+        body.email = email;
+        body.token = token;
+        body.id = fileid;
+        body.users = users;
+
+        client.share(body, new Callback<SimpleRequestAnswer>() {
+            @Override
+            public void success(SimpleRequestAnswer answer, Response response) {
+                if (answer.result) {
+                    activityCallback.onShareSuccess();
+                } else {
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+
+            }
+        });
+
+
+
+    }
+
+    public void getUsers(final NetworkCallbackClass activityCallback, final String email,String token){
+
+        GetUsersService client = ServiceGenerator.createService(GetUsersService.class,baseUrl);
+
+        client.getUsers(email, token, new Callback<GetUsersAnswer>() {
+            @Override
+            public void success(GetUsersAnswer answer, Response response) {
+                if(answer.result){
+                    List<String> emails = new ArrayList<String>();
+                    for(int i =0; i<answer.users.size();i++){
+                        emails.add(answer.users.get(i).email);
+                    }
+                    activityCallback.onGetUsersForSharingSuccess(emails);
+                }
+                else{
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
 
 
     }
