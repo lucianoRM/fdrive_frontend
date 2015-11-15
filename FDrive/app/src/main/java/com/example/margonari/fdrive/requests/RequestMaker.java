@@ -239,15 +239,18 @@ public class RequestMaker {
 
     }
 
-    public void saveFile(final NetworkCallbackClass activityCallback,String email,String token,FileMetadata metadata){
+    public void saveNewVersion(final NetworkCallbackClass activityCallback,String email,String token,String name,String extension,int id,String path,long size,List<String> tags,int version){
 
-        ExistentFileBody body = new ExistentFileBody();
+        NewVersionBody body = new NewVersionBody();
         body.email = email;
         body.token = token;
-        body.name = metadata.name;
-        body.extension = metadata.extension;
-        body.tags = metadata.tags;
-        body.id = metadata.id;
+        body.name = name;
+        body.extension = extension;
+        body.id = id;
+        body.version = version;
+        body.tags = tags;
+        body.path = path;
+        body.size = (int)(size/1000);
 
 
         SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
@@ -258,7 +261,7 @@ public class RequestMaker {
             public void success(SaveFileAnswer answer, Response response) {
                 //What to do when success
                 if (answer.result) {
-                    activityCallback.onMetadataUploadSuccess();
+                    activityCallback.onNewVersionSaveSuccess();
                 } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
@@ -409,7 +412,7 @@ public class RequestMaker {
         client.search(email, token, searchType, element, new Callback<SearchAnswer>() {
             @Override
             public void success(SearchAnswer answer, Response response) {
-                Log.d("test", Integer.toString(answer.content.files.get(0)));
+                activityCallback.onSearchSuccess(answer.content.files);
             }
 
             @Override

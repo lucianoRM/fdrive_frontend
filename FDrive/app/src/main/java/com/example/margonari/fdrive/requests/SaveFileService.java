@@ -14,6 +14,20 @@ import retrofit.http.POST;
  * Created by luciano on 18/10/15.
  */
 
+class NewVersionBody{
+
+    public String email;
+    public String token;
+    public String name;
+    public String extension;
+    public int id;
+    public List<String> tags;
+    public int size;
+    public String path;
+    public int version;
+    public boolean overwrite = false;
+}
+
 class NewFileBody{
     public String email;
     public String token;
@@ -42,6 +56,6 @@ public interface SaveFileService {
     void saveFile(@Body NewFileBody body, Callback<SaveFileAnswer> callback);
 
     @POST("/files")
-    void saveFile(@Body ExistentFileBody body, Callback<SaveFileAnswer> callback);
+    void saveFile(@Body NewVersionBody body, Callback<SaveFileAnswer> callback);
 
 }

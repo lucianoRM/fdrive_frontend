@@ -67,6 +67,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DriveActivity extends AppCompatActivity implements NetworkCallbackClass.NetworkCallback {
 
+    private static int GENERAL_UPLOAD = 1;
+    private static int UPLOAD_PROFILE_PICTURE = 2;
+    private static int UPLOAD_NEW_VERSION = 3;
+
+
     //View
     private DrawerLayout drawerLayout;
     private NavigationView leftDrawerView;
@@ -281,7 +286,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 // Check for the freshest data.
-                startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 2);
+                startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), UPLOAD_PROFILE_PICTURE);
             }
         });
 
@@ -322,7 +327,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         RequestMaker.getInstance().getUsers(activityCallback,email,token);
                         break;
                     case R.id.right_drawer_upload_button:
-                        Log.d("test","Upload button");
+                        uploadNewVersion();
                         break;
                     case R.id.right_drawer_add_tag_button:
                         AlertDialogManager.createAddTagAlertDialog(context,activityCallback);
@@ -580,7 +585,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
 
     public void addTag(String newTag){
-        Log.d("test",newTag);
+
+        /*selectedFileCard.metadata.tags.add(newTag);
+        RequestMaker.getInstance().saveFile(activityCallback,email,token,selectedFileCard.metadata);*/
 
     }
 
@@ -602,8 +609,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void renameFile(String newName){
-        selectedFileCard.metadata.name = newName;
-        RequestMaker.getInstance().saveFile(activityCallback,email,token,selectedFileCard.metadata);
+       /* selectedFileCard.metadata.name = newName;
+        RequestMaker.getInstance().saveFile(activityCallback,email,token,selectedFileCard.metadata);*/
 
     }
      /*###########################################################################
@@ -633,13 +640,23 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
 
+    private void uploadNewVersion(){
+
+        ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
+        Intent intent = new Intent();
+        intent.setType("*/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), UPLOAD_NEW_VERSION);
+
+    }
+
     protected void pickFile(View view){
 
         ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
         Intent intent = new Intent();
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 1);
+        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), GENERAL_UPLOAD);
 
 
     }
@@ -649,7 +666,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     protected void onActivityResult(int reqCode, int resCode, Intent data){
         super.onActivityResult(reqCode, resCode, data);
         //Uploading file
-        if (reqCode == 1 && resCode == RESULT_OK && data != null) {
+        if (reqCode == GENERAL_UPLOAD && resCode == RESULT_OK && data != null) {
             //Get selected uri
             Uri selectedFile = data.getData();
             //Get file information and create typedFile to send
@@ -672,16 +689,40 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         }
 
         //Updating user image
-        if (reqCode == 2 && resCode == RESULT_OK && data != null){
+        if (reqCode == UPLOAD_PROFILE_PICTURE && resCode == RESULT_OK && data != null){
             Uri uri = data.getData();
             //Persisit image
             Database.getInstance().put(email, uri.toString());
-            Log.d("test", "Pongo: " + uri.getScheme());
 
             CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
             circleImageView.setImageURI(uri);
 
         }
+        //Updating user image
+        if (reqCode == UPLOAD_NEW_VERSION && resCode == RESULT_OK && data != null){
+                //Get selected uri
+                Uri selectedFile = data.getData();
+                //Get file information and create typedFile to send
+                ContentResolver contentResolver = this.getContentResolver();
+                String fileType = contentResolver.getType(selectedFile);
+                Cursor returnCursor = contentResolver.query(selectedFile, null, null, null, null);
+                int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+                returnCursor.moveToFirst();
+                String completeFileName = returnCursor.getString(nameIndex);
+                String fileName = completeFileName.split("\\.")[0];
+                String fileExtension = completeFileName.split("\\.")[1];
+                InputStream is = null;
+                try {
+                    is = contentResolver.openInputStream(selectedFile);
+                }catch(FileNotFoundException e){}
+                fileToUpload = new TypedInputStream(fileName, fileType, returnCursor.getLong(sizeIndex),is,activityCallback);
+
+                RequestMaker.getInstance().saveNewVersion(activityCallback, email, token, fileName, "." + fileExtension, selectedFileCard.metadata.id, path.toAbsolutePath(), returnCursor.getLong(sizeIndex), selectedFileCard.metadata.tags, selectedFileCard.metadata.lastVersion);
+
+        }
+
+
     }
 
     /*###########################################################################
@@ -825,11 +866,16 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void onGetUsersForSharingSuccess(List<String> users){
-        AlertDialogManager.createShareAlertDialog(activityCallback,context, users);
+        AlertDialogManager.createShareAlertDialog(activityCallback, context, users);
     }
 
     public void onShareSuccess(){
         getUserFiles();
+    }
+
+    public void onNewVersionSaveSuccess(){
+        onFileUploadToggleUI(false);
+        RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token,selectedFileCard.metadata.id);
     }
 
     public void onFileUploadProgress(final long progress){
@@ -864,7 +910,6 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         });
 
     }
-
 
 
 
