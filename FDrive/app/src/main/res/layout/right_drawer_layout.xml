@@ -255,7 +255,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
                 <TextView
-                    android:text="Nombre"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/right_drawer_metadata_file_name"/>
@@ -272,7 +271,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
                 <TextView
-                    android:text="Extension"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/right_drawer_metadata_file_extension"/>
@@ -289,10 +287,14 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
                 <TextView
-                    android:text="10 kb"
+                    android:id="@+id/right_drawer_metadata_file_size"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/right_drawer_metadata_file_size"/>
+                    android:layout_width="wrap_content"/>
+                <TextView
+                    android:text="kb"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
             </LinearLayout>
             <LinearLayout
                 android:layout_height="wrap_content"
@@ -306,7 +308,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
                 <TextView
-                    android:text="Duenio"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/right_drawer_metadata_file_owner"/>
@@ -323,7 +324,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
                 <TextView
-                    android:text="12/12/12 00:00:00"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/right_drawer_metadata_last_mod"/>
@@ -340,7 +340,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
                 <TextView
-                    android:text="ultimo"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/right_drawer_metadata_file_last_user"/>
@@ -359,10 +358,8 @@
 
 
                 <Spinner
-                    android:text="Nombre"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:entries="@array/right_drawer_spinner_default"
                     android:id="@+id/right_drawer_metadata_tags"/>
 
             </LinearLayout>
@@ -380,7 +377,6 @@
                 <Spinner
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:entries="@array/right_drawer_spinner_default"
                     android:id="@+id/right_drawer_metadata_shared"/>
             </LinearLayout>
 

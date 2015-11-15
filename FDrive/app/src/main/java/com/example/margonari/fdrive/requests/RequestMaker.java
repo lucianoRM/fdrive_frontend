@@ -19,6 +19,7 @@ import com.example.margonari.fdrive.R;
 import com.example.margonari.fdrive.RegistrationActivity;
 import com.example.margonari.fdrive.TypedInputStream;
 import com.example.margonari.fdrive.requests.Answers.DownloadFileAnswer;
+import com.example.margonari.fdrive.requests.Answers.GetFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 import com.example.margonari.fdrive.requests.Answers.LoginAnswer;
 import com.example.margonari.fdrive.requests.Answers.SaveFileAnswer;
@@ -126,10 +127,14 @@ public class RequestMaker {
         GetFileService client = ServiceGenerator.createService(GetFileService.class,baseUrl);
 
         // Fetch and print a list of the contributors to this library.
-        client.getFile(email, token, fileId, new Callback<FileMetadata>() {
+        client.getFile(email, token, fileId, new Callback<GetFileAnswer>() {
             @Override
-            public void success(FileMetadata answer, Response response) {
-                activityCallback.onGetFileSuccess(answer);
+            public void success(GetFileAnswer answer, Response response) {
+                if(answer.result) {
+                    activityCallback.onGetFileSuccess(answer.file);
+                }else{
+                    activityCallback.onRequestFailure(answer.errors);
+                }
             }
 
             @Override
@@ -178,7 +183,11 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
-                    activityCallback.onDeleteFileSuccess();
+                    if(answer.result) {
+                        activityCallback.onDeleteFileSuccess();
+                    }else{
+                        activityCallback.onRequestFailure(answer.errors);
+                    }
                 } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
