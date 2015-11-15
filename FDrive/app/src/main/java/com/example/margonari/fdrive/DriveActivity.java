@@ -57,6 +57,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -102,7 +103,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private FileCard selectedFileCard;
     public NetworkCallbackClass activityCallback;
     public TypedInputStream fileToUpload;
-
+    private boolean afterSearch;
+    private Map<Integer,String> searchMap;
 
 
 
@@ -466,7 +468,6 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 Spinner rightDrawerMetadataTags = (Spinner) findViewById(R.id.right_drawer_metadata_tags);
 
 
-
                 rightDrawerCardExtensionPhoto.setImageDrawable(clickedFileIcon.getDrawable());
                 rightDrawerCardFileName.setText(metadata.name);
                 rightDrawerCardFileSize.setText(Integer.toString(metadata.size));
@@ -476,19 +477,19 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 rightDrawerMetadataLastMod.setText(metadata.lastModified);
                 rightDrawerMetadataLastUser.setText(metadata.lastUser);
                 rightDrawerMetadataOwner.setText(metadata.owner);
-                rightDrawerMetadataPath.setText(metadata.pathInOwner);
+                rightDrawerMetadataPath.setText(selectedFileCard.path);
                 rightDrawerMetadataSize.setText(Integer.toString(metadata.size));
                 rightDrawerMetadataVersion.setText(Integer.toString(metadata.lastVersion));
-                rightDrawerMetadataTags.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,metadata.tags));
-                rightDrawerMetadataShared.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,metadata.users));
+                rightDrawerMetadataTags.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, metadata.tags));
+                rightDrawerMetadataShared.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, metadata.users));
 
                 //Set buttons
                 ImageButton editButton = (ImageButton) findViewById(R.id.right_drawer_edit_button);
                 ImageButton deleteButtin = (ImageButton) findViewById(R.id.right_drawer_delete_button);
 
-                if (!(metadata.owner.equals(email))){//No es el owner del archivo
+                if (!(metadata.owner.equals(email))) {//No es el owner del archivo
                     editButton.setClickable(false);
-                }else{
+                } else {
                     editButton.setClickable(true);
                 }
 
@@ -586,7 +587,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void addTag(String newTag){
 
-        RequestMaker.getInstance().addTag(activityCallback,email,token,selectedFileCard.metadata.id,newTag);
+        RequestMaker.getInstance().addTag(activityCallback, email, token, selectedFileCard.metadata.id, newTag);
     }
 
 
@@ -597,7 +598,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void share(List<String> selectedUsers){
-        RequestMaker.getInstance().shareFile(activityCallback,email,token,selectedFileCard.metadata.id,selectedUsers);
+        RequestMaker.getInstance().shareFile(activityCallback, email, token, selectedFileCard.metadata.id, selectedUsers);
 
     }
 
@@ -607,7 +608,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void renameFile(String newName){
-        RequestMaker.getInstance().renameFile(activityCallback,email,token,selectedFileCard.metadata.id,newName);
+        RequestMaker.getInstance().renameFile(activityCallback, email, token, selectedFileCard.metadata.id, newName);
 
     }
      /*###########################################################################
@@ -629,7 +630,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         addFolderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialogManager.createAddFolderAlertDialog(context,activityCallback);
+                AlertDialogManager.createAddFolderAlertDialog(context, activityCallback);
                 floatingMenu.collapse();
             }
         });
@@ -735,7 +736,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     private void getUserFiles(){
-
+        afterSearch = false;
         RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
         toggleUi(false);
     }
@@ -780,9 +781,16 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void onGetFileSuccess(FileMetadata file){
         totFiles--; //Substract one to know which file is it
-        fileCards.add(new FileCard(file));
+        fileCards.add(new FileCard(file,email));
 
         if(totFiles == 0){
+            if(afterSearch){ //Needs to overwrite paths
+                for(int i = 0;i<fileCards.size();i++){
+                    FileCard card = fileCards.get(i);
+                    String searchedPath = searchMap.get(i);
+                    card.path = searchedPath;
+                }
+            }
             updateFileCards();
             updateFolderCards();
             toggleUi(true);
@@ -841,7 +849,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         getUserFiles();
     }
 
-    public void onSearchSuccess(List<Integer> files){
+    public void onSearchSuccess(Map<Integer,String> files){
+        afterSearch = true;
+        searchMap = files;
         totFiles = files.size();
         //Empty previous folders
         folderCards = new ArrayList<>();
@@ -850,9 +860,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
         //empty files
         fileCards = new ArrayList<>();
-        for(int i = 0; i<files.size();i++){
+
+        for (Integer key : files.keySet()) {
             //gets every file in folder
-            RequestMaker.getInstance().getFile(activityCallback,email,token,files.get(i)); //The fileCards are loaded in success
+            RequestMaker.getInstance().getFile(activityCallback,email,token,key); //The fileCards are loaded in success
             toggleUi(false);
         }
         if(files.size() == 0){

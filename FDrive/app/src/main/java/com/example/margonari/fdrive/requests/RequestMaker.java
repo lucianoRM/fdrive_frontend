@@ -35,7 +35,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -319,9 +321,9 @@ public class RequestMaker {
         client.saveFile(body, new Callback<SaveFileAnswer>() {
             @Override
             public void success(SaveFileAnswer answer, Response response) {
-                if(answer.result){
+                if (answer.result) {
                     activityCallback.onMetadataUploadSuccess();
-                }else{
+                } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -469,7 +471,15 @@ public class RequestMaker {
         client.search(email, token, searchType, element, new Callback<SearchAnswer>() {
             @Override
             public void success(SearchAnswer answer, Response response) {
-                activityCallback.onSearchSuccess(answer.content.files);
+
+                Map<Integer,String> map = new HashMap<Integer,String>();
+
+                for(int i = 0;i < answer.content.files.size();i++){
+                    SearchAnswer.File file = answer.content.files.get(i);
+                    map.put(file.id,file.path);
+                }
+
+                activityCallback.onSearchSuccess(map);
             }
 
             @Override

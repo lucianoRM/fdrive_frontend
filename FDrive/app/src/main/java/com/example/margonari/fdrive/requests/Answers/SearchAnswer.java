@@ -7,8 +7,13 @@ import java.util.List;
  */
 public class SearchAnswer {
 
+    public static class File{
+        public int id;
+        public String path;
+    }
+
     public static class Content {
-        public List<Integer> files;
+        public List<File> files;
     }
 
     public boolean result;

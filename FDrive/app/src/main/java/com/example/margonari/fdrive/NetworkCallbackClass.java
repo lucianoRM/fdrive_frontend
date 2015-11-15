@@ -3,6 +3,7 @@ package com.example.margonari.fdrive;
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by luciano on 10/11/15.
@@ -41,7 +42,7 @@ public class NetworkCallbackClass {
     public void onCreateFolderSuccess() {callback.onCreateFolderSuccess();}
     public void onFileDownloadProgress(long progress) {callback.onFileDownloadProgress(progress);}
     public void onFileDownloadSuccess() {callback.onFileDownloadSuccess();}
-    public void onSearchSuccess(List<Integer> files) {callback.onSearchSuccess(files);};
+    public void onSearchSuccess(Map<Integer,String> files) {callback.onSearchSuccess(files);};
     public void search(String typeOfSearch,String element) {callback.search(typeOfSearch, element);}
     public void addTag(String newTag) {callback.addTag(newTag);}
     public void createFolder(String newFolder) {callback.createFolder(newFolder);}
@@ -68,7 +69,7 @@ public class NetworkCallbackClass {
         public void onSaveFileSuccess(int id);
         public void onCreateFolderSuccess();
         public void onFileDownloadSuccess();
-        public void onSearchSuccess(List<Integer> files);
+        public void onSearchSuccess(Map<Integer,String> files);
         public void onMetadataUploadSuccess();
         public void onShareSuccess();
         public void onGetUsersForSharingSuccess(List<String> users);
