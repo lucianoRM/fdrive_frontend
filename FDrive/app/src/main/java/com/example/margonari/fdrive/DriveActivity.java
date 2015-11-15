@@ -2,8 +2,10 @@ package com.example.margonari.fdrive;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -13,6 +15,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -27,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
@@ -35,6 +39,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -313,13 +319,17 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         onFileDownloadToggleUI(false);
                         break;
                     case R.id.right_drawer_share_button:
-                        Log.d("test","Share button");
+                        List<String> a = new ArrayList<String>();
+                        a.add("a");
+                        a.add("b");
+                        a.add("c");
+                        AlertDialogManager.createShareAlertDialog(context, a);
                         break;
                     case R.id.right_drawer_upload_button:
                         Log.d("test","Upload button");
                         break;
                     case R.id.right_drawer_add_tag_button:
-                        Log.d("test","Add tag");
+                        AlertDialogManager.createAddTagAlertDialog(context,activityCallback);
                         break;
                 }
             }
@@ -352,8 +362,6 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
 
-
-
     private void toggleUi(boolean enable){
         if(enable){
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -363,7 +371,6 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             progressBar.setVisibility(ProgressBar.VISIBLE);
         }
     }
-
 
 
     //Sets the user information shown in the screen
@@ -518,8 +525,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,0, locationListener);
-
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        }catch (SecurityException e) {};
 
 
     }
@@ -559,7 +567,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 drawerLayout.openDrawer(leftDrawerView);
                 return true;
             case R.id.search_action_bar_menu:
-                createSearchDialog();
+                AlertDialogManager.createSearchAlertDialog(context,activityCallback);
                 return true;
 
         }
@@ -567,35 +575,16 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
 
-    private void createSearchDialog(){
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.search_alert_dialog, null);
-        dialogBuilder.setView(dialogView);
-        AlertDialog alertDialog = dialogBuilder.create();
-        setupSearchDialogButtonListener(dialogView, alertDialog);
-        alertDialog.show();
+    public void addTag(String newTag){
 
 
     }
 
-    private void setupSearchDialogButtonListener(final View dialogView,final AlertDialog alertDialog){
 
-        Button alertDialogSearchButton = (Button) dialogView.findViewById(R.id.search_alert_dialog_button);
-        alertDialogSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Spinner searchTypeOptions = (Spinner) dialogView.findViewById(R.id.search_alert_dialog_spinner);
-                EditText searchElement = (EditText) dialogView.findViewById(R.id.search_alert_dialog_text);
-                String searchSelectedType = searchTypeOptions.getSelectedItem().toString();
-                String element = searchElement.getText().toString();
-                path.goTo("search");
-                RequestMaker.getInstance().search(activityCallback, email, token, searchSelectedType.toLowerCase(), element);
-                alertDialog.hide();
+    public void search(String selectedType,String element){
+        path.goTo("search");
+        RequestMaker.getInstance().search(activityCallback, email, token, selectedType.toLowerCase(), element);
 
-
-            }
-        });
     }
 
      /*###########################################################################

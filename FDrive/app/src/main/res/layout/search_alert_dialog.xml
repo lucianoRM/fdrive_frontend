@@ -2,16 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="10dp"
+    android:paddingTop="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:textColor="@android:color/black"/>
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -38,20 +32,12 @@
         android:orientation="horizontal">
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/search_alert_dialog_button"
-            android:text="Search"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="5dp"/>
         <EditText
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:singleLine="true"
             android:id="@+id/search_alert_dialog_text"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/search_alert_dialog_button"
             android:layout_marginEnd="5dp"
             android:layout_marginStart="10dp"/>
 

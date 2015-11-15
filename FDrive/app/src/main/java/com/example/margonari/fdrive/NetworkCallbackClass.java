@@ -42,8 +42,15 @@ public class NetworkCallbackClass {
     public void onFileDownloadProgress(long progress) {callback.onFileDownloadProgress(progress);}
     public void onFileDownloadSuccess() {callback.onFileDownloadSuccess();}
     public void onSearchSuccess(List<Integer> files) {callback.onSearchSuccess(files);};
+    public void search(String typeOfSearch,String element) {callback.search(typeOfSearch, element);}
+    public void addTag(String newTag) {callback.addTag(newTag);}
+
+
+
 
     public interface NetworkCallback {
+
+        //On Success methods
         public void onLogoutSuccess();
         public void onGetFileSuccess(FileMetadata file);
         public void onGetUserFilesSuccess(GetUserFilesAnswer answer);
@@ -54,12 +61,22 @@ public class NetworkCallbackClass {
         public void onFileDownloadSuccess();
         public void onSearchSuccess(List<Integer> files);
 
+        //On failure methods
         public void onRequestFailure(List<String> errors);
 
+
+        //On connection error methods
         public void onConnectionError();
 
+
+        //On progress methods
         public void onFileUploadProgress(long progress);
         public void onFileDownloadProgress(long progress);
+
+
+        //Non network related methods
+        public void search(String typeOfSearch,String element);
+        public void addTag(String newTag);
     }
 
 
