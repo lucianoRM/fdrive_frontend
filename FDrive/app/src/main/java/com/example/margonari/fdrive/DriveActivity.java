@@ -384,8 +384,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         token = Database.getInstance().get("token","token");
 
         String uriString = Database.getInstance().get(email,"");
-        Log.d("test","Leo: " + uriString);
-        if(uriString != ""){
+        if(!uriString.equals("")){
             Uri imageUri = Uri.parse(uriString);
             CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
 
