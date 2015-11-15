@@ -576,7 +576,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
 
     public void addTag(String newTag){
-
+        Log.d("test",newTag);
 
     }
 
@@ -587,6 +587,13 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
+
+    public void createFolder(String newFolder){
+        RequestMaker.getInstance().createFolder(activityCallback, email, token, path.toAbsolutePath(), newFolder);
+
+    }
+
+    public void renameFile(String newName){ Log.d("test",newName);}
      /*###########################################################################
     ###################     FLOATING BUTTON      #################################
     #############################################################################
@@ -606,39 +613,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         addFolderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewFolderDialog();
+                AlertDialogManager.createAddFolderAlertDialog(context,activityCallback);
                 floatingMenu.collapse();
             }
         });
 
-    }
-
-    private void createNewFolderDialog(){
-
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.create_folder_alert_dialog, null);
-        dialogBuilder.setView(dialogView);
-        AlertDialog alertDialog = dialogBuilder.create();
-        setupCreateFolderAlertDialogListener(dialogView, alertDialog);
-        alertDialog.show();
-
-    }
-
-    private void setupCreateFolderAlertDialogListener(final View dialogView,final AlertDialog alertDialog){
-
-        Button alertDialogSearchButton = (Button) dialogView.findViewById(R.id.create_folder_alert_dialog_button);
-        alertDialogSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText newNameEditText = (EditText) dialogView.findViewById(R.id.create_folder_alert_dialog_text);
-                String newName = newNameEditText.getText().toString();
-                RequestMaker.getInstance().createFolder(activityCallback, email, token, path.toAbsolutePath(), newName);
-                alertDialog.hide();
-
-
-            }
-        });
     }
 
 

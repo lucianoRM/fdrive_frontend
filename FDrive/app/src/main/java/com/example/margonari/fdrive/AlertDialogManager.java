@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.margonari.fdrive.requests.RequestMaker;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +95,7 @@ public class AlertDialogManager {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Add tag");
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View dialogView = inflater.inflate(R.layout.add_tag_alert_dialog, null);
+        final View dialogView = inflater.inflate(R.layout.new_string_alert_dialog, null);
         builder.setView(dialogView);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -107,7 +105,7 @@ public class AlertDialogManager {
         }).setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                EditText newTag = (EditText) dialogView.findViewById(R.id.add_tag_alert_dialog_text);
+                EditText newTag = (EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
                 String newTagString = newTag.getText().toString();
 
                 //Call request method
@@ -121,8 +119,70 @@ public class AlertDialogManager {
         alertDialog.show();
 
 
+    }
+
+    public static void createAddFolderAlertDialog(Context context,final NetworkCallbackClass activityCallback){
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Create folder");
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.new_string_alert_dialog, null);
+        builder.setView(dialogView);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        }).setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditText newFolder = (EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
+                String newFolderString = newFolder.getText().toString();
+
+                //Call request method
+                activityCallback.createFolder(newFolderString);
+
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
 
 
     }
+
+
+    public static void createFileRenameAlertDialog(Context context,final NetworkCallbackClass activityCallback){
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Rename");
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.new_string_alert_dialog, null);
+        builder.setView(dialogView);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        }).setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditText newName = (EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
+                String newNameString = newName.getText().toString();
+
+                //Call request method
+                activityCallback.renameFile(newNameString);
+
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+
+
+    }
+
 
 }

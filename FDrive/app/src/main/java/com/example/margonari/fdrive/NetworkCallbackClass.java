@@ -44,6 +44,8 @@ public class NetworkCallbackClass {
     public void onSearchSuccess(List<Integer> files) {callback.onSearchSuccess(files);};
     public void search(String typeOfSearch,String element) {callback.search(typeOfSearch, element);}
     public void addTag(String newTag) {callback.addTag(newTag);}
+    public void createFolder(String newFolder) {callback.createFolder(newFolder);}
+    public void renameFile(String newName) {callback.renameFile(newName);}
 
 
 
@@ -77,6 +79,8 @@ public class NetworkCallbackClass {
         //Non network related methods
         public void search(String typeOfSearch,String element);
         public void addTag(String newTag);
+        public void createFolder(String newFolder);
+        public void renameFile(String newName);
     }
 
 
