@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -77,7 +78,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     //Info
     private int totFiles = 0;
     private String email,token,name,surname;
-    private Location lastLocation;
+    private String lastLocation = "0.0,0.0";
 
 
     //Aux
@@ -235,6 +236,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                     case R.id.logout_button:
                         RequestMaker.getInstance().logout(activityCallback, email, token);
                         toggleUi(false);
+                        return true;
+                    case R.id.location_button:
+                        WebView wv = (WebView)findViewById(R.id.test_web_view);
+                        wv.loadUrl("http://maps.google.com/maps?q=" + lastLocation);
                         return true;
                     case R.id.my_drive_button:
                         path = new Path(getResources().getString(R.string.root_folder));
@@ -471,8 +476,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                lastLocation = location;
-                Log.d("test",Double.toString(location.getLatitude()) + ";" + Double.toString(location.getLongitude()));
+                lastLocation = Double.toString(location.getLatitude()) + "," + Double.toString(location.getLongitude());
             }
 
             @Override

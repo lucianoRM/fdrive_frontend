@@ -22,6 +22,10 @@
             android:title="@string/options_title">
             <menu>
                 <item
+                    android:id="@+id/location_button"
+                    android:icon="@mipmap/ic_location_on_black_24dp"
+                    android:title="@string/location" />
+                <item
                     android:id="@+id/settings_button"
                     android:icon="@mipmap/ic_settings_black_24dp"
                     android:title="@string/settings" />

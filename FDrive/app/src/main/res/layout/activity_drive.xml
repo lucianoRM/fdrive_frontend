@@ -48,6 +48,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/drive_horizontal_progress_bar"
                 style="@android:style/Widget.Holo.ProgressBar.Horizontal"/>
+
+            <WebView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/test_web_view"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <include layout="@layout/main_content" />
