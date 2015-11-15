@@ -46,6 +46,7 @@ public class NetworkCallbackClass {
     public void addTag(String newTag) {callback.addTag(newTag);}
     public void createFolder(String newFolder) {callback.createFolder(newFolder);}
     public void renameFile(String newName) {callback.renameFile(newName);}
+    public void onMetadataUploadSuccess() {callback.onMetadataUploadSuccess();}
 
 
 
@@ -62,6 +63,7 @@ public class NetworkCallbackClass {
         public void onCreateFolderSuccess();
         public void onFileDownloadSuccess();
         public void onSearchSuccess(List<Integer> files);
+        public void onMetadataUploadSuccess();
 
         //On failure methods
         public void onRequestFailure(List<String> errors);

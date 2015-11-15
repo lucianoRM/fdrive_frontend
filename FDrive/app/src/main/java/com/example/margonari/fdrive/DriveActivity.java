@@ -311,7 +311,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         deleteSelectedFile();
                         break;
                     case R.id.right_drawer_edit_button:
-                        Log.d("test","Edit button");
+                        AlertDialogManager.createFileRenameAlertDialog(context,activityCallback);
                         break;
                     case R.id.right_drawer_download_button:
                         FileMetadata metadata = selectedFileCard.metadata;
@@ -481,7 +481,15 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 rightDrawerMetadataTags.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,metadata.tags));
                 rightDrawerMetadataShared.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,metadata.users));
 
+                //Set buttons
+                ImageButton editButton = (ImageButton) findViewById(R.id.right_drawer_edit_button);
+                ImageButton deleteButtin = (ImageButton) findViewById(R.id.right_drawer_delete_button);
 
+                if (!(metadata.owner.equals(email))){//No es el owner del archivo
+                    editButton.setClickable(false);
+                }else{
+                    editButton.setClickable(true);
+                }
 
                 drawerLayout.openDrawer(rightDrawerView);
 
@@ -593,7 +601,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
-    public void renameFile(String newName){ Log.d("test",newName);}
+    public void renameFile(String newName){
+        selectedFileCard.metadata.name = newName;
+        RequestMaker.getInstance().saveFile(activityCallback,email,token,selectedFileCard.metadata);
+
+    }
      /*###########################################################################
     ###################     FLOATING BUTTON      #################################
     #############################################################################
@@ -624,7 +636,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     protected void pickFile(View view){
 
         ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
-
+        Intent intent = new Intent();
+        intent.setType("*/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload"), 1);
 
 
     }
@@ -738,10 +753,17 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
+    //When uploading a new file
     public void onSaveFileSuccess(int id){
         onFileUploadToggleUI(false);
         RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token, id);
     }
+
+    //When updating a file
+    public void onMetadataUploadSuccess(){
+        RequestMaker.getInstance().getUserFiles(activityCallback,email,token,path.toAbsolutePath());
+    }
+
 
     public void onLogoutSuccess(){
         //Erase token from "persistence" db

@@ -130,9 +130,9 @@ public class RequestMaker {
         client.getFile(email, token, fileId, new Callback<GetFileAnswer>() {
             @Override
             public void success(GetFileAnswer answer, Response response) {
-                if(answer.result) {
+                if (answer.result) {
                     activityCallback.onGetFileSuccess(answer.file);
-                }else{
+                } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -183,9 +183,9 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
-                    if(answer.result) {
+                    if (answer.result) {
                         activityCallback.onDeleteFileSuccess();
-                    }else{
+                    } else {
                         activityCallback.onRequestFailure(answer.errors);
                     }
                 } else {
@@ -207,7 +207,7 @@ public class RequestMaker {
 
         SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
 
-        SaveFileBody body = new SaveFileBody();
+        NewFileBody body = new NewFileBody();
         body.email = email;
         body.token = token;
         body.name = fileName;
@@ -237,6 +237,41 @@ public class RequestMaker {
         });
 
     }
+
+    public void saveFile(final NetworkCallbackClass activityCallback,String email,String token,FileMetadata metadata){
+
+        ExistentFileBody body = new ExistentFileBody();
+        body.email = email;
+        body.token = token;
+        body.name = metadata.name;
+        body.extension = metadata.extension;
+        body.tags = metadata.tags;
+        body.id = metadata.id;
+
+
+        SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
+
+        // Fetch and print a list of the contributors to this library.
+        client.saveFile(body, new Callback<SaveFileAnswer>() {
+            @Override
+            public void success(SaveFileAnswer answer, Response response) {
+                //What to do when success
+                if (answer.result) {
+                    activityCallback.onMetadataUploadSuccess();
+                } else {
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
+
+    }
+
+
 
     public void getUserFiles(final NetworkCallbackClass activityCallback,String email,String token,String path){
 

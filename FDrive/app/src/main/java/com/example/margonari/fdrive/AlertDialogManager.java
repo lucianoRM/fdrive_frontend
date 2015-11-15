@@ -165,7 +165,7 @@ public class AlertDialogManager {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
-        }).setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        }).setPositiveButton("Rename", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText newName = (EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
