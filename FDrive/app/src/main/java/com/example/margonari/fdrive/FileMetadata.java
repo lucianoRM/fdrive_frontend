@@ -7,8 +7,8 @@ import java.util.List;
  */
 public class FileMetadata {
 
-    public String name,extension,owner,lastUser,lastModified;
-    int id,size;
+    public String name,extension,owner,lastUser,lastModified,pathInOwner;
+    int id,size,lastVersion;
     List<String> tags,users;
 
 

@@ -283,6 +283,23 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
+                    android:text="Version: "
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+                <TextView
+                    android:id="@+id/right_drawer_metadata_version"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
                     android:text="Size: "
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
@@ -292,6 +309,23 @@
                     android:layout_width="wrap_content"/>
                 <TextView
                     android:text="kb"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:text="Path: "
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+                <TextView
+                    android:id="@+id/right_drawer_metadata_file_path"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
 

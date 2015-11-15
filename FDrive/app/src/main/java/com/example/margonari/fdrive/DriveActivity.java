@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,6 +43,8 @@ import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import org.w3c.dom.Text;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -433,22 +436,45 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
             @Override
             public void onItemClick(View view, int position) {
-                //Reads from clicked fileCard
-                TextView clickedFileName = (TextView) view.findViewById(R.id.file_name);
-                TextView clickedFileSize = (TextView) view.findViewById(R.id.file_size);
+
+                //sets selected file card and gets information
+                selectedFileCard = fileCards.get(position);
+                FileMetadata metadata = selectedFileCard.metadata;
                 ImageView clickedFileIcon = (ImageView) view.findViewById(R.id.extension_photo);
 
-                //Writes to drawer file card
-                TextView rightDrawerFileName = (TextView) findViewById(R.id.right_drawer_file_name);
-                TextView rightDrawerFileSize = (TextView) findViewById(R.id.right_drawer_file_size);
-                ImageView rightDrawerExtensionPhoto = (ImageView) findViewById(R.id.right_drawer_extension_photo);
+                //Gets right drawer fields to edit
+                TextView rightDrawerCardFileName = (TextView) findViewById(R.id.right_drawer_file_name);
+                TextView rightDrawerCardFileSize = (TextView) findViewById(R.id.right_drawer_file_size);
+                ImageView rightDrawerCardExtensionPhoto = (ImageView) findViewById(R.id.right_drawer_extension_photo);
+                TextView rightDrawerMetadataFileName = (TextView) findViewById(R.id.right_drawer_metadata_file_name);
+                TextView rightDrawerMetadataFileExtension = (TextView) findViewById(R.id.right_drawer_metadata_file_extension);
+                TextView rightDrawerMetadataLastUser = (TextView) findViewById(R.id.right_drawer_metadata_file_last_user);
+                TextView rightDrawerMetadataLastMod = (TextView) findViewById(R.id.right_drawer_metadata_last_mod);
+                TextView rightDrawerMetadataOwner = (TextView) findViewById(R.id.right_drawer_metadata_file_owner);
+                TextView rightDrawerMetadataVersion = (TextView) findViewById(R.id.right_drawer_metadata_version);
+                TextView rightDrawerMetadataSize = (TextView) findViewById(R.id.right_drawer_metadata_file_size);
+                TextView rightDrawerMetadataPath = (TextView) findViewById(R.id.right_drawer_metadata_file_path);
+                Spinner rightDrawerMetadataShared = (Spinner) findViewById(R.id.right_drawer_metadata_shared);
+                Spinner rightDrawerMetadataTags = (Spinner) findViewById(R.id.right_drawer_metadata_tags);
 
-                rightDrawerExtensionPhoto.setImageDrawable(clickedFileIcon.getDrawable());
-                rightDrawerFileName.setText(clickedFileName.getText().toString());
-                rightDrawerFileSize.setText(clickedFileSize.getText().toString());
 
-                //sets selected file card
-                selectedFileCard = fileCards.get(position);
+
+                rightDrawerCardExtensionPhoto.setImageDrawable(clickedFileIcon.getDrawable());
+                rightDrawerCardFileName.setText(metadata.name);
+                rightDrawerCardFileSize.setText(Integer.toString(metadata.size));
+
+                rightDrawerMetadataFileExtension.setText(metadata.extension);
+                rightDrawerMetadataFileName.setText(metadata.name);
+                rightDrawerMetadataLastMod.setText(metadata.lastModified);
+                rightDrawerMetadataLastUser.setText(metadata.lastUser);
+                rightDrawerMetadataOwner.setText(metadata.owner);
+                rightDrawerMetadataPath.setText(metadata.pathInOwner);
+                rightDrawerMetadataSize.setText(Integer.toString(metadata.size));
+                rightDrawerMetadataVersion.setText(Integer.toString(metadata.lastVersion));
+                rightDrawerMetadataTags.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,metadata.tags));
+                rightDrawerMetadataShared.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,metadata.users));
+
+
 
                 drawerLayout.openDrawer(rightDrawerView);
 
