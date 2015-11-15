@@ -586,9 +586,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void addTag(String newTag){
 
-        /*selectedFileCard.metadata.tags.add(newTag);
-        RequestMaker.getInstance().saveFile(activityCallback,email,token,selectedFileCard.metadata);*/
-
+        RequestMaker.getInstance().addTag(activityCallback,email,token,selectedFileCard.metadata.id,newTag);
     }
 
 
@@ -609,8 +607,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void renameFile(String newName){
-       /* selectedFileCard.metadata.name = newName;
-        RequestMaker.getInstance().saveFile(activityCallback,email,token,selectedFileCard.metadata);*/
+        RequestMaker.getInstance().renameFile(activityCallback,email,token,selectedFileCard.metadata.id,newName);
 
     }
      /*###########################################################################
@@ -802,7 +799,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     //When updating a file
     public void onMetadataUploadSuccess(){
-        RequestMaker.getInstance().getUserFiles(activityCallback, email, token, path.toAbsolutePath());
+       getUserFiles();
     }
 
 

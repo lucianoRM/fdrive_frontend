@@ -9,6 +9,7 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 
 /**
  * Created by luciano on 18/10/15.
@@ -39,16 +40,19 @@ class NewFileBody{
     public String path;
 }
 
-class ExistentFileBody{
+class AddTagBody{
 
     public String email;
     public String token;
-    public String name;
-    public String extension;
+    public String tag;
     public int id;
-    public List<String> tags;
+}
 
-
+class RenameBody{
+    public String email;
+    public String token;
+    public String name;
+    public int id;
 }
 
 public interface SaveFileService {
@@ -57,5 +61,11 @@ public interface SaveFileService {
 
     @POST("/files")
     void saveFile(@Body NewVersionBody body, Callback<SaveFileAnswer> callback);
+
+    @PUT("/files")
+    void saveFile(@Body AddTagBody body,Callback<SaveFileAnswer> callback);
+
+    @PUT("/files")
+    void saveFile(@Body RenameBody body,Callback<SaveFileAnswer> callback);
 
 }

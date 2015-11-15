@@ -276,6 +276,63 @@ public class RequestMaker {
     }
 
 
+    public void renameFile(final NetworkCallbackClass activityCallback,String email,String token,int id,String newName){
+
+        SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
+
+        RenameBody body = new RenameBody();
+        body.email = email;
+        body.token = token;
+        body.name = newName;
+        body.id = id;
+
+        client.saveFile(body, new Callback<SaveFileAnswer>() {
+            @Override
+            public void success(SaveFileAnswer answer, Response response) {
+                if(answer.result){
+                    activityCallback.onMetadataUploadSuccess();
+                }else{
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
+
+
+    }
+
+    public void addTag(final NetworkCallbackClass activityCallback,String email,String token,int id,String newTag){
+
+        SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
+
+        AddTagBody body = new AddTagBody();
+        body.email = email;
+        body.token = token;
+        body.tag = newTag;
+        body.id = id;
+
+        client.saveFile(body, new Callback<SaveFileAnswer>() {
+            @Override
+            public void success(SaveFileAnswer answer, Response response) {
+                if(answer.result){
+                    activityCallback.onMetadataUploadSuccess();
+                }else{
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
+
+    }
 
     public void getUserFiles(final NetworkCallbackClass activityCallback,String email,String token,String path){
 
