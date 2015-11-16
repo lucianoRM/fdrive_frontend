@@ -2,6 +2,7 @@ package com.example.margonari.fdrive;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,6 +72,7 @@ public class AlertDialogManager {
                     activityCallback.share(selectedUsersToShare);
                 }
                 if (!selectedUsersToUnshare.isEmpty()) { //if empty dont request
+                    SystemClock.sleep(500);
                     activityCallback.unshare(selectedUsersToUnshare);
                 }
             }
