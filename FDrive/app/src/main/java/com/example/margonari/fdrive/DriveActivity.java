@@ -105,6 +105,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public NetworkCallbackClass activityCallback;
     public TypedInputStream fileToUpload;
     private boolean afterSearch;
+    private boolean updated;
     private Map<Integer,String> searchMap;
 
 
@@ -598,11 +599,13 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void share(List<String> selectedUsers){
+        updated = false;
         RequestMaker.getInstance().shareFile(activityCallback, email, token, selectedFileCard.metadata.id, selectedUsers);
 
     }
 
     public void unshare(List<String> selectedUsers){
+        updated = false;
         RequestMaker.getInstance().unshareFile(activityCallback, email, token, selectedFileCard.metadata.id, selectedUsers);
 
     }
@@ -790,7 +793,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void onGetFileSuccess(FileMetadata file){
         totFiles--; //Substract one to know which file is it
-        fileCards.add(new FileCard(file,email));
+        fileCards.add(new FileCard(file, email));
 
         if(totFiles == 0){
             if(afterSearch){ //Needs to overwrite paths
@@ -887,7 +890,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void onShareSuccess(){
-        getUserFiles();
+        if(!updated) {
+            getUserFiles();
+            updated = true;
+        }
     }
 
     public void onNewVersionSaveSuccess(){
