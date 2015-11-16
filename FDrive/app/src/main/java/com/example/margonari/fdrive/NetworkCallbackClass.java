@@ -52,6 +52,7 @@ public class NetworkCallbackClass {
     public void onGetUsersForSharingSuccess(List<String> users) {callback.onGetUsersForSharingSuccess(users);}
     public void share(List<String> selectedUsers) {callback.share(selectedUsers);}
     public void onNewVersionSaveSuccess() {callback.onNewVersionSaveSuccess();}
+    public void unshare(List<String> selectedUsers) {callback.unshare(selectedUsers);}
 
 
 
@@ -91,6 +92,7 @@ public class NetworkCallbackClass {
         //Non network related methods
         public void search(String typeOfSearch,String element);
         public void share(List<String> selectedUsers);
+        public void unshare(List<String> selectedUsers);
         public void addTag(String newTag);
         public void createFolder(String newFolder);
         public void renameFile(String newName);

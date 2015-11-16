@@ -472,11 +472,11 @@ public class RequestMaker {
             @Override
             public void success(SearchAnswer answer, Response response) {
 
-                Map<Integer,String> map = new HashMap<Integer,String>();
+                Map<Integer, String> map = new HashMap<Integer, String>();
 
-                for(int i = 0;i < answer.content.files.size();i++){
+                for (int i = 0; i < answer.content.files.size(); i++) {
                     SearchAnswer.File file = answer.content.files.get(i);
-                    map.put(file.id,file.path);
+                    map.put(file.id, file.path);
                 }
 
                 activityCallback.onSearchSuccess(map);
@@ -522,6 +522,38 @@ public class RequestMaker {
 
 
     }
+
+    public void unshareFile(final NetworkCallbackClass activityCallback,String email,String token,int fileid,List<String> users){
+
+        ShareFileService client = ServiceGenerator.createService(ShareFileService.class,baseUrl);
+
+        ShareFileBody body = new ShareFileBody();
+        body.email = email;
+        body.token = token;
+        body.id = fileid;
+        body.users = users;
+
+        client.unshare(body, new Callback<SimpleRequestAnswer>() {
+            @Override
+            public void success(SimpleRequestAnswer answer, Response response) {
+                if (answer.result) {
+                    activityCallback.onShareSuccess();
+                } else {
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+
+            }
+        });
+
+
+
+    }
+
 
     public void getUsers(final NetworkCallbackClass activityCallback, final String email,String token){
 

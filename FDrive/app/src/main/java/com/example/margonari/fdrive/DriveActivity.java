@@ -602,6 +602,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
+    public void unshare(List<String> selectedUsers){
+        RequestMaker.getInstance().unshareFile(activityCallback, email, token, selectedFileCard.metadata.id, selectedUsers);
+
+    }
+
     public void createFolder(String newFolder){
         RequestMaker.getInstance().createFolder(activityCallback, email, token, path.toAbsolutePath(), newFolder);
 
@@ -878,7 +883,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void onGetUsersForSharingSuccess(List<String> users){
-        AlertDialogManager.createShareAlertDialog(activityCallback, context, users);
+        AlertDialogManager.createShareAlertDialog(activityCallback, context, users,selectedFileCard.metadata.users);
     }
 
     public void onShareSuccess(){

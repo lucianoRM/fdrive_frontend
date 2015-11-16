@@ -17,30 +17,62 @@ import java.util.List;
  */
 public class AlertDialogManager {
 
-    public static void createShareAlertDialog(final NetworkCallbackClass activityCallback,Context context, final List<String> users){
+    public static void createShareAlertDialog(final NetworkCallbackClass activityCallback,Context context, final List<String> users,final List<String> alreadySharedUsers){
+
         final CharSequence[] usersSequence = users.toArray(new CharSequence[users.size()]);
-        final List<Integer> seletedItems = new ArrayList<>();
+
+        //Checks already shared values and sets them as checked
+        final boolean[] sharedValues = new boolean[users.size()];
+        for(int i=0;i<users.size();i++){
+            if(alreadySharedUsers.contains(users.get(i))){
+                sharedValues[i] = true;
+            }else{
+                sharedValues[i] = false;
+            }
+        }
+
+
+
+
+        final List<Integer> toShare = new ArrayList<>();
+        final List<Integer> toUnshare = new ArrayList<>();
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Share to");
-        builder.setMultiChoiceItems(usersSequence, null, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setMultiChoiceItems(usersSequence, sharedValues, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 if (isChecked) {
                     //Add selected item
-                    seletedItems.add(which);
-                } else if (seletedItems.contains(which)) {
+                    toShare.add(which);
+                    if (toUnshare.contains(which)) { //If was to unShare, delete it
+                        toUnshare.remove(Integer.valueOf(which));
+                    }
+                } else {
                     //Remove selected item
-                    seletedItems.remove(Integer.valueOf(which));
+                    toUnshare.add(which);
+                    if (toShare.contains(which)) {
+                        toShare.remove(Integer.valueOf(which));
+                    }
+
                 }
             }
-        }).setPositiveButton("Share", new DialogInterface.OnClickListener() {
+    }).setPositiveButton("Share", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                List<String> selectedUsers = new ArrayList<String>();
-                for(int i = 0;i<seletedItems.size();i++){
-                    selectedUsers.add(users.get(seletedItems.get(i)));
+                List<String> selectedUsersToShare = new ArrayList<String>();
+                List<String> selectedUsersToUnshare = new ArrayList<>();
+                for (int i = 0; i < toShare.size(); i++) {
+                    selectedUsersToShare.add(users.get(toShare.get(i)));
                 }
-                activityCallback.share(selectedUsers);
+                for (int i = 0; i < toUnshare.size(); i++) {
+                    selectedUsersToUnshare.add(users.get(toUnshare.get(i)));
+                }
+                if (!selectedUsersToShare.isEmpty()) { //if empty dont request
+                    activityCallback.share(selectedUsersToShare);
+                }
+                if (!selectedUsersToUnshare.isEmpty()) { //if empty dont request
+                    activityCallback.unshare(selectedUsersToUnshare);
+                }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
