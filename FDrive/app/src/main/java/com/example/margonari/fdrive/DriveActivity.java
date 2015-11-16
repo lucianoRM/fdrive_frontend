@@ -52,6 +52,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URI;
@@ -640,6 +641,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private void uploadNewVersion(){
 
         ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
+
         Intent intent = new Intent();
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -714,8 +716,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                     is = contentResolver.openInputStream(selectedFile);
                 }catch(FileNotFoundException e){}
                 fileToUpload = new TypedInputStream(fileName, fileType, returnCursor.getLong(sizeIndex),is,activityCallback);
-
-                RequestMaker.getInstance().saveNewVersion(activityCallback, email, token, fileName, "." + fileExtension, selectedFileCard.metadata.id, path.toAbsolutePath(), returnCursor.getLong(sizeIndex), selectedFileCard.metadata.tags, selectedFileCard.metadata.lastVersion);
+                if(selectedFileCard.metadata.name.equals(fileName)) {
+                    RequestMaker.getInstance().saveNewVersion(activityCallback, email, token, fileName, "." + fileExtension, selectedFileCard.metadata.id, path.toAbsolutePath(), returnCursor.getLong(sizeIndex), selectedFileCard.metadata.tags, selectedFileCard.metadata.lastVersion);
+                }else{
+                    ErrorDisplay.getInstance().showMessage(context,view,"Not the same file");
+                }
 
         }
 
