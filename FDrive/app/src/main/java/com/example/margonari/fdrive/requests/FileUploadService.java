@@ -7,6 +7,7 @@ import retrofit.Callback;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
+import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.mime.TypedFile;
 
@@ -15,6 +16,6 @@ import retrofit.mime.TypedFile;
  */
 public interface FileUploadService {
     @Multipart
-    @POST("/filesupload")
-    void uploadFile(@Part("upload") TypedInputStream file,@Query("email") String email, @Query("token") String token,@Query("id") int id, Callback<SimpleRequestAnswer> callback);
+    @POST("/files/{id}/{version}/data")
+    void uploadFile(@Part("upload") TypedInputStream file,@Query("email") String email, @Query("token") String token,@Path("id") int id, @Path("version") int version, Callback<SimpleRequestAnswer> callback);
 }

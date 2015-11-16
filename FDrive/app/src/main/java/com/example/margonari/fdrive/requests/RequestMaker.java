@@ -69,11 +69,11 @@ public class RequestMaker {
     }
 
 
-    public void uploadFile(final NetworkCallbackClass activityCallback,TypedInputStream inputStream,String email,String token,int fileId){
+    public void uploadFile(final NetworkCallbackClass activityCallback,TypedInputStream inputStream,String email,String token,int fileId, int version){
 
         FileUploadService client = ServiceGenerator.createService(FileUploadService.class, baseUrl);
 
-        client.uploadFile(inputStream, email, token, fileId, new Callback<SimpleRequestAnswer>() {
+        client.uploadFile(inputStream, email, token, fileId, version, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
@@ -248,7 +248,6 @@ public class RequestMaker {
         body.token = token;
         body.name = name;
         body.extension = extension;
-        body.id = id;
         body.version = version;
         body.tags = tags;
         body.path = path;
@@ -258,12 +257,12 @@ public class RequestMaker {
         SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
 
         // Fetch and print a list of the contributors to this library.
-        client.saveFile(body, new Callback<SaveFileAnswer>() {
+        client.saveFile(body, id, new Callback<SaveFileAnswer>() {
             @Override
             public void success(SaveFileAnswer answer, Response response) {
                 //What to do when success
                 if (answer.result) {
-                    activityCallback.onNewVersionSaveSuccess();
+                    activityCallback.onNewVersionSaveSuccess(answer.version);
                 } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
@@ -286,9 +285,8 @@ public class RequestMaker {
         body.email = email;
         body.token = token;
         body.name = newName;
-        body.id = id;
 
-        client.saveFile(body, new Callback<SaveFileAnswer>() {
+        client.saveFile(body, id, new Callback<SaveFileAnswer>() {
             @Override
             public void success(SaveFileAnswer answer, Response response) {
                 if(answer.result){
@@ -316,9 +314,8 @@ public class RequestMaker {
         body.email = email;
         body.token = token;
         body.tag = newTag;
-        body.id = id;
 
-        client.saveFile(body, new Callback<SaveFileAnswer>() {
+        client.saveFile(body, id, new Callback<SaveFileAnswer>() {
             @Override
             public void success(SaveFileAnswer answer, Response response) {
                 if (answer.result) {

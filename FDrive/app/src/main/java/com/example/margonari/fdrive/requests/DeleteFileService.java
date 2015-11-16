@@ -5,6 +5,7 @@ import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
+import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**
@@ -13,7 +14,7 @@ import retrofit.http.Query;
 
 
 public interface DeleteFileService {
-    @DELETE("/files")
-    void deleteFile(@Query("email") String email,@Query("token") String token,@Query("path") String path,@Query("id") int id, Callback<SimpleRequestAnswer> callback);
+    @DELETE("/files/{id}")
+    void deleteFile(@Query("email") String email,@Query("token") String token,@Query("path") String path,@Path("id") int id, Callback<SimpleRequestAnswer> callback);
 
 }

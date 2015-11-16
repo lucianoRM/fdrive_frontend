@@ -814,7 +814,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     //When uploading a new file
     public void onSaveFileSuccess(int id){
         onFileUploadToggleUI(false);
-        RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token, id);
+        RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token, id, 0);
     }
 
     //When updating a file
@@ -896,9 +896,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         }
     }
 
-    public void onNewVersionSaveSuccess(){
+    public void onNewVersionSaveSuccess(int version){
         onFileUploadToggleUI(false);
-        RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token,selectedFileCard.metadata.id);
+        RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token,selectedFileCard.metadata.id, version);
     }
 
     public void onFileUploadProgress(final long progress){

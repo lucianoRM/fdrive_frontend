@@ -51,7 +51,7 @@ public class NetworkCallbackClass {
     public void onShareSuccess() {callback.onShareSuccess();}
     public void onGetUsersForSharingSuccess(List<String> users) {callback.onGetUsersForSharingSuccess(users);}
     public void share(List<String> selectedUsers) {callback.share(selectedUsers);}
-    public void onNewVersionSaveSuccess() {callback.onNewVersionSaveSuccess();}
+    public void onNewVersionSaveSuccess(int version) {callback.onNewVersionSaveSuccess(version);}
     public void unshare(List<String> selectedUsers) {callback.unshare(selectedUsers);}
 
 
@@ -74,7 +74,7 @@ public class NetworkCallbackClass {
         public void onMetadataUploadSuccess();
         public void onShareSuccess();
         public void onGetUsersForSharingSuccess(List<String> users);
-        public void onNewVersionSaveSuccess();
+        public void onNewVersionSaveSuccess(int version);
 
         //On failure methods
         public void onRequestFailure(List<String> errors);

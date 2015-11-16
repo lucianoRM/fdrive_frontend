@@ -12,6 +12,7 @@ public class SaveFileAnswer {
 
     public boolean result;
     public int fileID;
+    public int version;
     public List<String> errors = new ArrayList<String>();
 
 
