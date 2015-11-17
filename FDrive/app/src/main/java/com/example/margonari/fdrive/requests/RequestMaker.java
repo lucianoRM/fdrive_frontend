@@ -381,7 +381,7 @@ public class RequestMaker {
 
         FileDownloadService client = ServiceGenerator.createService(FileDownloadService.class,baseUrl);
 
-        client.downloadFile(email, token, fileId,version, new Callback<Response>() {
+        client.downloadFile(email, token, fileId, version, new Callback<Response>() {
             @Override
             public void success(Response answer, final Response response) {
                 new Thread(new Runnable() {
@@ -471,8 +471,17 @@ public class RequestMaker {
 
                 Map<Integer, String> map = new HashMap<Integer, String>();
 
-                for (int i = 0; i < answer.content.files.size(); i++) {
-                    SearchAnswer.File file = answer.content.files.get(i);
+                List<SearchAnswer.File> files = new ArrayList<>();
+                if(answer.content != null){
+                    files = answer.content.files;
+                }else{
+                    List<String> error = new ArrayList<String>();
+                    error.add("No file found");
+                    activityCallback.onRequestFailure(error);
+                }
+
+                for (int i = 0; i < files.size(); i++) {
+                    SearchAnswer.File file = files.get(i);
                     map.put(file.id, file.path);
                 }
 
