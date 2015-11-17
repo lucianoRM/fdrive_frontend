@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -31,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
         mainContext = this;
         mainView = (View) findViewById(android.R.id.content);
         mainScreenWebView = (WebView) findViewById(R.id.mainScreenWebView);
-        mainScreenWebView.loadUrl("file:///android_asset/math.gif");
+        mainScreenWebView.loadUrl("file:///android_asset/nextbit-cloud-transparent.gif");
         mainScreenWebView.getSettings().setLoadWithOverviewMode(true);
         mainScreenWebView.getSettings().setUseWideViewPort(true);
+        mainScreenWebView.setBackgroundColor(Color.TRANSPARENT);
 
 
         setToolbar();
