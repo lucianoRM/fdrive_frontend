@@ -42,4 +42,10 @@ public class Path {
         return toAbsolutePath();
     }
 
+    public String currentFolder(){
+
+        return path.get(path.size()-1);
+
+    }
+
 }

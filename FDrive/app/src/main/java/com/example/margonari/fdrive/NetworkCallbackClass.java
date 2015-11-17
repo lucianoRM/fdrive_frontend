@@ -54,7 +54,8 @@ public class NetworkCallbackClass {
     public void onNewVersionSaveSuccess(int version) {callback.onNewVersionSaveSuccess(version);}
     public void unshare(List<String> selectedUsers) {callback.unshare(selectedUsers);}
     public void downloadFileVersion(int selectedVersion){ callback.downloadFileVersion(selectedVersion);}
-
+    public void openShareFolderDialog(){ callback.openShareFolderDialog();}
+    public void renameFolder(String oldname,String newName) {callback.renameFolder(oldname,newName);}
 
 
 
@@ -93,6 +94,8 @@ public class NetworkCallbackClass {
         //Non network related methods
         public void search(String typeOfSearch,String element);
         public void share(List<String> selectedUsers);
+        public void openShareFolderDialog();
+        public void renameFolder(String oldname,String newName);
         public void unshare(List<String> selectedUsers);
         public void addTag(String newTag);
         public void createFolder(String newFolder);

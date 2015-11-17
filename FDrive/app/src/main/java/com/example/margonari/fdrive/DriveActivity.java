@@ -643,6 +643,12 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
+    public void renameFolder(String oldname,String newName){
+        RequestMaker.getInstance().renameFolder(activityCallback, email, token, path.toAbsolutePath(),oldname, newName);
+    }
+
+    public void openShareFolderDialog(){}
+
 
     public void downloadFileVersion(int selectedVersion){
         FileMetadata metadata = selectedFileCard.metadata;

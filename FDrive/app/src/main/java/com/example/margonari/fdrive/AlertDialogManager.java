@@ -261,13 +261,13 @@ public class AlertDialogManager {
 
     }
 
-    public static void createEditFolderAlertDialog(Context context,NetworkCallbackClass activityCallback,String folderName){
+    public static void createEditFolderAlertDialog(Context context, final NetworkCallbackClass activityCallback, final String folderName){
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Folder");
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.new_string_alert_dialog, null);
 
-        EditText text =(EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
+        final EditText text =(EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
         text.setText(folderName);
         builder.setView(dialogView);
         builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -278,6 +278,7 @@ public class AlertDialogManager {
         }).setPositiveButton("Rename", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                activityCallback.renameFolder(folderName,text.getText().toString());
                 dialog.cancel();
             }
         }).setNegativeButton("Share contents", new DialogInterface.OnClickListener() {
@@ -296,3 +297,6 @@ public class AlertDialogManager {
 
 
     }
+
+
+

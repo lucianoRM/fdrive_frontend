@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Network;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -472,9 +473,9 @@ public class RequestMaker {
                 Map<Integer, String> map = new HashMap<Integer, String>();
 
                 List<SearchAnswer.File> files = new ArrayList<>();
-                if(answer.content != null){
+                if (answer.content != null) {
                     files = answer.content.files;
-                }else{
+                } else {
                     List<String> error = new ArrayList<String>();
                     error.add("No file found");
                     activityCallback.onRequestFailure(error);
@@ -568,14 +569,13 @@ public class RequestMaker {
         client.getUsers(email, token, new Callback<GetUsersAnswer>() {
             @Override
             public void success(GetUsersAnswer answer, Response response) {
-                if(answer.result){
+                if (answer.result) {
                     List<String> emails = new ArrayList<String>();
-                    for(int i =0; i<answer.users.size();i++){
+                    for (int i = 0; i < answer.users.size(); i++) {
                         emails.add(answer.users.get(i).email);
                     }
                     activityCallback.onGetUsersForSharingSuccess(emails);
-                }
-                else{
+                } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -589,6 +589,31 @@ public class RequestMaker {
 
     }
 
+
+    public void renameFolder(final NetworkCallbackClass activityCallback,String email,String token,String path,String oldname,String newname){
+
+
+        RenameFolderService client = ServiceGenerator.createService(RenameFolderService.class,baseUrl);
+
+        client.renameFolder(email, token, path, oldname, newname, new Callback<SimpleRequestAnswer>() {
+            @Override
+            public void success(SimpleRequestAnswer answer, Response response) {
+                if(answer.result){
+                    activityCallback.onMetadataUploadSuccess();
+                }else{
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
+
+
+
+    }
 
 
 
