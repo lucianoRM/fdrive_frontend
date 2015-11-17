@@ -25,14 +25,17 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -368,7 +371,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     private void updateFolderCards(){
-        FolderCardAdapter adapter  = new FolderCardAdapter(folderCards);
+        FolderCardAdapter adapter  = new FolderCardAdapter(folderCards,context,activityCallback);
         recyclerFoldersView.setAdapter(adapter);
     }
 
@@ -505,7 +508,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                     deleteButton.setImageDrawable(getResources().getDrawable(R.mipmap.ic_undo_black_24dp, null));
                     deleteButtonText.setText("Restore");
 
-                }else{
+                } else {
                     deleteButton.setImageDrawable(getResources().getDrawable(R.mipmap.ic_delete_black_24dp, null));
                     deleteButtonText.setText("Delete");
                 }
@@ -516,7 +519,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
         }));
 
+
+
         this.recyclerFoldersView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+
 
             @Override
             public void onItemClick(View view, int position) {
@@ -525,6 +531,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 toggleUi(false);
 
             }
+
 
         }));
 
@@ -773,7 +780,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private void restoreSelectedFile(){
         int id = selectedFileCard.metadata.id;
         String actualPath = path.toAbsolutePath();
-        Log.d("test","restore");
+        Log.d("test", "restore");
         //toggleUi(false);
     }
 

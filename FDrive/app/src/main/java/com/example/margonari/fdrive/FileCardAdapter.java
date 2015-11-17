@@ -1,6 +1,7 @@
 package com.example.margonari.fdrive;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,9 @@ public class FileCardAdapter extends RecyclerView.Adapter<FileCardAdapter.FileVi
 
         fileViewHolder.icon.setImageResource(resource);
         fileViewHolder.currentItem = files.get(i);
+
+
+
     }
 
     @Override

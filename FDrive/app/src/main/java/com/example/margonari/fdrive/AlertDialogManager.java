@@ -131,6 +131,8 @@ public class AlertDialogManager {
         builder.setTitle("Add tag");
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.new_string_alert_dialog, null);
+        final EditText newTag = (EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
+        newTag.setHint("new tag");
         builder.setView(dialogView);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -162,6 +164,8 @@ public class AlertDialogManager {
         builder.setTitle("Create folder");
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.new_string_alert_dialog, null);
+        final EditText newFolder =(EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
+        newFolder.setHint("folder name");
         builder.setView(dialogView);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -171,7 +175,6 @@ public class AlertDialogManager {
         }).setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                EditText newFolder = (EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
                 String newFolderString = newFolder.getText().toString();
 
                 //Call request method
@@ -194,6 +197,8 @@ public class AlertDialogManager {
         builder.setTitle("Rename");
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.new_string_alert_dialog, null);
+        final EditText newName =(EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
+        newName.setHint("new name");
         builder.setView(dialogView);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -203,7 +208,6 @@ public class AlertDialogManager {
         }).setPositiveButton("Rename", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                EditText newName = (EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
                 String newNameString = newName.getText().toString();
 
                 //Call request method
@@ -257,8 +261,38 @@ public class AlertDialogManager {
 
     }
 
+    public static void createEditFolderAlertDialog(Context context,NetworkCallbackClass activityCallback,String folderName){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Folder");
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.new_string_alert_dialog, null);
+
+        EditText text =(EditText) dialogView.findViewById(R.id.new_string_alert_dialog_text);
+        text.setText(folderName);
+        builder.setView(dialogView);
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        }).setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        }).setNegativeButton("Share contents", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
 
 
+        }
 
 
-}
+    }

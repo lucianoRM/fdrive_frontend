@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="1dp"
     android:foreground="?android:attr/selectableItemBackground"
-    >
+    android:id="@+id/folder_card_layout">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -19,6 +19,12 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/folder_card_edit_icon"
+            android:background="?android:selectableItemBackgroundBorderless"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,6 +51,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
                 />
+
 
 
         </RelativeLayout>
