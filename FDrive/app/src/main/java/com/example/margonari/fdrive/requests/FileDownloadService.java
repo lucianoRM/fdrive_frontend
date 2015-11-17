@@ -22,4 +22,9 @@ public interface FileDownloadService {
     @GET("/files/{id}/data")
     @Streaming
     void downloadFile(@Query("email") String email, @Query("token") String password, @Path("id") int id, Callback<Response> callback);
+
+    @GET("/files/{id}/{version}/data")
+    @Streaming
+    void downloadFile(@Query("email") String email, @Query("token") String password, @Path("id") int id,@Path("version")int version,Callback<Response> callback);
+
 }

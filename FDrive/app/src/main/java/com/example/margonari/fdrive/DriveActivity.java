@@ -323,9 +323,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         AlertDialogManager.createFileRenameAlertDialog(context,activityCallback);
                         break;
                     case R.id.right_drawer_download_button:
-                        FileMetadata metadata = selectedFileCard.metadata;
-                        RequestMaker.getInstance().downloadFile(activityCallback,email,token,metadata.id,metadata.name,metadata.extension);
-                        onFileDownloadToggleUI(false);
+                        AlertDialogManager.createSelectVersionAlertDialog(context,activityCallback,selectedFileCard.metadata.lastVersion);
                         break;
                     case R.id.right_drawer_share_button:
                         RequestMaker.getInstance().getUsers(activityCallback,email,token);
@@ -618,6 +616,13 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public void renameFile(String newName){
         RequestMaker.getInstance().renameFile(activityCallback, email, token, selectedFileCard.metadata.id, newName);
 
+    }
+
+
+    public void downloadFileVersion(int selectedVersion){
+        FileMetadata metadata = selectedFileCard.metadata;
+        RequestMaker.getInstance().downloadFile(activityCallback,email,token,metadata.id,metadata.name,metadata.extension,selectedVersion);
+        onFileDownloadToggleUI(false);
     }
      /*###########################################################################
     ###################     FLOATING BUTTON      #################################

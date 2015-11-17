@@ -53,6 +53,7 @@ public class NetworkCallbackClass {
     public void share(List<String> selectedUsers) {callback.share(selectedUsers);}
     public void onNewVersionSaveSuccess(int version) {callback.onNewVersionSaveSuccess(version);}
     public void unshare(List<String> selectedUsers) {callback.unshare(selectedUsers);}
+    public void downloadFileVersion(int selectedVersion){ callback.downloadFileVersion(selectedVersion);}
 
 
 
@@ -96,6 +97,7 @@ public class NetworkCallbackClass {
         public void addTag(String newTag);
         public void createFolder(String newFolder);
         public void renameFile(String newName);
+        public void downloadFileVersion(int selectedVersion);
     }
 
 

@@ -377,11 +377,11 @@ public class RequestMaker {
 
     }
 
-    public void downloadFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId,final String fileName,final String fileExtension){
+    public void downloadFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId,final String fileName,final String fileExtension,final int version){
 
         FileDownloadService client = ServiceGenerator.createService(FileDownloadService.class,baseUrl);
 
-        client.downloadFile(email, token, fileId, new Callback<Response>() {
+        client.downloadFile(email, token, fileId,version, new Callback<Response>() {
             @Override
             public void success(Response answer, final Response response) {
                 new Thread(new Runnable() {

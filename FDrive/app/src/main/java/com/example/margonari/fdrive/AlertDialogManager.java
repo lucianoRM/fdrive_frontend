@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -217,6 +218,47 @@ public class AlertDialogManager {
 
 
     }
+
+
+    public static void createSelectVersionAlertDialog(Context context,final NetworkCallbackClass activityCallback,int lastVersion){
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Choose version");
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.choose_version_spinner, null);
+        final Spinner alertDialogSpinner = (Spinner) dialogView.findViewById(R.id.download_version_spinner);
+
+        //Populate spinner with numbers from 0 to lastVersion
+        List<Integer> versionsList = new ArrayList<>();
+        for(int i=0;i<=lastVersion;i++){
+            versionsList.add(i);
+        }
+
+        alertDialogSpinner.setAdapter(new ArrayAdapter<Integer>(context, android.R.layout.simple_spinner_item,versionsList));
+        alertDialogSpinner.setSelection(lastVersion);
+        builder.setView(dialogView);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        }).setPositiveButton("Download", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int selectedItem = (int) alertDialogSpinner.getSelectedItem();
+                activityCallback.downloadFileVersion(selectedItem);
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+
+
+    }
+
+
+
 
 
 }
