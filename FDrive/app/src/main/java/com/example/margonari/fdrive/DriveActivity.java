@@ -106,6 +106,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public TypedInputStream fileToUpload;
     private boolean afterSearch;
     private boolean updated;
+    private boolean inTrash;
     private Map<Integer,String> searchMap;
 
 
@@ -260,14 +261,17 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         wv.loadUrl("http://maps.google.com/maps?q=" + lastLocation);
                         return true;
                     case R.id.my_drive_button:
+                        inTrash = false;
                         path = new Path(getResources().getString(R.string.root_folder));
                         getUserFiles();
                         return true;
                     case R.id.shared_whith_me_button:
+                        inTrash = false;
                         path = new Path(getResources().getString(R.string.shared_folder));
                         getUserFiles();
                         return true;
                     case R.id.trash_folder_icon:
+                        inTrash = true;
                         path = new Path(getResources().getString(R.string.trash_folder));
                         getUserFiles();
                         return true;
@@ -317,7 +321,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 //Check to see which item was being clicked and perform appropriate action
                 switch (v.getId()) {
                     case R.id.right_drawer_delete_button:
-                        deleteSelectedFile();
+                        if(inTrash){
+                            restoreSelectedFile();
+                        }else {
+                            deleteSelectedFile();
+                        }
                         break;
                     case R.id.right_drawer_edit_button:
                         AlertDialogManager.createFileRenameAlertDialog(context,activityCallback);
@@ -484,12 +492,22 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
                 //Set buttons
                 ImageButton editButton = (ImageButton) findViewById(R.id.right_drawer_edit_button);
-                ImageButton deleteButtin = (ImageButton) findViewById(R.id.right_drawer_delete_button);
+                ImageButton deleteButton = (ImageButton) findViewById(R.id.right_drawer_delete_button);
+                TextView deleteButtonText = (TextView) findViewById(R.id.right_drawer_delete_button_tag);
 
                 if (!(metadata.owner.equals(email))) {//No es el owner del archivo
                     editButton.setClickable(false);
                 } else {
                     editButton.setClickable(true);
+                }
+
+                if (inTrash) {
+                    deleteButton.setImageDrawable(getResources().getDrawable(R.mipmap.ic_undo_black_24dp, null));
+                    deleteButtonText.setText("Restore");
+
+                }else{
+                    deleteButton.setImageDrawable(getResources().getDrawable(R.mipmap.ic_delete_black_24dp, null));
+                    deleteButtonText.setText("Delete");
                 }
 
                 drawerLayout.openDrawer(rightDrawerView);
@@ -750,6 +768,13 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         String actualPath = path.toAbsolutePath();
         RequestMaker.getInstance().deleteFile(activityCallback,email,token,actualPath,id);
         toggleUi(false);
+    }
+
+    private void restoreSelectedFile(){
+        int id = selectedFileCard.metadata.id;
+        String actualPath = path.toAbsolutePath();
+        Log.d("test","restore");
+        //toggleUi(false);
     }
 
     private void getUserFiles(){

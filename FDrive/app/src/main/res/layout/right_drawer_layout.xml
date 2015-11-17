@@ -147,6 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="delete"
+                    android:id="@+id/right_drawer_delete_button_tag"
                     android:textSize="10sp" />
             </LinearLayout>
 
