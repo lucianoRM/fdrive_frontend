@@ -611,52 +611,62 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public void addTag(String newTag){
 
         RequestMaker.getInstance().addTag(activityCallback, email, token, selectedFileCard.metadata.id, newTag);
+        toggleUi(false);
     }
 
 
     public void search(String selectedType,String element){
         path.goTo("search");
         RequestMaker.getInstance().search(activityCallback, email, token, selectedType.toLowerCase(), element);
+        toggleUi(false);
 
     }
 
     public void share(List<String> selectedUsers){
         updated = false;
         RequestMaker.getInstance().shareFile(activityCallback, email, token, selectedFileCard.metadata.id, selectedUsers);
+        toggleUi(false);
 
     }
 
     public void shareFolder(List<String> selectedUsers, String folderName){
         updated = false;
         RequestMaker.getInstance().shareFolder(activityCallback,email,token,path.toAbsolutePath() + "/" + folderName,selectedUsers);
+        toggleUi(false);
     }
 
     public void unshare(List<String> selectedUsers){
         updated = false;
         RequestMaker.getInstance().unshareFile(activityCallback, email, token, selectedFileCard.metadata.id, selectedUsers);
+        toggleUi(false);
 
     }
 
     public void createFolder(String newFolder){
         RequestMaker.getInstance().createFolder(activityCallback, email, token, path.toAbsolutePath(), newFolder);
+        toggleUi(false);
 
     }
 
     public void renameFile(String newName){
         RequestMaker.getInstance().renameFile(activityCallback, email, token, selectedFileCard.metadata.id, newName);
+        toggleUi(false);
 
     }
 
     public void renameFolder(String oldname,String newName){
         RequestMaker.getInstance().renameFolder(activityCallback, email, token, path.toAbsolutePath(), oldname, newName);
+        toggleUi(false);
     }
 
     public void getUsers(String folderName){
         RequestMaker.getInstance().getUsers(activityCallback,email,token,folderName);
+        toggleUi(false);
     }
 
     public void openShareFolderDialog(String folderName){
         RequestMaker.getInstance().getUsers(activityCallback, email, token, folderName);
+        toggleUi(false);
     }
 
 
@@ -739,6 +749,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             fileToUpload = new TypedInputStream(fileName, fileType, returnCursor.getLong(sizeIndex),is,activityCallback);
 
             RequestMaker.getInstance().saveFile(activityCallback, email, token, fileName, "."+fileExtension, email,returnCursor.getLong(sizeIndex),path.toAbsolutePath());
+            toggleUi(false);
         }
 
         //Updating user image
@@ -772,6 +783,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 fileToUpload = new TypedInputStream(fileName, fileType, returnCursor.getLong(sizeIndex),is,activityCallback);
                 if(selectedFileCard.metadata.name.equals(fileName)) {
                     RequestMaker.getInstance().saveNewVersion(activityCallback, email, token, fileName, "." + fileExtension, selectedFileCard.metadata.id, path.toAbsolutePath(), returnCursor.getLong(sizeIndex), selectedFileCard.metadata.tags, selectedFileCard.metadata.lastVersion);
+                    toggleUi(false);
                 }else{
                     ErrorDisplay.getInstance().showMessage(context,view,"Not the same file");
                 }
@@ -866,6 +878,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     //When uploading a new file
     public void onSaveFileSuccess(int id){
+        toggleUi(true);
         onFileUploadToggleUI(false);
         RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token, id, 0);
     }
@@ -900,18 +913,21 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public void onUploadFileSuccess(){
         onFileUploadToggleUI(true);
         ErrorDisplay.getInstance().showMessage(context, view, "Upload Successful");
+        toggleUi(false);
         getUserFiles();
     }
 
 
     public void onDeleteFileSuccess(){
         ErrorDisplay.getInstance().showMessage(context, view, "File deleted");
+        toggleUi(false);
         getUserFiles();
     }
 
 
     public void onCreateFolderSuccess(){
         getUserFiles();
+        toggleUi(false);
     }
 
     public void onSearchSuccess(Map<Integer,String> files){
@@ -944,17 +960,20 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         }else{
             AlertDialogManager.createShareFolderAlertDialog(activityCallback,context,users,folderName);
         }
+        toggleUi(true);
     }
 
 
     public void onShareSuccess(){
         if(!updated) {
             getUserFiles();
+            toggleUi(false);
             updated = true;
         }
     }
 
     public void onNewVersionSaveSuccess(int version){
+        toggleUi(true);
         onFileUploadToggleUI(false);
         RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token,selectedFileCard.metadata.id, version);
     }
