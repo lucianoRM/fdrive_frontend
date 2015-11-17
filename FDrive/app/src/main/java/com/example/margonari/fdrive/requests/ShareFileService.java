@@ -26,6 +26,14 @@ class ShareFileBody{
 
 }
 
+class ShareFolderBody{
+    public String email;
+    public String token;
+    public String path;
+    public List<String> users;
+
+}
+
 
 public interface ShareFileService {
     @POST("/share")
@@ -33,5 +41,8 @@ public interface ShareFileService {
 
     @PUT("/unshare")
     void unshare(@Body ShareFileBody body,Callback<SimpleRequestAnswer> callback);
+
+    @POST("/share/folder")
+    void shareFolder(@Body ShareFolderBody body,Callback<SimpleRequestAnswer> callback);
 
 }

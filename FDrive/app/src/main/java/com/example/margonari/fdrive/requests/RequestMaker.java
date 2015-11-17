@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -562,7 +563,7 @@ public class RequestMaker {
     }
 
 
-    public void getUsers(final NetworkCallbackClass activityCallback, final String email,String token){
+    public void getUsers(final NetworkCallbackClass activityCallback, final String email,String token,final String folderName){
 
         GetUsersService client = ServiceGenerator.createService(GetUsersService.class,baseUrl);
 
@@ -574,7 +575,7 @@ public class RequestMaker {
                     for (int i = 0; i < answer.users.size(); i++) {
                         emails.add(answer.users.get(i).email);
                     }
-                    activityCallback.onGetUsersForSharingSuccess(emails);
+                    activityCallback.onGetUsersForSharingSuccess(emails, folderName);
                 } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
@@ -598,9 +599,9 @@ public class RequestMaker {
         client.renameFolder(email, token, path, oldname, newname, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                if(answer.result){
+                if (answer.result) {
                     activityCallback.onMetadataUploadSuccess();
-                }else{
+                } else {
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -611,6 +612,37 @@ public class RequestMaker {
             }
         });
 
+
+
+    }
+
+
+    public void shareFolder(final NetworkCallbackClass activityCallback,String email,String token,String path,List<String> users){
+
+        ShareFileService client = ServiceGenerator.createService(ShareFileService.class,baseUrl);
+
+        ShareFolderBody body = new ShareFolderBody();
+
+        body.email = email;
+        body.token = token;
+        body.users = users;
+        body.path = path;
+
+        client.shareFolder(body, new Callback<SimpleRequestAnswer>() {
+            @Override
+            public void success(SimpleRequestAnswer answer, Response response) {
+                if(answer.result){
+                    activityCallback.onShareSuccess();
+                }else{
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
 
 
     }

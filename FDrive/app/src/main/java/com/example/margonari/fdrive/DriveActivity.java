@@ -319,7 +319,6 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             public void onClick(View v) {
                 //Closing drawer on item click
                 drawerLayout.closeDrawer(rightDrawerView);
-                Log.d("test","Entra");
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (v.getId()) {
@@ -337,7 +336,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         AlertDialogManager.createSelectVersionAlertDialog(context,activityCallback,selectedFileCard.metadata.lastVersion);
                         break;
                     case R.id.right_drawer_share_button:
-                        RequestMaker.getInstance().getUsers(activityCallback,email,token);
+                        getUsers(null);
                         break;
                     case R.id.right_drawer_upload_button:
                         uploadNewVersion();
@@ -627,6 +626,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     }
 
+    public void shareFolder(List<String> selectedUsers, String folderName){
+        updated = false;
+        RequestMaker.getInstance().shareFolder(activityCallback,email,token,path.toAbsolutePath() + "/" + folderName,selectedUsers);
+    }
+
     public void unshare(List<String> selectedUsers){
         updated = false;
         RequestMaker.getInstance().unshareFile(activityCallback, email, token, selectedFileCard.metadata.id, selectedUsers);
@@ -644,15 +648,21 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     }
 
     public void renameFolder(String oldname,String newName){
-        RequestMaker.getInstance().renameFolder(activityCallback, email, token, path.toAbsolutePath(),oldname, newName);
+        RequestMaker.getInstance().renameFolder(activityCallback, email, token, path.toAbsolutePath(), oldname, newName);
     }
 
-    public void openShareFolderDialog(){}
+    public void getUsers(String folderName){
+        RequestMaker.getInstance().getUsers(activityCallback,email,token,folderName);
+    }
+
+    public void openShareFolderDialog(String folderName){
+        RequestMaker.getInstance().getUsers(activityCallback, email, token, folderName);
+    }
 
 
     public void downloadFileVersion(int selectedVersion){
         FileMetadata metadata = selectedFileCard.metadata;
-        RequestMaker.getInstance().downloadFile(activityCallback,email,token,metadata.id,metadata.name,metadata.extension,selectedVersion);
+        RequestMaker.getInstance().downloadFile(activityCallback, email, token, metadata.id, metadata.name, metadata.extension, selectedVersion);
         onFileDownloadToggleUI(false);
     }
      /*###########################################################################
@@ -928,9 +938,14 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         toggleUi(true);
     }
 
-    public void onGetUsersForSharingSuccess(List<String> users){
-        AlertDialogManager.createShareAlertDialog(activityCallback, context, users,selectedFileCard.metadata.users);
+    public void onGetUsersForSharingSuccess(List<String> users,String folderName){
+        if(folderName == null) {
+            AlertDialogManager.createShareAlertDialog(activityCallback, context, users, selectedFileCard.metadata.users);
+        }else{
+            AlertDialogManager.createShareFolderAlertDialog(activityCallback,context,users,folderName);
+        }
     }
+
 
     public void onShareSuccess(){
         if(!updated) {

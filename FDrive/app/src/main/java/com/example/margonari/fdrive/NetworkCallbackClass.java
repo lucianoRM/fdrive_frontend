@@ -49,13 +49,15 @@ public class NetworkCallbackClass {
     public void renameFile(String newName) {callback.renameFile(newName);}
     public void onMetadataUploadSuccess() {callback.onMetadataUploadSuccess();}
     public void onShareSuccess() {callback.onShareSuccess();}
-    public void onGetUsersForSharingSuccess(List<String> users) {callback.onGetUsersForSharingSuccess(users);}
+    public void onGetUsersForSharingSuccess(List<String> users,String folderName) {callback.onGetUsersForSharingSuccess(users, folderName);}
     public void share(List<String> selectedUsers) {callback.share(selectedUsers);}
     public void onNewVersionSaveSuccess(int version) {callback.onNewVersionSaveSuccess(version);}
     public void unshare(List<String> selectedUsers) {callback.unshare(selectedUsers);}
     public void downloadFileVersion(int selectedVersion){ callback.downloadFileVersion(selectedVersion);}
-    public void openShareFolderDialog(){ callback.openShareFolderDialog();}
-    public void renameFolder(String oldname,String newName) {callback.renameFolder(oldname,newName);}
+    public void openShareFolderDialog(String folderName){ callback.openShareFolderDialog(folderName);}
+    public void renameFolder(String oldname,String newName) {callback.renameFolder(oldname, newName);}
+    public void getUsers(String folderName) {callback.getUsers(folderName);}
+    public void shareFolder(List<String> selectedUsers,String folderName) {callback.shareFolder(selectedUsers,folderName);}
 
 
 
@@ -75,7 +77,7 @@ public class NetworkCallbackClass {
         public void onSearchSuccess(Map<Integer,String> files);
         public void onMetadataUploadSuccess();
         public void onShareSuccess();
-        public void onGetUsersForSharingSuccess(List<String> users);
+        public void onGetUsersForSharingSuccess(List<String> users,String folderName);
         public void onNewVersionSaveSuccess(int version);
 
         //On failure methods
@@ -94,10 +96,12 @@ public class NetworkCallbackClass {
         //Non network related methods
         public void search(String typeOfSearch,String element);
         public void share(List<String> selectedUsers);
-        public void openShareFolderDialog();
+        public void shareFolder(List<String> selectedUsers,String folderName);
+        public void openShareFolderDialog(String folderName);
         public void renameFolder(String oldname,String newName);
         public void unshare(List<String> selectedUsers);
         public void addTag(String newTag);
+        public void getUsers(String folderName);
         public void createFolder(String newFolder);
         public void renameFile(String newName);
         public void downloadFileVersion(int selectedVersion);

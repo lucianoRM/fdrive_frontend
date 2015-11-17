@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.margonari.fdrive.requests.RequestMaker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -284,6 +286,7 @@ public class AlertDialogManager {
         }).setNegativeButton("Share contents", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                activityCallback.getUsers(folderName);
                 dialog.cancel();
             }
         });
@@ -293,10 +296,56 @@ public class AlertDialogManager {
         alertDialog.show();
 
 
-        }
+    }
+
+
+
+    public static void createShareFolderAlertDialog(final NetworkCallbackClass activityCallback,Context context, final List<String> users, final String folderName){
+
+        final CharSequence[] usersSequence = users.toArray(new CharSequence[users.size()]);
+
+        final List<Integer> toShare = new ArrayList<>();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Share to");
+        builder.setMultiChoiceItems(usersSequence, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    //Add selected item
+                    toShare.add(which);
+                } else {
+                    //Remove selected item
+                    if (toShare.contains(which)) {
+                        toShare.remove(Integer.valueOf(which));
+                    }
+
+                }
+            }
+        }).setPositiveButton("Share", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                List<String> selectedUsersToShare = new ArrayList<String>();
+                for (int i = 0; i < toShare.size(); i++) {
+                    selectedUsersToShare.add(users.get(toShare.get(i)));
+                }
+
+                if (!selectedUsersToShare.isEmpty()) { //if empty dont request
+                    activityCallback.shareFolder(selectedUsersToShare, folderName);
+                }
+
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();//Closes the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
 
     }
+}
 
 
 
