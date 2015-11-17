@@ -102,7 +102,7 @@ public class LogInActivity extends AppCompatActivity {
 
         //Persist token
         SharedPreferences.Editor edit = preferences.edit();
-        edit.putString("token", token);
+        edit.putString(email+".token", token);
         edit.putString("email",email);
         edit.commit();
 

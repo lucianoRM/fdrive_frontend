@@ -205,10 +205,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         //Persist information
         SharedPreferences.Editor edit = preferences.edit();
-        edit.putString("password",password);
-        edit.putString("name",name);
+        edit.putString(email+".password",password);
+        edit.putString(email+".name",name);
         edit.putString("email",email);
-        edit.putString("surname",surname);
+        edit.putString(email+".surname",surname);
         edit.commit();
 
         //Lauches login activity

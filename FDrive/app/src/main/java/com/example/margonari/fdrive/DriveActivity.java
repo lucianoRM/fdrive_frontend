@@ -389,11 +389,11 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     //Sets the user information shown in the screen
     private void setUserInformation(){
         email = Database.getInstance().get("email", "email");
-        name = Database.getInstance().get("name","name");
-        surname = Database.getInstance().get("surname","surname");
-        token = Database.getInstance().get("token","token");
+        name = Database.getInstance().get(email+".name","name");
+        surname = Database.getInstance().get(email+".surname","surname");
+        token = Database.getInstance().get(email+".token","token");
 
-        String uriString = Database.getInstance().get(email,"");
+        String uriString = Database.getInstance().get(email+".profileimage","");
         if(!uriString.equals("")){
             Uri imageUri = Uri.parse(uriString);
             CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
@@ -756,7 +756,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         if (reqCode == UPLOAD_PROFILE_PICTURE && resCode == RESULT_OK && data != null){
             Uri uri = data.getData();
             //Persisit image
-            Database.getInstance().put(email, uri.toString());
+            Database.getInstance().put(email+".profileimage", uri.toString());
 
             CircleImageView circleImageView = (CircleImageView) leftDrawerView.findViewById(R.id.circle_image);
             circleImageView.setImageURI(uri);
@@ -892,7 +892,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public void onLogoutSuccess(){
         //Erase token from "persistence" db
 
-        Database.getInstance().put("token", "");
+        Database.getInstance().put(email+".token", "");
         toggleUi(true);
         finish();
 

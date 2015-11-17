@@ -71,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
     private void loginIfPossible(){
         SharedPreferences prefs = this.getSharedPreferences(getResources().getString(R.string.sharedConf), Context.MODE_PRIVATE);
         String email = prefs.getString("email", "");
-        String token = prefs.getString("token","");
+        String token = prefs.getString(email+".token","");
 
 
         if(!email.equals("") && !token.equals("")){
-            Log.d("test", "Email guardado: " + email +  " token guardado: " + token);
             openDrive(mainView);
         }
 
