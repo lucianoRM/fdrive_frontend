@@ -15,13 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <WebView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/mainScreenWebView">
 
-    </WebView>
 
 
 
@@ -29,19 +23,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <WebView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/mainScreenWebView"
+            android:background="@null">
 
-
-
-
-
-
-
+        </WebView>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Register"
-                android:id="@+id/buttonRegister"
+                android:text="Log in"
+                android:id="@+id/buttonLogIn"
                 android:layout_marginBottom="99dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
@@ -51,33 +46,34 @@
                 android:height="60dp"
                 android:focusableInTouchMode="false"
                 android:nestedScrollingEnabled="false"
-                android:onClick="toRegisterActivity" />
+                android:onClick="toLogInActivity" />
 
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/buttonLogIn"
+            android:layout_marginBottom="32dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already have an account?"
+                android:text="Don't have an account?"
                 android:id="@+id/textViewRegister"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/buttonRegister"
-                android:layout_marginBottom="32dp"
                 android:textColor="@android:color/black" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Log In"
-                android:id="@+id/buttonToLogInActivity"
-                android:layout_alignBottom="@+id/textViewRegister"
-                android:layout_toEndOf="@+id/textViewRegister"
+                android:text="Sign up"
+                android:id="@+id/buttonRegister"
                 android:textColor="@android:color/holo_blue_light"
                 android:background="@null"
                 android:height="10dp"
-
                 android:shadowColor="@android:color/white"
-                android:onClick="toLogInActivity"
-                android:layout_alignTop="@+id/textViewRegister" />
+                android:onClick="toRegisterActivity"/>
 
+        </LinearLayout>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
