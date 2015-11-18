@@ -495,12 +495,22 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 //Set buttons
                 ImageButton editButton = (ImageButton) findViewById(R.id.right_drawer_edit_button);
                 ImageButton deleteButton = (ImageButton) findViewById(R.id.right_drawer_delete_button);
+                ImageButton addTagButton = (ImageButton) findViewById(R.id.right_drawer_add_tag_button);
+                ImageButton shareButton = (ImageButton) findViewById(R.id.right_drawer_share_button);
+                ImageButton uploadButton = (ImageButton) findViewById(R.id.right_drawer_upload_button);
+
                 TextView deleteButtonText = (TextView) findViewById(R.id.right_drawer_delete_button_tag);
 
                 if (!(metadata.owner.equals(email))) {//No es el owner del archivo
                     editButton.setClickable(false);
+                    addTagButton.setClickable(false);
+                    shareButton.setClickable(false);
+                    uploadButton.setClickable(false);
                 } else {
                     editButton.setClickable(true);
+                    addTagButton.setClickable(true);
+                    shareButton.setClickable(true);
+                    uploadButton.setClickable(true);
                 }
 
                 if (inTrash) {
@@ -849,7 +859,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             RequestMaker.getInstance().getFile(activityCallback,email,token,files.get(i)); //The fileCards are loaded in success
             toggleUi(false);
         }
-        if(files.size() == 0){
+        if(files.size() == 0) {
             updateFileCards();
             updateFolderCards();
         }
@@ -859,7 +869,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public void onGetFileSuccess(FileMetadata file){
         totFiles--; //Substract one to know which file is it
         fileCards.add(new FileCard(file, email));
-        
+
         if(totFiles == 0){
             if(afterSearch){ //Needs to overwrite paths
                 for(int i = 0;i<fileCards.size();i++){
