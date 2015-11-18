@@ -801,7 +801,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private void deleteSelectedFile(){
         int id = selectedFileCard.metadata.id;
         String actualPath = path.toAbsolutePath();
-        RequestMaker.getInstance().deleteFile(activityCallback,email,token,actualPath,id);
+        RequestMaker.getInstance().deleteFile(activityCallback,email,token,selectedFileCard.path,id);
         toggleUi(false);
     }
 
@@ -859,12 +859,12 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     public void onGetFileSuccess(FileMetadata file){
         totFiles--; //Substract one to know which file is it
         fileCards.add(new FileCard(file, email));
-
+        
         if(totFiles == 0){
             if(afterSearch){ //Needs to overwrite paths
                 for(int i = 0;i<fileCards.size();i++){
                     FileCard card = fileCards.get(i);
-                    String searchedPath = searchMap.get(i);
+                    String searchedPath = searchMap.get(card.metadata.id);
                     card.path = searchedPath;
                 }
             }
