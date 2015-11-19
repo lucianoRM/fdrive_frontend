@@ -11,6 +11,8 @@ import android.widget.EditText;
 import com.example.margonari.fdrive.R;
 import com.example.margonari.fdrive.requests.RequestMaker;
 
+import org.slf4j.LoggerFactory;
+
 /**
  * Created by luciano on 31/10/15.
  */
@@ -38,6 +40,8 @@ public class ConfigurationActivity extends Activity {
 
         ipString = ipView.getText().toString();
         Database.getInstance().put("ip",ipString);
+
+        LoggerFactory.getLogger(getClass()).info("New ip set to" + ipString);
 
         //Closes configurations
         finish();

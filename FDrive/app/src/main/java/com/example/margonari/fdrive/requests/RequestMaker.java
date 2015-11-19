@@ -28,6 +28,8 @@ import com.example.margonari.fdrive.requests.Answers.SaveFileAnswer;
 import com.example.margonari.fdrive.requests.Answers.SearchAnswer;
 import com.example.margonari.fdrive.requests.Answers.SimpleRequestAnswer;
 
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -79,8 +81,10 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("upload success");
                     activityCallback.onUploadFileSuccess();
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Upload failure, Response: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
 
@@ -109,8 +113,10 @@ public class RequestMaker {
 
                 //Registration successful
                 if (answer.result == true) {
+                    LoggerFactory.getLogger(getClass()).info("Registration success");
                     RegistrationActivity.onRegistrationSuccess();
                 } else { //registration failure
+                    LoggerFactory.getLogger(getClass()).error("Registration failure, Errors: " + answer.errors.toString());
                     RegistrationActivity.onRegistrationFailure(answer.errors);
                 }
 
@@ -136,8 +142,10 @@ public class RequestMaker {
             @Override
             public void success(GetFileAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Get file success");
                     activityCallback.onGetFileSuccess(answer.file);
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Get file failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -159,12 +167,13 @@ public class RequestMaker {
         client.loginUser(email, password, new Callback<LoginAnswer>() {
             @Override
             public void success(LoginAnswer answer, Response response) {
-                Log.d("test", "Called" + answer.result + answer.token);
                 //login successful
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Login success");
                     LogInActivity.onLoginSuccess(answer.token);
                 } else {
                     //login failure
+                    LoggerFactory.getLogger(getClass()).error("Login failure, Errors: " + answer.errors.toString());
                     LogInActivity.onLoginFailure(answer.errors);
                 }
             }
@@ -189,8 +198,10 @@ public class RequestMaker {
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
                     if (answer.result) {
+                        LoggerFactory.getLogger(getClass()).info("Delete file success");
                         activityCallback.onDeleteFileSuccess();
                     } else {
+                        LoggerFactory.getLogger(getClass()).error("Delete file failure, Errors: " + answer.errors.toString());
                         activityCallback.onRequestFailure(answer.errors);
                     }
                 } else {
@@ -228,9 +239,10 @@ public class RequestMaker {
             public void success(SaveFileAnswer answer, Response response) {
                 //What to do when success
                 if (answer.result) {
-                    Log.d("test", "id: " + answer.fileID);
+                    LoggerFactory.getLogger(getClass()).info("Save file success");
                     activityCallback.onSaveFileSuccess(answer.fileID);
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Save file failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -264,8 +276,10 @@ public class RequestMaker {
             public void success(SaveFileAnswer answer, Response response) {
                 //What to do when success
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Save new version success");
                     activityCallback.onNewVersionSaveSuccess(answer.version);
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Save new version failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -292,8 +306,10 @@ public class RequestMaker {
             @Override
             public void success(SaveFileAnswer answer, Response response) {
                 if(answer.result){
+                    LoggerFactory.getLogger(getClass()).info("Rename file success");
                     activityCallback.onMetadataUploadSuccess();
                 }else{
+                    LoggerFactory.getLogger(getClass()).error("Rename file failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -321,8 +337,10 @@ public class RequestMaker {
             @Override
             public void success(SaveFileAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Add tag success");
                     activityCallback.onMetadataUploadSuccess();
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Add tag failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -342,9 +360,12 @@ public class RequestMaker {
         client.getUserFiles(email, token, path, new Callback<GetUserFilesAnswer>() {
             @Override
             public void success(GetUserFilesAnswer getUserFilesAnswer, Response response) {
-                if (getUserFilesAnswer.result)
+                if (getUserFilesAnswer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Get user files success");
                     activityCallback.onGetUserFilesSuccess(getUserFilesAnswer);
+                }
                 else {
+                    LoggerFactory.getLogger(getClass()).error("Get user files failure, Errors: " + getUserFilesAnswer.errors.toString());
                     activityCallback.onRequestFailure(getUserFilesAnswer.errors);
                 }
             }
@@ -365,8 +386,10 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Logout success");
                     activityCallback.onLogoutSuccess();
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("logout failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -386,6 +409,7 @@ public class RequestMaker {
         client.downloadFile(email, token, fileId, version, new Callback<Response>() {
             @Override
             public void success(Response answer, final Response response) {
+                LoggerFactory.getLogger(getClass()).info("Downloading file");
                 new Thread(new Runnable() {
                     public void run() {
                         File targetFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/" + fileName + fileExtension);
@@ -448,8 +472,10 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Create folder success");
                     activityClass.onCreateFolderSuccess();
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Create folder failure, Errors: " + answer.errors.toString());
                     activityClass.onRequestFailure(answer.errors);
                 }
             }
@@ -488,6 +514,7 @@ public class RequestMaker {
                 }
 
                 activityCallback.onSearchSuccess(map);
+                LoggerFactory.getLogger(getClass()).info("Search success");
             }
 
             @Override
@@ -514,8 +541,10 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Share file success");
                     activityCallback.onShareSuccess();
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Share file failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -545,8 +574,10 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Unshare file success");
                     activityCallback.onShareSuccess();
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Unshare file failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -575,8 +606,10 @@ public class RequestMaker {
                     for (int i = 0; i < answer.users.size(); i++) {
                         emails.add(answer.users.get(i).email);
                     }
+                    LoggerFactory.getLogger(getClass()).info("Get users success");
                     activityCallback.onGetUsersForSharingSuccess(emails, folderName);
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Get users failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -600,8 +633,10 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Rename folder success");
                     activityCallback.onMetadataUploadSuccess();
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Rename folder failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -632,8 +667,10 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
+                    LoggerFactory.getLogger(getClass()).info("Share folder success");
                     activityCallback.onShareSuccess();
                 } else {
+                    LoggerFactory.getLogger(getClass()).error("Share folder failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }
@@ -655,8 +692,10 @@ public class RequestMaker {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
                 if(answer.result){
+                    LoggerFactory.getLogger(getClass()).info("Recover file success");
                     activityCallback.onMetadataUploadSuccess();
                 }else{
+                    LoggerFactory.getLogger(getClass()).error("Recover file failure, Errors: " + answer.errors.toString());
                     activityCallback.onRequestFailure(answer.errors);
                 }
             }

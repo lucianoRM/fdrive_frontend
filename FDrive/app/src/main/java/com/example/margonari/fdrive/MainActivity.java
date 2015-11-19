@@ -18,6 +18,8 @@ import android.webkit.WebView;
 
 import com.example.margonari.fdrive.requests.RequestMaker;
 
+import org.slf4j.LoggerFactory;
+
 public class MainActivity extends AppCompatActivity {
 
     public static Context mainContext;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         loginIfPossible();
+        LoggerFactory.getLogger(getClass()).info("Start");
 
     }
 

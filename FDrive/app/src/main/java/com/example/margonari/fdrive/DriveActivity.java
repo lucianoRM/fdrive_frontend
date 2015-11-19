@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.support.annotation.IntegerRes;
 import android.support.design.widget.NavigationView;
@@ -49,11 +50,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.margonari.fdrive.requests.Answers.GetUserFilesAnswer;
+import com.example.margonari.fdrive.requests.Answers.SearchAnswer;
 import com.example.margonari.fdrive.requests.RequestMaker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import org.w3c.dom.Text;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -192,6 +196,10 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
 
 
+
+
+
+
     }
 
 
@@ -265,6 +273,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                         return true;
                     case R.id.location_button:
                         WebView wv = (WebView)findViewById(R.id.test_web_view);
+                        LoggerFactory.getLogger(getClass()).info("Location requested, value: " + lastLocation);
                         wv.loadUrl("http://maps.google.com/maps?q=" + lastLocation);
                         return true;
                     case R.id.my_drive_button:

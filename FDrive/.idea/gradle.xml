@@ -11,6 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/logback-android-1.1.1-4" />
+            <option value="$PROJECT_DIR$/slf4j-api-1.7.6" />
           </set>
         </option>
       </GradleProjectSettings>
