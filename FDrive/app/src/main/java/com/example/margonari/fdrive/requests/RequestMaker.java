@@ -702,7 +702,6 @@ public class RequestMaker {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("test",error.toString());
                 activityCallback.onConnectionError();
             }
         });
