@@ -817,9 +817,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     private void restoreSelectedFile(){
         int id = selectedFileCard.metadata.id;
-        String actualPath = path.toAbsolutePath();
-        Log.d("test", "restore");
-        //toggleUi(false);
+        RequestMaker.getInstance().recoverFile(activityCallback,email,token,id);
+        toggleUi(false);
     }
 
     private void getUserFiles(){

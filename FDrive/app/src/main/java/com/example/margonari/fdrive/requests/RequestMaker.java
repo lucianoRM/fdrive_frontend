@@ -632,8 +632,31 @@ public class RequestMaker {
         client.shareFolder(body, new Callback<SimpleRequestAnswer>() {
             @Override
             public void success(SimpleRequestAnswer answer, Response response) {
-                if(answer.result){
+                if (answer.result) {
                     activityCallback.onShareSuccess();
+                } else {
+                    activityCallback.onRequestFailure(answer.errors);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activityCallback.onConnectionError();
+            }
+        });
+
+
+    }
+
+    public void recoverFile(final NetworkCallbackClass activityCallback,String email,String token,int id){
+
+        DeleteFileService client = ServiceGenerator.createService(DeleteFileService.class,baseUrl);
+
+        client.recoverFile(email, token, id, new Callback<SimpleRequestAnswer>() {
+            @Override
+            public void success(SimpleRequestAnswer answer, Response response) {
+                if(answer.result){
+                    activityCallback.onMetadataUploadSuccess();
                 }else{
                     activityCallback.onRequestFailure(answer.errors);
                 }
