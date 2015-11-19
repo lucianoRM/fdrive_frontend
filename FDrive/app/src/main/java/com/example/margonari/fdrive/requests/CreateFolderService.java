@@ -13,6 +13,6 @@ import retrofit.http.Query;
  * Created by luciano on 13/11/15.
  */
 public interface CreateFolderService {
-    @POST("/addfolder")
+    @POST("/folders")
     void createFolder(@Query("email") String email, @Query("token") String token,@Query("path") String path,@Query("name") String folderName, Callback<SimpleRequestAnswer> callback);
 }
