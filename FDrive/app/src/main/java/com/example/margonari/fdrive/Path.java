@@ -13,6 +13,7 @@ public class Path {
     public Path(String root){
 
         path.add(root);
+        DriveActivity.pathView.setText(toAbsolutePath());
 
     }
 
@@ -39,6 +40,7 @@ public class Path {
         }else{
             if(path.get(path.size() - 1) != "search") path.add(newFolder);
         }
+        DriveActivity.pathView.setText(toAbsolutePath());
         return toAbsolutePath();
     }
 

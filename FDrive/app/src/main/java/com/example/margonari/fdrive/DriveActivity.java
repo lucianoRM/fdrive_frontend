@@ -87,6 +87,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private TextView progressBarPercentage,progressBarMethod;
     private LinearLayout progressBarLayout;
     private com.getbase.floatingactionbutton.FloatingActionButton uploadFileButton;
+    public static TextView pathView;
 
     //Cards
     private List<FileCard> fileCards = new ArrayList<FileCard>(); //Where all file cards are stored
@@ -120,6 +121,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive);
+
+        //Sets path view
+        pathView =(TextView) findViewById(R.id.path_view);
 
         //Sets the progress bar as invisible
         progressBar = (ProgressBar) findViewById(R.id.drive_circular_progress_bar);
