@@ -1,7 +1,7 @@
 <configuration>
     <!-- Create a file appender for a log in the application's data directory -->
     <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>/storage/emulated/0/Download/FdriveLog.txt</file>
+        <file>/storage/emulated/0/Fdrive/FdriveLog.txt</file>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} %-5level - %msg%n</pattern>
         </encoder>
