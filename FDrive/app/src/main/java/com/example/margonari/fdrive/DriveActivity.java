@@ -64,6 +64,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -377,12 +379,24 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
      */
 
     private void updateFileCards(){
+        Collections.sort(fileCards, new Comparator<FileCard>() {
+            @Override
+            public int compare(FileCard lhs, FileCard rhs) {
+                return lhs.name.compareTo(rhs.name);
+            }
+        });
         FileCardAdapter adapter = new FileCardAdapter(fileCards);
         recyclerFilesView.setAdapter(adapter);
 
     }
 
     private void updateFolderCards(){
+        Collections.sort(folderCards, new Comparator<FolderCard>() {
+            @Override
+            public int compare(FolderCard lhs, FolderCard rhs) {
+                return lhs.name.compareTo(rhs.name);
+            }
+        });
         FolderCardAdapter adapter  = new FolderCardAdapter(folderCards,context,activityCallback);
         recyclerFoldersView.setAdapter(adapter);
     }
@@ -851,6 +865,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
         List<Integer> files = answer.content.files;
         List<String> folders = answer.content.folders;
+
 
         totFiles = files.size();
 
