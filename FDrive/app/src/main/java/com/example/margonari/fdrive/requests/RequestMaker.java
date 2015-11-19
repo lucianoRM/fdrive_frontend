@@ -144,7 +144,7 @@ public class RequestMaker {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("Test", error.toString());
+                activityCallback.onConnectionError();
             }
         });
 
@@ -182,7 +182,6 @@ public class RequestMaker {
 
         DeleteFileService client = ServiceGenerator.createService(DeleteFileService.class,baseUrl);
 
-        Log.d("test",path);
 
         // Fetch and print a list of the contributors to this library.
         client.deleteFile(email, token, path, fileId, new Callback<SimpleRequestAnswer>() {
@@ -352,7 +351,7 @@ public class RequestMaker {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("test", "Error: " + error.toString());
+                activityCallback.onConnectionError();
             }
         });
 
