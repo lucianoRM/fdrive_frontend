@@ -21,13 +21,13 @@ public class ServiceGenerator {
 
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseUrl)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                /*.setLog(new RestAdapter.Log() {
+                .setLogLevel(RestAdapter.LogLevel.BASIC)
+                .setLog(new RestAdapter.Log() {
                     @Override
                     public void log(String message) {
                         LoggerFactory.getLogger(getClass()).info(message);
                     }
-                })*/
+                })
                 .setClient(new OkClient(new OkHttpClient()));
 
         RestAdapter adapter = builder.build();
