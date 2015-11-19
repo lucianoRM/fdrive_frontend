@@ -668,7 +668,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void shareFolder(List<String> selectedUsers, String folderName){
         updated = false;
-        RequestMaker.getInstance().shareFolder(activityCallback,email,token,path.toAbsolutePath() + "/" + folderName,selectedUsers);
+        RequestMaker.getInstance().shareFolder(activityCallback, email, token, path.toAbsolutePath() + "/" + folderName, selectedUsers);
         toggleUi(false);
     }
 
@@ -837,14 +837,13 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     private void deleteSelectedFile(){
         int id = selectedFileCard.metadata.id;
-        String actualPath = path.toAbsolutePath();
-        RequestMaker.getInstance().deleteFile(activityCallback,email,token,selectedFileCard.path,id);
+        RequestMaker.getInstance().deleteFile(activityCallback, email, token, selectedFileCard.path, id);
         toggleUi(false);
     }
 
     private void restoreSelectedFile(){
         int id = selectedFileCard.metadata.id;
-        RequestMaker.getInstance().recoverFile(activityCallback,email,token,id);
+        RequestMaker.getInstance().recoverFile(activityCallback, email, token, id);
         toggleUi(false);
     }
 
@@ -957,8 +956,15 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
 
     public void onDeleteFileSuccess(){
         ErrorDisplay.getInstance().showMessage(context, view, "File deleted");
-        toggleUi(false);
-        getUserFiles();
+        if(!afterSearch) {
+            getUserFiles();
+            toggleUi(false);
+        }
+        else{
+            fileCards.remove(selectedFileCard);
+            updateFileCards();
+            toggleUi(true);
+        }
     }
 
 

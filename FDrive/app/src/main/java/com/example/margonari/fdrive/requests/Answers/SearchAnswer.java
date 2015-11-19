@@ -12,10 +12,7 @@ public class SearchAnswer {
         public String path;
     }
 
-    public static class Content {
-        public List<File> files;
-    }
 
     public boolean result;
-    public Content content;
+    public List<File> files;
 }

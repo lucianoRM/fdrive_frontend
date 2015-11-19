@@ -500,8 +500,8 @@ public class RequestMaker {
                 Map<Integer, String> map = new HashMap<Integer, String>();
 
                 List<SearchAnswer.File> files = new ArrayList<>();
-                if (answer.content != null) {
-                    files = answer.content.files;
+                if (answer.files != null) {
+                    files = answer.files;
                 } else {
                     List<String> error = new ArrayList<String>();
                     error.add("No file found");

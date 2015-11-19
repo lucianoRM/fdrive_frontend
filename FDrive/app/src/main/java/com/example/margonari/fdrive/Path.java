@@ -46,8 +46,18 @@ public class Path {
 
     public String currentFolder(){
 
-        return path.get(path.size()-1);
+        return path.get(path.size() - 1);
 
     }
 
+    public String previousFolder(){
+
+        String absolutePath = "";
+        for(int i = 0; i < path.size() - 1;i++){
+            absolutePath+=path.get(i);
+            absolutePath+="/";
+        }
+        return absolutePath.substring(0,absolutePath.length() - 1);
+
+    }
 }
