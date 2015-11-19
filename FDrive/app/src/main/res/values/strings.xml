@@ -17,7 +17,7 @@
     </string-array>
     <string-array name="search_options">
         <item>Name</item>
-        <item>Tags</item>
+        <item>Tag</item>
         <item>Extension</item>
         <item>Owner</item>
     </string-array>
