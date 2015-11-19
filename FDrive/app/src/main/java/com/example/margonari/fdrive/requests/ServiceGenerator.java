@@ -21,7 +21,7 @@ public class ServiceGenerator {
 
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseUrl)
-                .setLogLevel(RestAdapter.LogLevel.BASIC)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setLog(new RestAdapter.Log() {
                     @Override
                     public void log(String message) {

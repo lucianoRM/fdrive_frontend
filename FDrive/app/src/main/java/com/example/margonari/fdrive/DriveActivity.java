@@ -529,15 +529,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 TextView deleteButtonText = (TextView) findViewById(R.id.right_drawer_delete_button_tag);
 
                 if (!(metadata.owner.equals(email))) {//No es el owner del archivo
-                    editButton.setClickable(false);
-                    addTagButton.setClickable(false);
                     shareButton.setClickable(false);
-                    uploadButton.setClickable(false);
                 } else {
-                    editButton.setClickable(true);
-                    addTagButton.setClickable(true);
                     shareButton.setClickable(true);
-                    uploadButton.setClickable(true);
                 }
 
                 if (inTrash) {
