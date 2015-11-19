@@ -1007,7 +1007,9 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             toggleUi(false);
             updated = true;
         }
+        ErrorDisplay.getInstance().showMessage(context,view,"File shared");
     }
+
 
     public void onNewVersionSaveSuccess(int version){
         toggleUi(true);
