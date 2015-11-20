@@ -27,7 +27,7 @@ class NewVersionBody{
     public int size;
     public String path;
     public int version;
-    public boolean overwrite = false;
+    public boolean overwrite;
 }
 
 class NewFileBody{

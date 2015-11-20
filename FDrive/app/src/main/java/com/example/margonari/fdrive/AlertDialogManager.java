@@ -280,7 +280,7 @@ public class AlertDialogManager {
         }).setPositiveButton("Rename", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                activityCallback.renameFolder(folderName,text.getText().toString());
+                activityCallback.renameFolder(folderName, text.getText().toString());
                 dialog.cancel();
             }
         }).setNegativeButton("Share contents", new DialogInterface.OnClickListener() {
@@ -345,6 +345,35 @@ public class AlertDialogManager {
 
 
     }
+
+
+    public static void createAskForLastVersion(final NetworkCallbackClass activityCallback,Context context){
+
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Warning, last file version not downloaded,Upload anyway?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                activityCallback.overwriteUpload();
+                dialog.cancel();
+            }
+        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+
+
 }
 
 

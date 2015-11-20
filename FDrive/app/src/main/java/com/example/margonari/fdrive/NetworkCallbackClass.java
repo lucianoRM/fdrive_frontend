@@ -57,7 +57,10 @@ public class NetworkCallbackClass {
     public void openShareFolderDialog(String folderName){ callback.openShareFolderDialog(folderName);}
     public void renameFolder(String oldname,String newName) {callback.renameFolder(oldname, newName);}
     public void getUsers(String folderName) {callback.getUsers(folderName);}
-    public void shareFolder(List<String> selectedUsers,String folderName) {callback.shareFolder(selectedUsers,folderName);}
+    public void shareFolder(List<String> selectedUsers,String folderName) {callback.shareFolder(selectedUsers, folderName);}
+    public void askForLastVersionDownload() {callback.askForLastVersionDownload();}
+
+    public void overwriteUpload(){callback.overwriteUpload();}
 
 
 
@@ -93,6 +96,11 @@ public class NetworkCallbackClass {
         public void onFileDownloadProgress(long progress);
 
 
+        public void askForLastVersionDownload();
+        public void overwriteUpload();
+
+
+
         //Non network related methods
         public void search(String typeOfSearch,String element);
         public void share(List<String> selectedUsers);
@@ -105,6 +113,7 @@ public class NetworkCallbackClass {
         public void createFolder(String newFolder);
         public void renameFile(String newName);
         public void downloadFileVersion(int selectedVersion);
+
     }
 
 

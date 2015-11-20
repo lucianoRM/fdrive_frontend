@@ -73,7 +73,7 @@ public class RequestMaker {
     }
 
 
-    public void uploadFile(final NetworkCallbackClass activityCallback,TypedInputStream inputStream,String email,String token,int fileId, int version){
+    public void uploadFile(final NetworkCallbackClass activityCallback,TypedInputStream inputStream,final String email,String token, final int fileId, final int version){
 
         FileUploadService client = ServiceGenerator.createService(FileUploadService.class, baseUrl);
 
@@ -82,6 +82,7 @@ public class RequestMaker {
             public void success(SimpleRequestAnswer answer, Response response) {
                 if (answer.result) {
                     LoggerFactory.getLogger(getClass()).info("upload success");
+                    Database.getInstance().put(email + "." + fileId + ".lastVersion",Integer.toString(version));
                     activityCallback.onUploadFileSuccess();
                 } else {
                     LoggerFactory.getLogger(getClass()).error("Upload failure, Response: " + answer.errors.toString());
@@ -186,7 +187,7 @@ public class RequestMaker {
 
     }
 
-    public void deleteFile(final NetworkCallbackClass activityCallback,String email,String token,String path,int fileId){
+    public void deleteFile(final NetworkCallbackClass activityCallback,final String email,String token,String path,final int fileId){
 
 
         DeleteFileService client = ServiceGenerator.createService(DeleteFileService.class,baseUrl);
@@ -200,6 +201,7 @@ public class RequestMaker {
                     if (answer.result) {
                         LoggerFactory.getLogger(getClass()).info("Delete file success");
                         activityCallback.onDeleteFileSuccess();
+                        Database.getInstance().put(email + "." + fileId + ".lastVersion", "0");
                     } else {
                         LoggerFactory.getLogger(getClass()).error("Delete file failure, Errors: " + answer.errors.toString());
                         activityCallback.onRequestFailure(answer.errors);
@@ -255,17 +257,23 @@ public class RequestMaker {
 
     }
 
-    public void saveNewVersion(final NetworkCallbackClass activityCallback,String email,String token,String name,String extension,int id,String path,long size,List<String> tags,int version){
+    public void saveNewVersion(final NetworkCallbackClass activityCallback,String email,String token,String name,String extension,int id,String path,long size,List<String> tags,boolean overwrite){
+
+
+        int lastVersion = Integer.parseInt(Database.getInstance().get(email+"." + id + ".lastVersion","0"));
+
+        Log.d("test",Integer.toString(lastVersion));
 
         NewVersionBody body = new NewVersionBody();
         body.email = email;
         body.token = token;
         body.name = name;
         body.extension = extension;
-        body.version = version;
+        body.version = lastVersion;
         body.tags = tags;
         body.path = path;
         body.size = (int)(size/1000);
+        body.overwrite = overwrite;
 
 
         SaveFileService client = ServiceGenerator.createService(SaveFileService.class,baseUrl);
@@ -280,7 +288,12 @@ public class RequestMaker {
                     activityCallback.onNewVersionSaveSuccess(answer.version);
                 } else {
                     LoggerFactory.getLogger(getClass()).error("Save new version failure, Errors: " + answer.errors.toString());
-                    activityCallback.onRequestFailure(answer.errors);
+                    if(answer.errors.get(0).compareTo("Trying to update a file without viewing its last version.") == 0){
+                        //Last version not downloaded
+                        activityCallback.askForLastVersionDownload();
+                    }else{
+                        activityCallback.onRequestFailure(answer.errors);
+                    }
                 }
             }
 
@@ -402,7 +415,7 @@ public class RequestMaker {
 
     }
 
-    public void downloadFile(final NetworkCallbackClass activityCallback,String email,String token,int fileId,final String fileName,final String fileExtension,final int version){
+    public void downloadFile(final NetworkCallbackClass activityCallback,final String email,String token, final int fileId,final String fileName,final String fileExtension,final int version){
 
         FileDownloadService client = ServiceGenerator.createService(FileDownloadService.class,baseUrl);
 
@@ -447,6 +460,7 @@ public class RequestMaker {
                             }
                         } catch (IOException e) {
                         }
+                        Database.getInstance().put(email+"."+ fileId + ".lastVersion",Integer.toString(version));
                         activityCallback.onFileDownloadSuccess();
                     }
                 }).start();

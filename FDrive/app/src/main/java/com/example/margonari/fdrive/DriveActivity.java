@@ -114,6 +114,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private FileCard selectedFileCard;
     public NetworkCallbackClass activityCallback;
     public TypedInputStream fileToUpload;
+    public long toUploadSize;
     private boolean afterSearch;
     private boolean updated;
     private boolean inTrash;
@@ -736,7 +737,6 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
     private void uploadNewVersion(){
 
         ///Codigo que abre la galeria de imagenes y carga la imagen en displayedImage
-
         Intent intent = new Intent();
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -813,8 +813,8 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
                 }catch(FileNotFoundException e){}
                 fileToUpload = new TypedInputStream(fileName, fileType, returnCursor.getLong(sizeIndex),is,activityCallback);
                 if(selectedFileCard.metadata.name.equals(fileName)) {
-                    RequestMaker.getInstance().saveNewVersion(activityCallback, email, token, fileName, "." + fileExtension, selectedFileCard.metadata.id, path.toAbsolutePath(), returnCursor.getLong(sizeIndex), selectedFileCard.metadata.tags, selectedFileCard.metadata.lastVersion);
-                    toggleUi(false);
+                    RequestMaker.getInstance().saveNewVersion(activityCallback, email, token, fileName, "." + fileExtension, selectedFileCard.metadata.id, path.toAbsolutePath(), returnCursor.getLong(sizeIndex), selectedFileCard.metadata.tags, false);
+                    toUploadSize = returnCursor.getLong(sizeIndex);
                 }else{
                     ErrorDisplay.getInstance().showMessage(context,view,"Not the same file");
                 }
@@ -995,7 +995,7 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         if(folderName == null) {
             AlertDialogManager.createShareAlertDialog(activityCallback, context, users, selectedFileCard.metadata.users);
         }else{
-            AlertDialogManager.createShareFolderAlertDialog(activityCallback,context,users,folderName);
+            AlertDialogManager.createShareFolderAlertDialog(activityCallback, context, users, folderName);
         }
         toggleUi(true);
     }
@@ -1007,14 +1007,14 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
             toggleUi(false);
             updated = true;
         }
-        ErrorDisplay.getInstance().showMessage(context,view,"File shared");
+        ErrorDisplay.getInstance().showMessage(context, view, "File shared");
     }
 
 
     public void onNewVersionSaveSuccess(int version){
         toggleUi(true);
         onFileUploadToggleUI(false);
-        RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token,selectedFileCard.metadata.id, version);
+        RequestMaker.getInstance().uploadFile(activityCallback, fileToUpload, email, token, selectedFileCard.metadata.id, version);
     }
 
     public void onFileUploadProgress(final long progress){
@@ -1043,13 +1043,23 @@ public class DriveActivity extends AppCompatActivity implements NetworkCallbackC
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                horizontalProgressBar.setProgress((int)progress);
+                horizontalProgressBar.setProgress((int) progress);
                 progressBarPercentage.setText(Long.toString(progress));
             }
         });
 
     }
 
+    public void askForLastVersionDownload(){
+        AlertDialogManager.createAskForLastVersion(activityCallback, context);
+
+
+    }
+    public void overwriteUpload(){
+
+        RequestMaker.getInstance().saveNewVersion(activityCallback, email, token, selectedFileCard.metadata.name, selectedFileCard.metadata.extension, selectedFileCard.metadata.id, path.toAbsolutePath(),toUploadSize, selectedFileCard.metadata.tags, true);
+
+    }
 
 
 }
