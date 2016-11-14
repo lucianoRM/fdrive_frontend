@@ -1,4 +1,28 @@
 <resources>
     <string name="app_name">FDrive</string>
     <string name="Name">Name</string>
+    <string name="my_drive">My Drive</string>
+    <string name="shared">Shared</string>
+    <string name="settings">Settings</string>
+    <string name="location">Location</string>
+    <string name="logout">Log Out</string>
+    <string name="options_title">Options</string>
+    <string name="baseURL">http://192.168.0.6:8000</string>
+    <string name="sharedConf">conf</string>
+    <string name="trash">Trash</string>
+    <string-array name="right_drawer_spinner_default">
+        <item>Array Item One</item>
+        <item>Array Item Two</item>
+        <item>Array Item Three</item>
+    </string-array>
+    <string-array name="search_options">
+        <item>Name</item>
+        <item>Tag</item>
+        <item>Extension</item>
+        <item>Owner</item>
+    </string-array>
+    <string name="root_folder">root</string>
+    <string name="shared_folder">shared</string>
+    <string name="trash_folder">trash</string>
+
 </resources>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#97BC0F</color>
+    <color name="colorPrimaryDark">#739300</color>
+    <color name="colorAccent">#83781B</color>
+    <color name="background">#8B8982</color>
+    <color name="floatingButtonColorPressed">#94892c</color>
+    <color name="errorRed">#aa1122</color>
+    <color name="successGreen">#006600</color>
+    <color name="buttonsColor">#f42748db</color>
 </resources>

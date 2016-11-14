@@ -1,0 +1,99 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/linear_main">
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Folders - "
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:id="@+id/a"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:id="@+id/path_view"/>
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:id="@+id/recycler_folders_view"
+            android:layout_weight="0.5"
+            />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Files"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:id="@+id/recycler_files_view"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/drive_circular_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="?attr/colorPrimary"
+        android:indeterminateTintMode="src_in"
+        android:layout_gravity="center"
+        />
+
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/add_file_folder_floating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/linear_main"
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        fab:fab_addButtonColorNormal="#000000"
+        fab:fab_addButtonColorPressed="#111111"
+        fab:fab_addButtonPlusIconColor="#ffffff"
+        fab:fab_addButtonSize="normal">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_folder_floating_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="normal"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/floatingButtonColorPressed"
+            fab:fab_icon="@mipmap/ic_folder_white_24dp" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_file_floating_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_size="normal"
+            fab:fab_colorPressed="@color/floatingButtonColorPressed"
+            fab:fab_icon="@mipmap/ic_file_upload_white_24dp"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+</android.support.design.widget.CoordinatorLayout>

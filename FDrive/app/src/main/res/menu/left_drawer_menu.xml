@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/my_drive_button"
+            android:icon="@mipmap/ic_folder_black_24dp"
+            android:title="@string/my_drive" />
+        <item
+            android:id="@+id/shared_whith_me_button"
+            android:icon="@mipmap/ic_folder_shared_black_24dp"
+            android:title="@string/shared" />
+        <item
+            android:id="@+id/trash_folder_icon"
+            android:icon="@mipmap/ic_delete_black_24dp"
+            android:title="@string/trash"/>
+
+
+
+        <!-- Sección de configuración -->
+        <item
+            android:id="@+id/configuration_section"
+            android:title="@string/options_title">
+            <menu>
+                <item
+                    android:id="@+id/location_button"
+                    android:icon="@mipmap/ic_location_on_black_24dp"
+                    android:title="@string/location" />
+                <item
+                    android:id="@+id/settings_button"
+                    android:icon="@mipmap/ic_settings_black_24dp"
+                    android:title="@string/settings" />
+                <item
+                    android:id="@+id/logout_button"
+                    android:icon="@mipmap/ic_power_settings_new_black_24dp"
+                    android:title="@string/logout" />
+            </menu>
+        </item>
+    </group>
+
+</menu>
